@@ -1,5 +1,16 @@
-.textFieldCenter{
+.textFieldCenter {
   height: 50px;
   margin-left: 50%;
   margin-right: 50%;
+}
+
+.menu {
+  width: 200;
+}
+
+.paper {
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

@@ -8,7 +8,7 @@ class AppFrame extends Component {
       <div>
         <div className='app-frame'>
           <MenuAppBar />
-          <div>{body}</div>
+          <div>{null}</div>
           <div>
             <p>Tgroup Sistemas</p>
           </div>

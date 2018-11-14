@@ -9,8 +9,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Dialog
+  Dialog,
+  MenuItem,
+  Paper
 } from '@material-ui/core';
+import Img from 'react-image';
+import logo from '../image/isologo.jpg';
 
 class Login extends Component {
   constructor(props) {
@@ -20,7 +24,8 @@ class Login extends Component {
     this.state = {
       user: null,
       pass: null,
-      open: false
+      open: false,
+      base: null
     };
   }
 
@@ -32,49 +37,90 @@ class Login extends Component {
     this.setState({ open: false });
   };
 
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value
+    });
+  };
+
   render() {
+    const bases = [
+      {
+        value: 'PRUEBA',
+        label: 'Prueba'
+      }
+    ];
+
     return (
-      <div>
-        <TextField
-          id='user'
-          autoFocus='true'
-          label='Usuario'
-          variant='outlined'
-          margin='normal'
-          value={this.state.user}
-        />{' '}
-        <br />
-        <TextField
-          id='password'
-          label='Contraseña'
-          type='password'
-          margin='normal'
-          variant='outlined'
-          value={this.state.pass}
-        />{' '}
-        <br />
-        <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
-          Login
-        </Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby='alert-dialog-title'
-          aria-describedby='alert-dialog-description'
-        >
-          <DialogTitle id='alert-dialog-title'>{'Prueba'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id='alert-dialog-description'>
-              Estamos probando usuario + {this.state.user}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color='primary' autoFocus>
-              Ok!
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+      <Paper className='paper'>
+        <div>
+          <Img src={logo} />
+          <br />
+          <TextField
+            required
+            id='user'
+            autoFocus='true'
+            label='Usuario'
+            variant='outlined'
+            margin='normal'
+            value={this.state.user}
+            onChange={this.handleChange('user')}
+          />
+          <br />
+          <TextField
+            id='password'
+            label='Contraseña'
+            type='password'
+            margin='normal'
+            variant='outlined'
+            value={this.state.pass}
+            onChange={this.handleChange('pass')}
+          />
+          <br />
+          <TextField
+            required
+            id='standard-select-currency'
+            select
+            label='Base'
+            className='menu'
+            value={this.state.base}
+            onChange={this.handleChange('base')}
+            margin='normal'
+          >
+            {bases.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <br />
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={this.handleClickOpen}
+          >
+            Login
+          </Button>
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby='alert-dialog-title'
+            aria-describedby='alert-dialog-description'
+          >
+            <DialogTitle id='alert-dialog-title'>{'Prueba'}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id='alert-dialog-description'>
+                Estamos probando usuario {this.state.user}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color='primary' autoFocus>
+                Ok!
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </Paper>
     );
   }
 }
