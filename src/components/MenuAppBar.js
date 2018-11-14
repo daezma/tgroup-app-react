@@ -15,21 +15,21 @@ import Menu from '@material-ui/core/Menu';
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
-  },
+    marginRight: 20
+  }
 };
 
 class MenuAppBar extends Component {
   state = {
     auth: true,
-    anchorEl: null,
+    anchorEl: null
   };
 
   // handleChange = event => {
@@ -59,34 +59,34 @@ class MenuAppBar extends Component {
             label={auth ? 'Logout' : 'Login'}
           />
         </FormGroup> */}
-        <AppBar position="static">
+        <AppBar position='static'>
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton className={classes.menuButton} color='inherit' aria-label='Menu'>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
+            <Typography variant='h6' color='inherit' className={classes.grow}>
               Tgroup App
             </Typography>
             {auth && (
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : null}
-                  aria-haspopup="true"
+                  aria-haspopup='true'
                   onClick={this.handleMenu}
-                  color="inherit"
+                  color='inherit'
                 >
-                <AccountCircle />
+                  <AccountCircle />
                 </IconButton>
                 <Menu
-                  id="menu-appbar"
+                  id='menu-appbar'
                   anchorEl={anchorEl}
                   anchorOrigin={{
                     vertical: 'top',
-                    horizontal: 'right',
+                    horizontal: 'right'
                   }}
                   transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'right',
+                    horizontal: 'right'
                   }}
                   open={open}
                   onClose={this.handleClose}
@@ -104,7 +104,7 @@ class MenuAppBar extends Component {
 }
 
 MenuAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(MenuAppBar);
