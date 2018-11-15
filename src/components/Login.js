@@ -5,7 +5,7 @@ import './styles.css';
 import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
 import logo from '../image/isologo.jpg';
-import DialogError from '.';
+import DialogError from '../ui/DialogError';
 
 class Login extends Component {
   constructor(props) {
@@ -22,11 +22,17 @@ class Login extends Component {
   }
 
   handleClickOpen = () => {
-    //this.setState({ open: true });
-    if (this.user == '') {
-      this.setState({ open: true });
-    }
-    this.props.history.push('/home');
+    if (this.state.user === '') {
+      this.setState({
+        open: true,
+        msgErr: 'El campo Usuario debe contener un valor'
+      });
+    } else if (this.state.base === '') {
+      this.setState({
+        open: true,
+        msgErr: 'El campo Base debe contener un valor'
+      });
+    } else this.props.history.push('/home');
   };
 
   handleClose = () => {
@@ -93,6 +99,7 @@ class Login extends Component {
           <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
             Login
           </Button>
+          <DialogError open={this.state.open} handleClose={this.handleClose} msgError={this.state.msgErr} />
         </div>
       </Paper>
     );

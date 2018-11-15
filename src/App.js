@@ -27,6 +27,7 @@ class App extends Component {
         <div className='App'>
           <Route exact path='/' component={Login} />
           <Route exact path='/home' component={this.renderHome} />
+          {/* <Route exact path='/home' render={props => <AppFrame {...props} body={props.match.params.algo} />} /> */}
         </div>
       </Router>
     );

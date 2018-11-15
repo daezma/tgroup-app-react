@@ -11,13 +11,13 @@ const DialogError = ({ open, handleClose, msgError }) => {
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id='alert-dialog-title'>{'Prueba'}</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>{'Atención'}</DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>{msgError}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='primary' autoFocus>
-            Ok!
+            Aceptar
           </Button>
         </DialogActions>
       </Dialog>
