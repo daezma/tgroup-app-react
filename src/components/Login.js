@@ -2,19 +2,10 @@ import React, { Component } from 'react';
 //import PropTypes from 'prop-types'
 //import CircularProgress from '@material-ui/core/CircularProgress';
 import './styles.css';
-import {
-  Button,
-  TextField,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Dialog,
-  MenuItem,
-  Paper
-} from '@material-ui/core';
+import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
 import logo from '../image/isologo.jpg';
+import DialogError from '.';
 
 class Login extends Component {
   constructor(props) {
@@ -22,15 +13,20 @@ class Login extends Component {
     //const { user, pass } = props;
 
     this.state = {
-      user: null,
-      pass: null,
+      user: '',
+      pass: '',
       open: false,
-      base: null
+      base: '',
+      msgErr: ''
     };
   }
 
   handleClickOpen = () => {
-    this.setState({ open: true });
+    //this.setState({ open: true });
+    if (this.user == '') {
+      this.setState({ open: true });
+    }
+    this.props.history.push('/home');
   };
 
   handleClose = () => {
@@ -94,31 +90,9 @@ class Login extends Component {
             ))}
           </TextField>
           <br />
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={this.handleClickOpen}
-          >
+          <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
             Login
           </Button>
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'
-          >
-            <DialogTitle id='alert-dialog-title'>{'Prueba'}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id='alert-dialog-description'>
-                Estamos probando usuario {this.state.user}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color='primary' autoFocus>
-                Ok!
-              </Button>
-            </DialogActions>
-          </Dialog>
         </div>
       </Paper>
     );

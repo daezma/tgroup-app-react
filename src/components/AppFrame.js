@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MenuAppBar from './MenuAppBar';
+import { withRouter } from 'react-router-dom';
 
 class AppFrame extends Component {
   render() {
@@ -22,4 +23,4 @@ AppFrame.propTypes = {
   body: PropTypes.element.isRequired
 };
 
-export default AppFrame;
+export default withRouter(AppFrame);

@@ -7,6 +7,8 @@ import Login from './components/Login';
 import AppFrame from './components/AppFrame';
 
 class App extends Component {
+  renderHome = () => <AppFrame />;
+
   render() {
     return (
       // <Grid fluid>
@@ -24,7 +26,7 @@ class App extends Component {
       <Router>
         <div className='App'>
           <Route exact path='/' component={Login} />
-          {/* <Route exact path='/home' component={AppFrame()} /> */}
+          <Route exact path='/home' component={this.renderHome} />
         </div>
       </Router>
     );
