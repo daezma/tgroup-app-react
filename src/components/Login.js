@@ -6,6 +6,7 @@ import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
 import logo from '../image/isologo.jpg';
 import DialogError from '../ui/DialogError';
+import { itsLogin } from '../api/itrisApiConnect';
 
 class Login extends Component {
   constructor(props) {
@@ -32,7 +33,10 @@ class Login extends Component {
         open: true,
         msgErr: 'El campo Base debe contener un valor'
       });
-    } else this.props.history.push('/home');
+    } else {
+      itsLogin(this.state.base, this.state.user, this.state.pass);
+      this.props.history.push('/home');
+    }
   };
 
   handleClose = () => {
