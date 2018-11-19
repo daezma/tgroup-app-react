@@ -27,7 +27,7 @@ const DialogError = ({ open, handleClose, msgError }) => {
 
 DialogError.propTypes = {
   open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.element.isRequired,
+  handleClose: PropTypes.func.isRequired,
   msgError: PropTypes.string.isRequired
 };
 

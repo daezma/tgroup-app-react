@@ -2,25 +2,39 @@ import React, { Component } from 'react';
 //import PropTypes from 'prop-types'
 //import CircularProgress from '@material-ui/core/CircularProgress';
 import './styles.css';
-import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
+import { Button, TextField, MenuItem, Paper, CircularProgress } from '@material-ui/core';
 import Img from 'react-image';
 import logo from '../image/isologo.jpg';
 import DialogError from '../ui/DialogError';
 import { itsLogin } from '../api/itrisApiConnect';
+import LoginStore from '../MobX/LoginStore';
+import { observer, inject } from 'mobx-react';
 
+@inject('login')
+@observer
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    //const { user, pass } = props;
+  loginData = null;
+  constructor() {
+    super();
+    const { login } = this.props;
 
     this.state = {
-      user: '',
       pass: '',
       open: false,
       base: '',
-      msgErr: ''
+      msgErr: '',
+      loading: false
     };
   }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    const { login } = this.props;
+    if (login.LoginResponse.msgError !== '') {
+      this.setState.msgError = login.LoginResponse.msgError;
+      this.setState.open = true;
+    }
+    if (login.LoginResponse.usersession !== '') this.props.history.push('/home');
+  };
 
   handleClickOpen = () => {
     if (this.state.user === '') {
@@ -34,8 +48,8 @@ class Login extends Component {
         msgErr: 'El campo Base debe contener un valor'
       });
     } else {
-      itsLogin(this.state.base, this.state.user, this.state.pass);
-      this.props.history.push('/home');
+      this.setState.loading = true;
+      this.setState.loginResponse = itsLogin(this.state.base, this.state.user, this.state.pass);
     }
   };
 
@@ -50,9 +64,10 @@ class Login extends Component {
   };
 
   render() {
+    const { login } = this.props;
     const bases = [
       {
-        value: 'PRUEBA',
+        value: 'TPRUEBA',
         label: 'Prueba'
       }
     ];
@@ -65,11 +80,11 @@ class Login extends Component {
           <TextField
             required
             id='user'
-            autoFocus='true'
+            autoFocus={true}
             label='Usuario'
             variant='outlined'
             margin='normal'
-            value={this.state.user}
+            value={login.User}
             onChange={this.handleChange('user')}
           />
           <br />
@@ -103,6 +118,8 @@ class Login extends Component {
           <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
             Login
           </Button>
+          <br />
+          {this.state.loading ? <CircularProgress className='cp' /> : null}
           <DialogError open={this.state.open} handleClose={this.handleClose} msgError={this.state.msgErr} />
         </div>
       </Paper>

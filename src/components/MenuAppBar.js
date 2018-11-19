@@ -64,7 +64,7 @@ class MenuAppBar extends Component {
             <IconButton className={classes.menuButton} color='inherit' aria-label='Menu'>
               <MenuIcon />
             </IconButton>
-            <Typography variant='h6' color='inherit' className={classes.grow}>
+            <Typography useNextVariants='true' variant='h6' color='inherit' className={classes.grow}>
               Tgroup App
             </Typography>
             {auth && (
