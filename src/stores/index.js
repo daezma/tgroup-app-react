@@ -1,4 +1,4 @@
-import LoginStore from 'LoginStore';
+import LoginStore from './LoginStore';
 
 export default {
   login: new LoginStore()

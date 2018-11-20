@@ -45,7 +45,7 @@ export const itsLogin = (database, username, password) => {
         loginResponse.error = true;
         loginResponse.msgError = data.message;
       }
-      console.log(loginResponse);
+      //console.log(loginResponse);
       return loginResponse;
     });
 };

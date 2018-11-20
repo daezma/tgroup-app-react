@@ -5,7 +5,7 @@ import './App.css';
 import Login from './components/Login';
 import AppFrame from './components/AppFrame';
 import { Provider } from 'mobx-react';
-import stores from 'MobX';
+import stores from './stores';
 
 class App extends Component {
   renderHome = () => <AppFrame />;

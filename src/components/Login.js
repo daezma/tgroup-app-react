@@ -1,76 +1,48 @@
 import React, { Component } from 'react';
-//import PropTypes from 'prop-types'
 //import CircularProgress from '@material-ui/core/CircularProgress';
 import './styles.css';
-import { Button, TextField, MenuItem, Paper, CircularProgress } from '@material-ui/core';
+import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
 import logo from '../image/isologo.jpg';
 import DialogError from '../ui/DialogError';
-import { itsLogin } from '../api/itrisApiConnect';
-import LoginStore from '../MobX/LoginStore';
+//import { itsLogin } from '../api/itrisApiConnect';
 import { observer, inject } from 'mobx-react';
+import { bases } from '../constants/bases';
 
 @inject('login')
 @observer
 class Login extends Component {
-  loginData = null;
-  constructor() {
-    super();
-    const { login } = this.props;
-
-    this.state = {
-      pass: '',
-      open: false,
-      base: '',
-      msgErr: '',
-      loading: false
-    };
+  constructor(props) {
+    super(props);
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
-    const { login } = this.props;
-    if (login.LoginResponse.msgError !== '') {
-      this.setState.msgError = login.LoginResponse.msgError;
-      this.setState.open = true;
-    }
-    if (login.LoginResponse.usersession !== '') this.props.history.push('/home');
-  };
+  componentDidUpdate = (prevProps, prevState) => {};
 
   handleClickOpen = () => {
-    if (this.state.user === '') {
-      this.setState({
-        open: true,
-        msgErr: 'El campo Usuario debe contener un valor'
-      });
-    } else if (this.state.base === '') {
-      this.setState({
-        open: true,
-        msgErr: 'El campo Base debe contener un valor'
-      });
+    const { login } = this.props;
+    if (login.User === '') {
+      login.updateValue(true, 'O');
+      login.updateValue('El campo Usuario debe contener un valor', 'M');
+    } else if (login.Base === '') {
+      login.updateValue(true, 'O');
+      login.updateValue('El campo Base debe contener un valor', 'M');
     } else {
-      this.setState.loading = true;
-      this.setState.loginResponse = itsLogin(this.state.base, this.state.user, this.state.pass);
+      //this.setState.loginResponse = itsLogin(this.state.base, this.state.user, this.state.pass);
     }
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    const { login } = this.props;
+    login.updateValue(false, 'O');
   };
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
+  handleChange = option => event => {
+    const { login } = this.props;
+    login.updateValue(event.target.value, option);
   };
 
   render() {
     const { login } = this.props;
-    const bases = [
-      {
-        value: 'TPRUEBA',
-        label: 'Prueba'
-      }
-    ];
 
     return (
       <Paper className='paper'>
@@ -85,7 +57,7 @@ class Login extends Component {
             variant='outlined'
             margin='normal'
             value={login.User}
-            onChange={this.handleChange('user')}
+            onChange={this.handleChange('U')}
           />
           <br />
           <TextField
@@ -94,8 +66,8 @@ class Login extends Component {
             type='password'
             margin='normal'
             variant='outlined'
-            value={this.state.pass}
-            onChange={this.handleChange('pass')}
+            value={login.Pass}
+            onChange={this.handleChange('P')}
           />
           <br />
           <TextField
@@ -104,8 +76,8 @@ class Login extends Component {
             select
             label='Base'
             className='menu'
-            value={this.state.base}
-            onChange={this.handleChange('base')}
+            value={login.Base}
+            onChange={this.handleChange('B')}
             margin='normal'
           >
             {bases.map(option => (
@@ -119,8 +91,7 @@ class Login extends Component {
             Login
           </Button>
           <br />
-          {this.state.loading ? <CircularProgress className='cp' /> : null}
-          <DialogError open={this.state.open} handleClose={this.handleClose} msgError={this.state.msgErr} />
+          <DialogError open={login.openDialogState} handleClose={this.handleClose} msgError={login.msgErrorData} />
         </div>
       </Paper>
     );
