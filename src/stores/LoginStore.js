@@ -47,6 +47,11 @@ class LoginStore {
     return this.msgError;
   }
 
+  @computed
+  get UserSession() {
+    return this.loginResponse.usersession;
+  }
+
   @action
   updateValue(value, tipo) {
     switch (tipo) {
@@ -64,6 +69,9 @@ class LoginStore {
         break;
       case 'M':
         this.msgError = value;
+        break;
+      case 'L':
+        this.loginResponse = value;
         break;
       default:
         break;

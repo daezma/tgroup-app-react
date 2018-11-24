@@ -5,13 +5,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-// import Switch from '@material-ui/core/Switch';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import MenuPrincipal from './MenuPrincipal';
+import { observer, inject } from 'mobx-react';
 
 const styles = {
   root: {
@@ -26,6 +24,8 @@ const styles = {
   }
 };
 
+@inject('menuPrincipal')
+@observer
 class MenuAppBar extends Component {
   state = {
     auth: true,
@@ -40,6 +40,10 @@ class MenuAppBar extends Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleMenuP = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
@@ -51,26 +55,19 @@ class MenuAppBar extends Component {
 
     return (
       <div className={classes.root}>
-        {/* <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch checked={auth} onChange={this.handleChange} aria-label="LoginSwitch" />
-            }
-            label={auth ? 'Logout' : 'Login'}
-          />
-        </FormGroup> */}
         <AppBar position='static'>
           <Toolbar>
-            <IconButton className={classes.menuButton} color='inherit' aria-label='Menu'>
-              <MenuIcon />
+            <IconButton className={classes.menuButton} color='inherit' aria-label='Menu' onClick={this.handleMenuP}>
+              <MenuPrincipal />
             </IconButton>
+            />
             <Typography useNextVariants='true' variant='h6' color='inherit' className={classes.grow}>
               Tgroup App
             </Typography>
             {auth && (
               <div>
                 <IconButton
-                  aria-owns={open ? 'menu-appbar' : null}
+                  aria-owns={open ? 'login-appbar' : null}
                   aria-haspopup='true'
                   onClick={this.handleMenu}
                   color='inherit'
@@ -78,7 +75,7 @@ class MenuAppBar extends Component {
                   <AccountCircle />
                 </IconButton>
                 <Menu
-                  id='menu-appbar'
+                  id='login-appbar'
                   anchorEl={anchorEl}
                   anchorOrigin={{
                     vertical: 'top',

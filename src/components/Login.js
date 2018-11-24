@@ -5,7 +5,7 @@ import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
 import logo from '../image/isologo.jpg';
 import DialogError from '../ui/DialogError';
-//import { itsLogin } from '../api/itrisApiConnect';
+import { itsLogin } from '../api/itrisApiConnect';
 import { observer, inject } from 'mobx-react';
 import { bases } from '../constants/bases';
 
@@ -16,9 +16,7 @@ class Login extends Component {
     super(props);
   }
 
-  componentDidUpdate = (prevProps, prevState) => {};
-
-  handleClickOpen = () => {
+  handleClickOpen = async () => {
     const { login } = this.props;
     if (login.User === '') {
       login.updateValue(true, 'O');
@@ -27,7 +25,13 @@ class Login extends Component {
       login.updateValue(true, 'O');
       login.updateValue('El campo Base debe contener un valor', 'M');
     } else {
-      //this.setState.loginResponse = itsLogin(this.state.base, this.state.user, this.state.pass);
+      const response = await itsLogin(login.Base, login.User, login.Pass);
+      login.updateValue(response, 'L');
+      if (login.UserSession !== '') this.props.history.push('/home');
+      else {
+        login.updateValue(true, 'O');
+        login.updateValue(response.msgError, 'M');
+      }
     }
   };
 

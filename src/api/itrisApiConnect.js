@@ -1,4 +1,5 @@
 import { itris_url } from './urls';
+import axios from 'axios';
 
 const loginResponse = {
   error: false,
@@ -15,37 +16,33 @@ const LoginJsonear = (database, username, password) => {
   return JSON.stringify(obj);
 };
 
-const evaluateError = data => {
-  if (data.error === true) {
-    return data.message;
-  } else {
-    return '';
-  }
+const LogoutJsonear = userssesion => {
+  const obj = {
+    userssesion: userssesion
+  };
+  return JSON.stringify(obj);
 };
 
-export const itsLogin = (database, username, password) => {
-  fetch(`${itris_url}login`, {
-    method: 'POST',
-    body: LoginJsonear(database, username, password),
-    headers: new Headers({ 'Content-type': 'application/json' })
-  })
-    .then(resolve => {
-      return resolve.json();
-    })
-    .catch(error => {
-      loginResponse.error = true;
-      loginResponse.msgError = error;
-      return loginResponse;
-    })
-    .then(data => {
-      if (evaluateError(data) === '') {
-        loginResponse.error = false;
-        loginResponse.usersession = data.usersession;
-      } else {
-        loginResponse.error = true;
-        loginResponse.msgError = data.message;
-      }
-      //console.log(loginResponse);
-      return loginResponse;
-    });
-};
+export async function itsLogin(database, username, password) {
+  try {
+    const response = await axios.post(`${itris_url}login`, LoginJsonear(database, username, password));
+    loginResponse.usersession = response.data.usersession;
+  } catch (error) {
+    if (
+      error.response ? (loginResponse.msgError = error.response.data.message) : (loginResponse.msgError = error.message)
+    );
+    loginResponse.error = true;
+  }
+  return loginResponse;
+}
+
+export async function itsLogout(usersession) {
+  let msg = '';
+  try {
+    await axios.post(`${itris_url}login`, LogoutJsonear(usersession));
+    return '';
+  } catch (error) {
+    if (error.response ? (msg = error.response.data.message) : (msg = error.message));
+    return msg;
+  }
+}
