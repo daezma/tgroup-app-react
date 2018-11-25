@@ -12,10 +12,6 @@ import { bases } from '../constants/bases';
 @inject('login')
 @observer
 class Login extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleClickOpen = async () => {
     const { login } = this.props;
     if (login.User === '') {
@@ -25,6 +21,7 @@ class Login extends Component {
       login.updateValue(true, 'O');
       login.updateValue('El campo Base debe contener un valor', 'M');
     } else {
+      login.updateValue(true, 'X');
       const response = await itsLogin(login.Base, login.User, login.Pass);
       login.updateValue(response, 'L');
       if (login.UserSession !== '') this.props.history.push('/home');
@@ -91,9 +88,14 @@ class Login extends Component {
             ))}
           </TextField>
           <br />
-          <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
-            Login
-          </Button>
+          {login.loading ? (
+            <Button disabled>Login</Button>
+          ) : (
+            <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
+              Login
+            </Button>
+          )}
+
           <br />
           <DialogError open={login.openDialogState} handleClose={this.handleClose} msgError={login.msgErrorData} />
         </div>

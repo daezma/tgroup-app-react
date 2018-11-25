@@ -73,6 +73,9 @@ class LoginStore {
       case 'L':
         this.loginResponse = value;
         break;
+      case 'X':
+        this.loading = value;
+        break;
       default:
         break;
     }
