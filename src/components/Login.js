@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import './styles.css';
 import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
@@ -17,9 +17,11 @@ class Login extends Component {
     if (login.User === '') {
       login.updateValue(true, 'O');
       login.updateValue('El campo Usuario debe contener un valor', 'M');
+      login.updateValue(false, 'X');
     } else if (login.Base === '') {
       login.updateValue(true, 'O');
       login.updateValue('El campo Base debe contener un valor', 'M');
+      login.updateValue(false, 'X');
     } else {
       login.updateValue(true, 'X');
       const response = await itsLogin(login.Base, login.User, login.Pass);
@@ -28,6 +30,7 @@ class Login extends Component {
       else {
         login.updateValue(true, 'O');
         login.updateValue(response.msgError, 'M');
+        login.updateValue(false, 'X');
       }
     }
   };
@@ -50,50 +53,55 @@ class Login extends Component {
         <div>
           <Img src={logo} />
           <br />
-          <TextField
-            required
-            id='user'
-            autoFocus={true}
-            label='Usuario'
-            variant='outlined'
-            margin='normal'
-            value={login.User}
-            onChange={this.handleChange('U')}
-          />
-          <br />
-          <TextField
-            id='password'
-            label='Contraseña'
-            type='password'
-            margin='normal'
-            variant='outlined'
-            value={login.Pass}
-            onChange={this.handleChange('P')}
-          />
-          <br />
-          <TextField
-            required
-            id='standard-select-currency'
-            select
-            label='Base'
-            className='menu'
-            value={login.Base}
-            onChange={this.handleChange('B')}
-            margin='normal'
-          >
-            {bases.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          <br />
           {login.loading ? (
-            <Button disabled>Login</Button>
+            <>
+              <Button disabled>Login</Button>
+              <CircularProgress />
+            </>
           ) : (
-            <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
-              Login
-            </Button>
+            <>
+              <TextField
+                required
+                id='user'
+                autoFocus={true}
+                label='Usuario'
+                variant='outlined'
+                margin='normal'
+                value={login.User}
+                onChange={this.handleChange('U')}
+              />
+              <br />
+              <TextField
+                id='password'
+                label='Contraseña'
+                type='password'
+                margin='normal'
+                variant='outlined'
+                value={login.Pass}
+                onChange={this.handleChange('P')}
+              />
+              <br />
+              <TextField
+                required
+                id='standard-select-currency'
+                select
+                label='Base'
+                className='menu'
+                value={login.Base}
+                onChange={this.handleChange('B')}
+                margin='normal'
+              >
+                {bases.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <br />
+              <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
+                Login
+              </Button>
+            </>
           )}
 
           <br />

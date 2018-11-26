@@ -3,11 +3,17 @@ import { observable, computed, configure, action } from 'mobx';
 configure({ enforceActions: 'always' });
 
 class MenuPrincipalStore {
-  @observable anchor = false;
+  @observable anchor = null;
+  @observable anchorLogin = null;
 
   @computed
   get Open() {
     return Boolean(this.anchor);
+  }
+
+  @computed
+  get OpenLogin() {
+    return Boolean(this.anchorLogin);
   }
 
   @computed
@@ -18,6 +24,11 @@ class MenuPrincipalStore {
   @action
   UpdateAnchor(value) {
     this.anchor = value;
+  }
+
+  @action
+  UpdateAnchorLogin(value) {
+    this.anchorLogin = value;
   }
 }
 
