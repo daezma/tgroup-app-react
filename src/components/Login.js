@@ -26,7 +26,7 @@ class Login extends Component {
       login.updateValue(true, 'X');
       const response = await itsLogin(login.Base, login.User, login.Pass);
       login.updateValue(response, 'L');
-      if (login.UserSession !== '') this.props.history.push('/home');
+      if (login.UserSession !== '') this.props.history.push('/penven');
       else {
         login.updateValue(true, 'O');
         login.updateValue(response.msgError, 'M');

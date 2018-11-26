@@ -23,6 +23,18 @@ const LogoutJsonear = userssesion => {
   return JSON.stringify(obj);
 };
 
+const ClassToJson = (usersession, clase, recordCount, sqlFilter, sqlSort) => {
+  debugger;
+  const obj = {
+    usersession: usersession,
+    class: clase,
+    recordCount: recordCount,
+    sqlFilter: sqlFilter,
+    sqlSort: sqlSort
+  };
+  return JSON.stringify(obj);
+};
+
 export async function itsLogin(database, username, password) {
   try {
     const response = await axios.post(`${itris_url}login`, LoginJsonear(database, username, password));
@@ -44,5 +56,19 @@ export async function itsLogout(usersession) {
   } catch (error) {
     if (error.response ? (msg = error.response.data.message) : (msg = error.message));
     return msg;
+  }
+}
+
+export async function itsGetClass(usersession, clase, recordCount, sqlFilter, sqlSort) {
+  let msgError = '';
+  try {
+    const response = await axios.get(
+      `${itris_url}class`,
+      ClassToJson(usersession, clase, recordCount, sqlFilter, sqlSort)
+    );
+    return response.data.data;
+  } catch (error) {
+    if (error.response ? (msgError = error.response.data.message) : (msgError = error.message));
+    return msgError;
   }
 }

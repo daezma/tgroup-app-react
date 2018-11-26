@@ -38,13 +38,11 @@ class MenuAppBar extends Component {
   };
 
   handleMenu = event => {
-    // this.setState({ anchorEl: event.currentTarget });
     const { menuPrincipal } = this.props;
     menuPrincipal.UpdateAnchorLogin(event.currentTarget);
   };
 
   handleClose = () => {
-    // this.setState({ anchorEl: null });
     const { menuPrincipal } = this.props;
     menuPrincipal.UpdateAnchorLogin(null);
   };
