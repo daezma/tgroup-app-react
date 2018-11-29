@@ -8,6 +8,7 @@
     "axios": "^0.18.0",
     "mobx": "^5.6.0",
     "mobx-react": "^5.4.2",
+    "mobx-react-form": "^1.35.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-image": "^1.5.1",

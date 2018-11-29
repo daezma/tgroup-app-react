@@ -31,6 +31,10 @@ class LoginStore {
     return this.loginData.name;
   }
 
+  user(value) {
+    this.loginData.name = value;
+  }
+
   get Pass() {
     return this.loginData.pass;
   }
@@ -51,6 +55,10 @@ class LoginStore {
     return this.loginResponse.usersession;
   }
 
+  userSession(value) {
+    this.loginResponse.usersession = value;
+  }
+
   ClearSession() {
     this.loginResponse.usersession = '';
     this.loginResponse.error = false;
@@ -59,9 +67,6 @@ class LoginStore {
 
   updateValue(value, tipo) {
     switch (tipo) {
-      case 'U':
-        this.loginData.name = value;
-        break;
       case 'P':
         this.loginData.pass = value;
         break;
@@ -79,9 +84,6 @@ class LoginStore {
         break;
       case 'X':
         this.loading = value;
-        break;
-      case 'S':
-        this.loginResponse.usersession = value;
         break;
       default:
         break;
@@ -104,7 +106,9 @@ decorate(LoginStore, {
   UserSession: computed,
   updateValue: action,
   inicializar: action,
-  ClearSession: action
+  ClearSession: action,
+  user: action,
+  userSession: action
 });
 
 export default LoginStore;

@@ -26,7 +26,7 @@ const Login = inject('login')(
         } else {
           login.updateValue(true, 'X');
           const response = await itsLogin(login.Base, login.User, login.Pass);
-          login.updateValue(response, 'L');
+          login.userSession(response);
           if (login.UserSession !== '') this.props.history.push(HOME);
           else {
             login.updateValue(true, 'O');
@@ -44,6 +44,13 @@ const Login = inject('login')(
       handleChange = option => event => {
         const { login } = this.props;
         login.updateValue(event.target.value, option);
+        //login.User(event.target.value);
+      };
+
+      handleChangeLogin = () => event => {
+        const { login } = this.props;
+        console.log(login);
+        login.user(event.target.value);
       };
 
       render() {
@@ -69,7 +76,7 @@ const Login = inject('login')(
                     variant='outlined'
                     margin='normal'
                     value={login.User}
-                    onChange={this.handleChange('U')}
+                    onChange={this.handleChangeLogin()}
                   />
                   <br />
                   <TextField
