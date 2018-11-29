@@ -26,7 +26,7 @@ const Login = inject('login')(
           login.updateValue(true, 'X');
           const response = await itsLogin(login.Base, login.User, login.Pass);
           login.updateValue(response, 'L');
-          if (login.UserSession !== '') this.props.history.push('/penven');
+          if (login.UserSession !== '') this.props.history.push('/');
           else {
             login.updateValue(true, 'O');
             login.updateValue(response.msgError, 'M');
@@ -49,7 +49,7 @@ const Login = inject('login')(
         const { login } = this.props;
 
         return (
-          <Paper className='paper'>
+          <Paper className="paper">
             <div>
               <Img src={logo} />
               <br />
@@ -62,34 +62,34 @@ const Login = inject('login')(
                 <>
                   <TextField
                     required
-                    id='user'
+                    id="user"
                     autoFocus={true}
-                    label='Usuario'
-                    variant='outlined'
-                    margin='normal'
+                    label="Usuario"
+                    variant="outlined"
+                    margin="normal"
                     value={login.User}
                     onChange={this.handleChange('U')}
                   />
                   <br />
                   <TextField
-                    id='password'
-                    label='Contraseña'
-                    type='password'
-                    margin='normal'
-                    variant='outlined'
+                    id="password"
+                    label="Contraseña"
+                    type="password"
+                    margin="normal"
+                    variant="outlined"
                     value={login.Pass}
                     onChange={this.handleChange('P')}
                   />
                   <br />
                   <TextField
                     required
-                    id='standard-select-currency'
+                    id="standard-select-currency"
                     select
-                    label='Base'
-                    className='menu'
+                    label="Base"
+                    className="menu"
                     value={login.Base}
                     onChange={this.handleChange('B')}
-                    margin='normal'
+                    margin="normal"
                   >
                     {bases.map(option => (
                       <MenuItem key={option.value} value={option.value}>
@@ -98,7 +98,7 @@ const Login = inject('login')(
                     ))}
                   </TextField>
                   <br />
-                  <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
+                  <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
                     Login
                   </Button>
                 </>
