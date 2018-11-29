@@ -12,6 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { observer, inject } from 'mobx-react';
 import { itsLogout } from '../api/itrisApiConnect';
 import DialogError from '../ui/DialogError';
+import * as pagina from '../constants/paginas';
 
 const styles = {
   root: {
@@ -35,6 +36,10 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
         menuPrincipal.UpdateAnchor(null);
         menuPrincipal.UpdateAnchorLogin(null);
       }
+
+      GoToPage = pagina => {
+        //this.props.history.push(pagina);
+      };
 
       handleMenu = event => {
         const { menuPrincipal } = this.props;
@@ -101,7 +106,9 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
                     open={menuPrincipal.Open}
                     onClose={this.handleCloseP}
                   >
-                    <MenuItem onClick={this.handleCloseP}>Pendientes de imputación de ventas</MenuItem>
+                    <MenuItem onClick={this.GoToPage(pagina.PENDIENTES_VENTAS)}>
+                      Pendientes de imputación de ventas
+                    </MenuItem>
                     <MenuItem onClick={this.handleCloseP}>Recibos de ventas</MenuItem>
                   </MenuIcon>
                 </IconButton>

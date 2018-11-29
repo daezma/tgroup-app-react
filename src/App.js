@@ -6,16 +6,17 @@ import Login from './components/Login';
 import AppFrame from './components/AppFrame';
 import { Provider } from 'mobx-react';
 import stores from './stores';
+import * as paginas from './constants/paginas';
 
 class App extends Component {
   render() {
     return (
       <Provider {...stores}>
         <Router>
-          <div className="App">
+          <div className='App'>
             <Switch>
-              <Route exact path="/login" component={Login} />
-              <Route path="/" render={() => <AppFrame clase="blank" />} />
+              <Route exact path={paginas.LOGIN} component={Login} />
+              <Route path={paginas.HOME} render={() => <AppFrame clase={paginas.PAGINA_EN_BLANCO} />} />
             </Switch>
           </div>
         </Router>

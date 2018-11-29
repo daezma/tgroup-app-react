@@ -8,6 +8,7 @@ import DialogError from '../ui/DialogError';
 import { itsLogin } from '../api/itrisApiConnect';
 import { observer, inject } from 'mobx-react';
 import { bases } from '../constants/bases';
+import { HOME } from '../constants/paginas';
 
 const Login = inject('login')(
   observer(
@@ -26,7 +27,7 @@ const Login = inject('login')(
           login.updateValue(true, 'X');
           const response = await itsLogin(login.Base, login.User, login.Pass);
           login.updateValue(response, 'L');
-          if (login.UserSession !== '') this.props.history.push('/');
+          if (login.UserSession !== '') this.props.history.push(HOME);
           else {
             login.updateValue(true, 'O');
             login.updateValue(response.msgError, 'M');

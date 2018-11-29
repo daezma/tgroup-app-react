@@ -4,6 +4,7 @@ import MenuAppBar from './MenuAppBar';
 import { withRouter, Redirect } from 'react-router-dom';
 import InitPage from './InitPage';
 import { observer, inject } from 'mobx-react';
+import * as paginas from '../constants/paginas';
 
 const AppFrame = inject('login')(
   observer(
@@ -12,7 +13,7 @@ const AppFrame = inject('login')(
         const { login } = this.props;
         console.log('sesion' + login.UserSession);
         if (login.UserSession === '') {
-          return <Redirect to='/login' />;
+          return <Redirect to={paginas.LOGIN} />;
         }
       };
 
@@ -20,7 +21,7 @@ const AppFrame = inject('login')(
         const { clase } = this.props;
         const contenido = (() => {
           switch (clase) {
-            case 'blank':
+            case paginas.PAGINA_EN_BLANCO:
               return <InitPage />;
             default:
               break;
