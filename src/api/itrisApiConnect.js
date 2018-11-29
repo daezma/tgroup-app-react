@@ -24,7 +24,6 @@ const LogoutJsonear = userssesion => {
 };
 
 const ClassToJson = (usersession, clase, recordCount, sqlFilter, sqlSort) => {
-  debugger;
   const obj = {
     usersession: usersession,
     class: clase,

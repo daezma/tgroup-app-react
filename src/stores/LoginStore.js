@@ -1,58 +1,56 @@
-import { observable, computed, configure, action } from 'mobx';
+import { observable, computed, configure, action, decorate } from 'mobx';
 
 configure({ enforceActions: 'always' });
 
 class LoginStore {
-  @observable loginResponse = {
-    error: false,
-    msgError: '',
-    usersession: ''
-  };
-  @observable loginData = {
-    name: '',
-    pass: '',
-    base: ''
-  };
-  @observable openDialog = false;
-  @observable msgError = '';
-  @observable loading = false;
+  constructor() {
+    this.inicializar();
+  }
 
-  @computed
+  inicializar() {
+    this.loginResponse = {
+      error: false,
+      msgError: '',
+      usersession: ''
+    };
+    this.loginData = {
+      name: '',
+      pass: '',
+      base: ''
+    };
+    this.openDialog = false;
+    this.msgError = '';
+    this.loading = false;
+  }
+
   get LoginResponse() {
     return this.loginResponse;
   }
 
-  @computed
   get User() {
     return this.loginData.name;
   }
 
-  @computed
   get Pass() {
     return this.loginData.pass;
   }
 
-  @computed
   get Base() {
     return this.loginData.base;
   }
 
-  @computed
   get openDialogState() {
     return this.openDialog;
   }
 
-  @computed
   get msgErrorData() {
     return this.msgError;
   }
 
-  @computed
   get UserSession() {
     return this.loginResponse.usersession;
   }
 
-  @action
   updateValue(value, tipo) {
     switch (tipo) {
       case 'U':
@@ -81,5 +79,22 @@ class LoginStore {
     }
   }
 }
+
+decorate(LoginStore, {
+  loginResponse: observable,
+  loginData: observable,
+  openDialog: observable,
+  msgError: observable,
+  loading: observable,
+  LoginResponse: computed,
+  User: computed,
+  Pass: computed,
+  Base: computed,
+  openDialogState: computed,
+  msgErrorData: computed,
+  UserSession: computed,
+  updateValue: action,
+  inicializar: action
+});
 
 export default LoginStore;

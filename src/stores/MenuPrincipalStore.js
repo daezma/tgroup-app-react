@@ -1,35 +1,47 @@
-import { observable, computed, configure, action } from 'mobx';
+import { observable, computed, configure, action, decorate } from 'mobx';
 
 configure({ enforceActions: 'always' });
 
 class MenuPrincipalStore {
-  @observable anchor = null;
-  @observable anchorLogin = null;
+  constructor() {
+    this.inicializar();
+  }
 
-  @computed
+  inicializar() {
+    this.anchor = null;
+    this.anchorLogin = null;
+  }
+
   get Open() {
     return Boolean(this.anchor);
   }
 
-  @computed
   get OpenLogin() {
     return Boolean(this.anchorLogin);
   }
 
-  @computed
   get Anchor() {
     return this.anchor;
   }
 
-  @action
   UpdateAnchor(value) {
     this.anchor = value;
   }
 
-  @action
   UpdateAnchorLogin(value) {
     this.anchorLogin = value;
   }
 }
+
+decorate(MenuPrincipalStore, {
+  anchor: observable,
+  anchorLogin: observable,
+  Open: computed,
+  OpenLogin: computed,
+  Anchor: computed,
+  UpdateAnchor: action,
+  UpdateAnchorLogin: action,
+  inicializar: action
+});
 
 export default MenuPrincipalStore;
