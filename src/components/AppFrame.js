@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MenuAppBar from './MenuAppBar';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import InitPage from './InitPage';
 import { observer, inject } from 'mobx-react';
 
 const AppFrame = inject('login')(
   observer(
     class AppFrame extends Component {
+      SessionOk = () => {
+        const { login } = this.props;
+        console.log('sesion' + login.UserSession);
+        if (login.UserSession === '') {
+          return <Redirect to='/login' />;
+        }
+      };
+
       render() {
         const { clase } = this.props;
         const contenido = (() => {
@@ -20,15 +28,18 @@ const AppFrame = inject('login')(
         })();
 
         return (
-          <div>
-            <div className='app-frame'>
-              <MenuAppBar />
-              <div>{contenido}</div>
-              <div>
-                <p>Tgroup Sistemas</p>
+          <>
+            {this.SessionOk()}
+            <div>
+              <div className='app-frame'>
+                <MenuAppBar />
+                <div>{contenido}</div>
+                <div>
+                  <p>Tgroup Sistemas</p>
+                </div>
               </div>
             </div>
-          </div>
+          </>
         );
       }
     }
