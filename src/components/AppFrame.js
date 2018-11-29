@@ -33,7 +33,7 @@ class AppFrame extends Component {
 }
 
 AppFrame.propTypes = {
-  body: PropTypes.element.isRequired
+  body: PropTypes.element
 };
 
 export default withRouter(AppFrame);

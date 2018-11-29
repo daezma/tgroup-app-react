@@ -51,6 +51,12 @@ class LoginStore {
     return this.loginResponse.usersession;
   }
 
+  ClearSession() {
+    this.loginResponse.usersession = '';
+    this.loginResponse.error = false;
+    this.loginResponse.msgError = '';
+  }
+
   updateValue(value, tipo) {
     switch (tipo) {
       case 'U':
@@ -74,6 +80,9 @@ class LoginStore {
       case 'X':
         this.loading = value;
         break;
+      case 'S':
+        this.loginResponse.usersession = value;
+        break;
       default:
         break;
     }
@@ -94,7 +103,8 @@ decorate(LoginStore, {
   msgErrorData: computed,
   UserSession: computed,
   updateValue: action,
-  inicializar: action
+  inicializar: action,
+  ClearSession: action
 });
 
 export default LoginStore;

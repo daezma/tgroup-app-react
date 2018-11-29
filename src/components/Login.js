@@ -26,7 +26,7 @@ const Login = inject('login')(
           login.updateValue(true, 'X');
           const response = await itsLogin(login.Base, login.User, login.Pass);
           login.updateValue(response, 'L');
-          if (login.UserSession !== '') this.props.history.push('/penven');
+          if (login.UserSession !== '') this.props.history.push('/home');
           else {
             login.updateValue(true, 'O');
             login.updateValue(response.msgError, 'M');

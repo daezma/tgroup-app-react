@@ -49,8 +49,9 @@ export async function itsLogin(database, username, password) {
 
 export async function itsLogout(usersession) {
   let msg = '';
+  debugger;
   try {
-    await axios.post(`${itris_url}login`, LogoutJsonear(usersession));
+    await axios.post(`${itris_url}logout`, LogoutJsonear(usersession));
     return '';
   } catch (error) {
     if (error.response ? (msg = error.response.data.message) : (msg = error.message));

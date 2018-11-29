@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +8,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/core/Menu';
+import { withStyles } from '@material-ui/core/styles';
 import { observer, inject } from 'mobx-react';
+import { itsLogout } from '../api/itrisApiConnect';
+import DialogError from '../ui/DialogError';
 
 const styles = {
   root: {
@@ -24,7 +26,7 @@ const styles = {
   }
 };
 
-const MenuAppBar = inject('menuPrincipal')(
+const MenuAppBar = inject('menuPrincipal', 'login')(
   observer(
     class MenuAppBar extends Component {
       constructor(props) {
@@ -33,9 +35,6 @@ const MenuAppBar = inject('menuPrincipal')(
         menuPrincipal.UpdateAnchor(null);
         menuPrincipal.UpdateAnchorLogin(null);
       }
-      state = {
-        anchorEl: null
-      };
 
       handleMenu = event => {
         const { menuPrincipal } = this.props;
@@ -57,7 +56,22 @@ const MenuAppBar = inject('menuPrincipal')(
         menuPrincipal.UpdateAnchor(event.currentTarget);
       };
 
+      closeSession = async () => {
+        const { login } = this.props;
+        const response = await itsLogout(login.userSession);
+        debugger;
+        if (response === '') {
+          login.ClearSession();
+          this.props.history.push('/home');
+        } else {
+          login.updateValue(true, 'O');
+          login.updateValue(response, 'M');
+          login.updateValue(false, 'X');
+        }
+      };
+
       render() {
+        const { login } = this.props;
         const { classes } = this.props;
         const { menuPrincipal } = this.props;
 
@@ -119,10 +133,12 @@ const MenuAppBar = inject('menuPrincipal')(
                   >
                     <MenuItem onClick={this.handleClose}>Perfil</MenuItem>
                     <MenuItem onClick={this.handleClose}>Mi cuenta</MenuItem>
+                    <MenuItem onClick={this.closeSession}>Cerrar sesión</MenuItem>
                   </Menu>
                 </div>
               </Toolbar>
             </AppBar>
+            <DialogError open={login.openDialogState} handleClose={this.handleClose} msgError={login.msgErrorData} />
           </div>
         );
       }
