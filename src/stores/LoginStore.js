@@ -31,7 +31,7 @@ class LoginStore {
     return this.loginData.name;
   }
 
-  user(value) {
+  setUser(value) {
     this.loginData.name = value;
   }
 
@@ -55,7 +55,7 @@ class LoginStore {
     return this.loginResponse.usersession;
   }
 
-  userSession(value) {
+  setUserSession(value) {
     this.loginResponse.usersession = value;
   }
 
@@ -107,8 +107,8 @@ decorate(LoginStore, {
   updateValue: action,
   inicializar: action,
   ClearSession: action,
-  user: action,
-  userSession: action
+  setUser: action,
+  setUserSession: action
 });
 
 export default LoginStore;

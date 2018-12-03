@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import MenuAppBar from './MenuAppBar';
 import { withRouter, Redirect } from 'react-router-dom';
 import InitPage from './InitPage';
+import PenVenPage from './PenVenPage';
 import { observer, inject } from 'mobx-react';
 import * as paginas from '../constants/paginas';
 
@@ -11,7 +12,6 @@ const AppFrame = inject('login')(
     class AppFrame extends Component {
       SessionOk = () => {
         const { login } = this.props;
-        console.log('sesion' + login.UserSession);
         if (login.UserSession === '') {
           return <Redirect to={paginas.LOGIN} />;
         }
@@ -23,6 +23,8 @@ const AppFrame = inject('login')(
           switch (clase) {
             case paginas.PAGINA_EN_BLANCO:
               return <InitPage />;
+            case paginas.PENDIENTES_VENTAS:
+              return <PenVenPage />;
             default:
               break;
           }

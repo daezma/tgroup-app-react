@@ -7,14 +7,20 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/core/Menu';
+import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 import { observer, inject } from 'mobx-react';
 import { itsLogout } from '../api/itrisApiConnect';
 import DialogError from '../ui/DialogError';
-import * as pagina from '../constants/paginas';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MenuPrincipalItems from './MenuPrincipalItems/MenuPrincipalItems';
 
-const styles = {
+const drawerWidth = 240;
+
+const styles = theme => ({
   root: {
     flexGrow: 1
   },
@@ -22,10 +28,57 @@ const styles = {
     flexGrow: 1
   },
   menuButton: {
-    marginLeft: -12,
+    marginLeft: 12,
     marginRight: 20
+  },
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  hide: {
+    display: 'none'
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: drawerWidth
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end'
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3,
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    marginLeft: -drawerWidth
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    }),
+    marginLeft: 0
   }
-};
+});
 
 const MenuAppBar = inject('menuPrincipal', 'login')(
   observer(
@@ -33,32 +86,27 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
       constructor(props) {
         super(props);
         const { menuPrincipal } = this.props;
-        menuPrincipal.UpdateAnchor(null);
-        menuPrincipal.UpdateAnchorLogin(null);
+        menuPrincipal.SetAnchorLogin(null);
       }
 
-      GoToPage = pagina => {
-        //this.props.history.push(pagina);
+      handleDrawerOpen = () => {
+        const { menuPrincipal } = this.props;
+        menuPrincipal.SetOpenMenu(true);
+      };
+
+      handleDrawerClose = () => {
+        const { menuPrincipal } = this.props;
+        menuPrincipal.SetOpenMenu(false);
       };
 
       handleMenu = event => {
         const { menuPrincipal } = this.props;
-        menuPrincipal.UpdateAnchorLogin(event.currentTarget);
+        menuPrincipal.SetAnchorLogin(event.currentTarget);
       };
 
       handleClose = () => {
         const { menuPrincipal } = this.props;
-        menuPrincipal.UpdateAnchorLogin(null);
-      };
-
-      handleCloseP = () => {
-        const { menuPrincipal } = this.props;
-        menuPrincipal.UpdateAnchor(null);
-      };
-
-      handleMenuP = event => {
-        const { menuPrincipal } = this.props;
-        menuPrincipal.UpdateAnchor(event.currentTarget);
+        menuPrincipal.SetAnchorLogin(null);
       };
 
       closeSession = async () => {
@@ -67,7 +115,7 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
         debugger;
         if (response === '') {
           login.ClearSession();
-          this.props.history.push('/home');
+          this.props.history.push('/');
         } else {
           login.updateValue(true, 'O');
           login.updateValue(response, 'M');
@@ -76,43 +124,21 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
       };
 
       render() {
-        const { login } = this.props;
-        const { classes } = this.props;
-        const { menuPrincipal } = this.props;
-
+        const { login, menuPrincipal, classes } = this.props;
         return (
           <div className={classes.root}>
+            <CssBaseline />
             <AppBar position='static'>
-              <Toolbar>
+              <Toolbar disableGutters={!menuPrincipal.OpenMenu}>
                 <IconButton
-                  aria-owns={menuPrincipal.Open ? 'menu-appbar' : null}
-                  aria-haspopup='true'
                   className={classes.menuButton}
-                  color='inherit'
                   aria-label='Menu'
-                  onClick={this.handleMenuP}
+                  color='inherit'
+                  onClick={this.handleDrawerOpen}
                 >
-                  <MenuIcon
-                    id='menu-appbar'
-                    anchorEl={menuPrincipal.Anchor}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left'
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left'
-                    }}
-                    open={menuPrincipal.Open}
-                    onClose={this.handleCloseP}
-                  >
-                    <MenuItem onClick={this.GoToPage(pagina.PENDIENTES_VENTAS)}>
-                      Pendientes de imputación de ventas
-                    </MenuItem>
-                    <MenuItem onClick={this.handleCloseP}>Recibos de ventas</MenuItem>
-                  </MenuIcon>
+                  <MenuIcon />
                 </IconButton>
-                <Typography useNextVariants='true' variant='h6' color='inherit' className={classes.grow}>
+                <Typography variant='h6' color='inherit' className={classes.grow}>
                   Tgroup App
                 </Typography>
                 <div>
@@ -145,6 +171,23 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
                 </div>
               </Toolbar>
             </AppBar>
+            <Drawer
+              className={classes.drawer}
+              variant='persistent'
+              anchor='left'
+              open={menuPrincipal.OpenMenu}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+            >
+              <div className={classes.drawerHeader}>
+                <IconButton onClick={this.handleDrawerClose}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </div>
+              <Divider />
+              <MenuPrincipalItems />
+            </Drawer>
             <DialogError open={login.openDialogState} handleClose={this.handleClose} msgError={login.msgErrorData} />
           </div>
         );

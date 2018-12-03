@@ -20,7 +20,6 @@ import Paper from '@material-ui/core/Paper';
 // });
 
 const SimpleTable = ({ objeto }) => {
-  debugger;
   const rows = objeto;
 
   return (

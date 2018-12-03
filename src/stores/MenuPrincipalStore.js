@@ -4,44 +4,39 @@ configure({ enforceActions: 'always' });
 
 class MenuPrincipalStore {
   constructor() {
-    this.inicializar();
+    this.initialize();
   }
 
-  inicializar() {
-    this.anchor = null;
+  initialize() {
     this.anchorLogin = null;
-  }
-
-  get Open() {
-    return Boolean(this.anchor);
+    this.openMenu = false;
   }
 
   get OpenLogin() {
     return Boolean(this.anchorLogin);
   }
 
-  get Anchor() {
-    return this.anchor;
+  get OpenMenu() {
+    return this.openMenu;
   }
 
-  UpdateAnchor(value) {
-    this.anchor = value;
-  }
-
-  UpdateAnchorLogin(value) {
+  SetAnchorLogin(value) {
     this.anchorLogin = value;
   }
+
+  SetOpenMenu = value => {
+    this.openMenu = value;
+  };
 }
 
 decorate(MenuPrincipalStore, {
-  anchor: observable,
+  openMenu: observable,
   anchorLogin: observable,
-  Open: computed,
   OpenLogin: computed,
-  Anchor: computed,
-  UpdateAnchor: action,
-  UpdateAnchorLogin: action,
-  inicializar: action
+  OpenMenu: computed,
+  SetAnchorLogin: action,
+  SetOpenMenu: action,
+  initialize: action
 });
 
 export default MenuPrincipalStore;

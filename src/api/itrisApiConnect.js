@@ -23,20 +23,21 @@ const LogoutJsonear = userssesion => {
   return JSON.stringify(obj);
 };
 
-const ClassToJson = (usersession, clase, recordCount, sqlFilter, sqlSort) => {
-  const obj = {
-    usersession: usersession,
-    class: clase,
-    recordCount: recordCount,
-    sqlFilter: sqlFilter,
-    sqlSort: sqlSort
-  };
-  return JSON.stringify(obj);
-};
+// const ClassToJson = (usersession, clase, recordCount, sqlFilter, sqlSort) => {
+//   const obj = {
+//     usersession: usersession,
+//     class: clase,
+//     recordCount: recordCount,
+//     sqlFilter: sqlFilter,
+//     sqlSort: sqlSort
+//   };
+//   return JSON.stringify(obj);
+// };
 
 export async function itsLogin(database, username, password) {
   try {
     const response = await axios.post(`${itris_url}login`, LoginJsonear(database, username, password));
+    console.log(response);
     loginResponse.usersession = response.data.usersession;
   } catch (error) {
     if (
@@ -59,13 +60,17 @@ export async function itsLogout(usersession) {
   }
 }
 
-export async function itsGetClass(usersession, clase, recordCount, sqlFilter, sqlSort) {
+export async function itsGetClass(usersession, clase, recordCount = '', sqlFilter = '', sqlSort = '') {
   let msgError = '';
+  const parameters = {
+    usersession: usersession,
+    class: clase
+  };
   try {
-    const response = await axios.get(
-      `${itris_url}class`,
-      ClassToJson(usersession, clase, recordCount, sqlFilter, sqlSort)
-    );
+    const response = await axios.get(`${itris_url}class`, {
+      params: parameters
+    });
+    console.log(response);
     return response.data.data;
   } catch (error) {
     if (error.response ? (msgError = error.response.data.message) : (msgError = error.message));

@@ -26,7 +26,8 @@ const Login = inject('login')(
         } else {
           login.updateValue(true, 'X');
           const response = await itsLogin(login.Base, login.User, login.Pass);
-          login.userSession(response);
+          console.log(response);
+          login.setUserSession(response.usersession);
           if (login.UserSession !== '') this.props.history.push(HOME);
           else {
             login.updateValue(true, 'O');
@@ -49,8 +50,7 @@ const Login = inject('login')(
 
       handleChangeLogin = () => event => {
         const { login } = this.props;
-        console.log(login);
-        login.user(event.target.value);
+        login.setUser(event.target.value);
       };
 
       render() {
@@ -72,7 +72,7 @@ const Login = inject('login')(
                     required
                     id='user'
                     autoFocus={true}
-                    label='Usuario'
+                    placeholder='Usuario'
                     variant='outlined'
                     margin='normal'
                     value={login.User}
@@ -81,7 +81,7 @@ const Login = inject('login')(
                   <br />
                   <TextField
                     id='password'
-                    label='Contraseña'
+                    placeholder='Contraseña'
                     type='password'
                     margin='normal'
                     variant='outlined'

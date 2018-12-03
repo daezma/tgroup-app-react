@@ -16,6 +16,11 @@ class App extends Component {
           <div className='App'>
             <Switch>
               <Route exact path={paginas.LOGIN} component={Login} />
+              <Route
+                exact
+                path={paginas.PENDIENTES_VENTAS}
+                render={() => <AppFrame clase={paginas.PENDIENTES_VENTAS} />}
+              />
               <Route path={paginas.HOME} render={() => <AppFrame clase={paginas.PAGINA_EN_BLANCO} />} />
             </Switch>
           </div>
