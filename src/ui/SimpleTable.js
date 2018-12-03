@@ -35,7 +35,7 @@ const SimpleTable = ({ objeto }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.data.map(row => {
+          {rows.map(row => {
             return (
               <TableRow key={row.ID}>
                 <TableCell component='th' scope='row'>

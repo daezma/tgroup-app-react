@@ -37,7 +37,6 @@ const LogoutJsonear = userssesion => {
 export async function itsLogin(database, username, password) {
   try {
     const response = await axios.post(`${itris_url}login`, LoginJsonear(database, username, password));
-    console.log(response);
     loginResponse.usersession = response.data.usersession;
   } catch (error) {
     if (
@@ -70,7 +69,6 @@ export async function itsGetClass(usersession, clase, recordCount = '', sqlFilte
     const response = await axios.get(`${itris_url}class`, {
       params: parameters
     });
-    console.log(response);
     return response.data.data;
   } catch (error) {
     if (error.response ? (msgError = error.response.data.message) : (msgError = error.message));
