@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import './styles.css';
+import style from './Login.module.css';
 import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
-import logo from '../image/isologo.jpg';
-import DialogError from '../ui/DialogError';
-import { itsLogin } from '../api/itrisApiConnect';
+import logo from '../../image/isologo.jpg';
+import DialogError from '../../ui/DialogError';
+import { itsLogin } from '../../api/itrisApiConnect';
 import { observer, inject } from 'mobx-react';
-import { bases } from '../constants/bases';
-import { HOME } from '../constants/paginas';
+import { bases } from '../../constants/bases';
+import { HOME } from '../../constants/paginas';
 
 const Login = inject('login')(
   observer(
@@ -57,7 +57,7 @@ const Login = inject('login')(
         const { login } = this.props;
 
         return (
-          <Paper className='paper'>
+          <Paper className={style.paper}>
             <div>
               <Img src={logo} />
               <br />
@@ -94,7 +94,7 @@ const Login = inject('login')(
                     id='standard-select-currency'
                     select
                     label='Base'
-                    className='menu'
+                    className={style.menu}
                     value={login.Base}
                     onChange={this.handleChange('B')}
                     margin='normal'

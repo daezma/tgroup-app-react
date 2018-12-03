@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import { Grid, Row, Col } from 'react-flexbox-grid';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Login from './components/Login';
+import Login from './components/Login/Login';
 import AppFrame from './components/AppFrame';
 import { Provider } from 'mobx-react';
 import stores from './stores';
