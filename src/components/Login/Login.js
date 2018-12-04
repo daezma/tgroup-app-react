@@ -26,7 +26,6 @@ const Login = inject('login')(
         } else {
           login.updateValue(true, 'X');
           const response = await itsLogin(login.Base, login.User, login.Pass);
-          console.log(response);
           login.setUserSession(response.usersession);
           if (login.UserSession !== '') this.props.history.push(HOME);
           else {
@@ -63,8 +62,8 @@ const Login = inject('login')(
               <br />
               {login.loading ? (
                 <>
-                  <Button disabled>Login</Button>
                   <CircularProgress />
+                  <p>Verificando...</p>
                 </>
               ) : (
                 <>
@@ -91,7 +90,7 @@ const Login = inject('login')(
                   <br />
                   <TextField
                     required
-                    id='standard-select-currency'
+                    id='select-base'
                     select
                     label='Base'
                     className={style.menu}
