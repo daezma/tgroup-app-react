@@ -7,7 +7,7 @@ const loginResponse = {
   usersession: ''
 };
 
-const LoginJsonear = (database, username, password) => {
+const LoginToJson = (database, username, password) => {
   const obj = {
     database: database,
     username: username,
@@ -16,9 +16,9 @@ const LoginJsonear = (database, username, password) => {
   return JSON.stringify(obj);
 };
 
-const LogoutJsonear = userssesion => {
+const LogoutToJson = usersession => {
   const obj = {
-    userssesion: userssesion
+    usersession: usersession
   };
   return JSON.stringify(obj);
 };
@@ -36,7 +36,7 @@ const LogoutJsonear = userssesion => {
 
 export async function itsLogin(database, username, password) {
   try {
-    const response = await axios.post(`${itris_url}login`, LoginJsonear(database, username, password));
+    const response = await axios.post(`${itris_url}login`, LoginToJson(database, username, password));
     loginResponse.usersession = response.data.usersession;
   } catch (error) {
     if (
@@ -49,9 +49,8 @@ export async function itsLogin(database, username, password) {
 
 export async function itsLogout(usersession) {
   let msg = '';
-  debugger;
   try {
-    await axios.post(`${itris_url}logout`, LogoutJsonear(usersession));
+    await axios.post(`${itris_url}logout`, LogoutToJson(usersession));
     return '';
   } catch (error) {
     if (error.response ? (msg = error.response.data.message) : (msg = error.message));

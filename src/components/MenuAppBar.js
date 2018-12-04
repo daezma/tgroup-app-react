@@ -17,6 +17,8 @@ import Divider from '@material-ui/core/Divider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuPrincipalItems from './MenuPrincipalItems/MenuPrincipalItems';
+import { LOGIN } from '../constants/paginas';
+import { withRouter } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -111,11 +113,11 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
 
       closeSession = async () => {
         const { login } = this.props;
-        const response = await itsLogout(login.userSession);
-        debugger;
+        const response = await itsLogout(login.UserSession);
         if (response === '') {
           login.ClearSession();
-          this.props.history.push('/');
+          login.setLoading(false);
+          this.props.history.push(LOGIN);
         } else {
           login.setOpenDialog(true);
           login.setMsgError(response);
@@ -200,4 +202,4 @@ MenuAppBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(MenuAppBar);
+export default withRouter(withStyles(styles)(MenuAppBar));
