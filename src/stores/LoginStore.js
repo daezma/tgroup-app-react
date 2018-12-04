@@ -65,6 +65,18 @@ class LoginStore {
     this.loginResponse.msgError = '';
   }
 
+  setOpenDialog(value) {
+    this.openDialog = value;
+  }
+
+  setLoading(value) {
+    this.loading = value;
+  }
+
+  setMsgError(value) {
+    this.msgError = value;
+  }
+
   updateValue(value, tipo) {
     switch (tipo) {
       case 'P':
@@ -108,7 +120,8 @@ decorate(LoginStore, {
   inicializar: action,
   ClearSession: action,
   setUser: action,
-  setUserSession: action
+  setUserSession: action,
+  setOpenDialog: action
 });
 
 export default LoginStore;

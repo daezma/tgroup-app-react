@@ -117,9 +117,9 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
           login.ClearSession();
           this.props.history.push('/');
         } else {
-          login.updateValue(true, 'O');
-          login.updateValue(response, 'M');
-          login.updateValue(false, 'X');
+          login.setOpenDialog(true);
+          login.setMsgError(response);
+          login.setLoading(false);
         }
       };
 
