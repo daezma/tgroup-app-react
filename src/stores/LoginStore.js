@@ -77,29 +77,12 @@ class LoginStore {
     this.msgError = value;
   }
 
-  updateValue(value, tipo) {
-    switch (tipo) {
-      case 'P':
-        this.loginData.pass = value;
-        break;
-      case 'B':
-        this.loginData.base = value;
-        break;
-      case 'O':
-        this.openDialog = value;
-        break;
-      case 'M':
-        this.msgError = value;
-        break;
-      case 'L':
-        this.loginResponse = value;
-        break;
-      case 'X':
-        this.loading = value;
-        break;
-      default:
-        break;
-    }
+  setPass(value) {
+    this.loginData.pass = value;
+  }
+
+  setBase(value) {
+    this.loginData.base = value;
   }
 }
 
@@ -121,7 +104,11 @@ decorate(LoginStore, {
   ClearSession: action,
   setUser: action,
   setUserSession: action,
-  setOpenDialog: action
+  setOpenDialog: action,
+  setLoading: action,
+  setPass: action,
+  setBase: action,
+  setMsgError: action
 });
 
 export default LoginStore;

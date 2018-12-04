@@ -15,41 +15,47 @@ const Login = inject('login')(
     class Login extends Component {
       handleClickOpen = async () => {
         const { login } = this.props;
+        let error = '';
         if (login.User === '') {
-          login.updateValue(true, 'O');
-          login.updateValue('El campo Usuario debe contener un valor', 'M');
-          login.updateValue(false, 'X');
+          error = 'El campo Usuario debe contener un valor';
         } else if (login.Base === '') {
-          login.updateValue(true, 'O');
-          login.updateValue('El campo Base debe contener un valor', 'M');
-          login.updateValue(false, 'X');
+          error = 'El campo Base debe contener un valor';
         } else {
-          login.updateValue(true, 'X');
+          login.setLoading(true);
           const response = await itsLogin(login.Base, login.User, login.Pass);
           login.setUserSession(response.usersession);
-          if (login.UserSession !== '') this.props.history.push(HOME);
-          else {
-            login.updateValue(true, 'O');
-            login.updateValue(response.msgError, 'M');
-            login.updateValue(false, 'X');
+          if (login.UserSession !== '') {
+            this.props.history.push(HOME);
+          } else {
+            error = response.msgError;
           }
+        }
+        if (error !== '') {
+          login.setOpenDialog(true);
+          login.setMsgError(error);
+          login.setLoading(false);
         }
       };
 
       handleClose = () => {
-        const { login } = this.props;
-        login.updateValue(false, 'O');
+        this.props.login.setOpenDialog(false);
       };
 
       handleChange = option => event => {
-        const { login } = this.props;
-        login.updateValue(event.target.value, option);
-        //login.User(event.target.value);
+        switch (option) {
+          case 'P':
+            this.props.login.setPass(event.target.value);
+            break;
+          case 'B':
+            this.props.login.setBase(event.target.value);
+            break;
+          default:
+            break;
+        }
       };
 
       handleChangeLogin = () => event => {
-        const { login } = this.props;
-        login.setUser(event.target.value);
+        this.props.login.setUser(event.target.value);
       };
 
       render() {
