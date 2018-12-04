@@ -7,7 +7,7 @@ const DialogError = ({ open, handleClose, msgError }) => {
     <div>
       <Dialog
         open={open}
-        onClose={handleClose}
+        //onClose={handleClose}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
       >
