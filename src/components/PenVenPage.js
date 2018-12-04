@@ -14,19 +14,15 @@ const PenVenPage = inject('login', 'penven')(
         try {
           const { login, penven } = this.props;
           const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP');
-          console.log(res.data);
-          penven.setData(res.data);
+          penven.SetData(res);
         } catch (error) {
-          console.log(error.data);
+          console.log(error);
         }
       };
 
       render() {
-        return (
-          <div>
-            <p>prueba</p>
-          </div>
-        );
+        const { penven } = this.props;
+        return <div>{penven.Data ? <SimpleTable objeto={penven.Data} /> : null}</div>;
       }
     }
   )
