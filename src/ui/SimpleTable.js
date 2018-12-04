@@ -28,10 +28,10 @@ const SimpleTable = ({ objeto }) => {
         <TableHead>
           <TableRow>
             <TableCell>Empresa</TableCell>
-            <TableCell date>Fecha</TableCell>
-            <TableCell string>Nro</TableCell>
-            <TableCell numeric>Importe</TableCell>
-            <TableCell numeric>Saldo</TableCell>
+            <TableCell>Fecha</TableCell>
+            <TableCell>Nro</TableCell>
+            <TableCell>Importe</TableCell>
+            <TableCell>Saldo</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -41,8 +41,8 @@ const SimpleTable = ({ objeto }) => {
                 <TableCell component='th' scope='row'>
                   {row.FK_ERP_EMPRESAS}
                 </TableCell>
-                <TableCell date>{row.FECHA}</TableCell>
-                <TableCell string>{row.FK_ERP_COM_VEN}</TableCell>
+                <TableCell>{row.FECHA}</TableCell>
+                <TableCell>{row.FK_ERP_COM_VEN}</TableCell>
                 <TableCell numeric>{row.IMPORTE}</TableCell>
                 <TableCell numeric>{row.SALDO}</TableCell>
               </TableRow>
