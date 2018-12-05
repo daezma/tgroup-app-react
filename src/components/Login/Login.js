@@ -4,7 +4,7 @@ import style from './Login.module.css';
 import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
 import logo from '../../image/isologo.jpg';
-import DialogError from '../../ui/DialogError';
+import DialogSnack from '../../ui/DialogSnack';
 import { itsLogin } from '../../api/itrisApiConnect';
 import { observer, inject } from 'mobx-react';
 import { bases } from '../../constants/bases';
@@ -118,7 +118,7 @@ const Login = inject('login')(
               )}
 
               <br />
-              <DialogError open={login.openDialogState} handleClose={this.handleClose} msgError={login.msgErrorData} />
+              <DialogSnack open={login.openDialogState} handleClose={this.handleClose} msg={login.msgErrorData} />
             </div>
           </Paper>
         );

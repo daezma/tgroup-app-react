@@ -11,7 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 import { observer, inject } from 'mobx-react';
 import { itsLogout } from '../api/itrisApiConnect';
-import DialogError from '../ui/DialogError';
+import DialogSnack from '../ui/DialogSnack';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -190,7 +190,7 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
               <Divider />
               <MenuPrincipalItems />
             </Drawer>
-            <DialogError open={login.openDialogState} handleClose={this.handleClose} msgError={login.msgErrorData} />
+            <DialogSnack open={login.openDialogState} handleClose={this.handleClose} msg={login.msgErrorData} />
           </div>
         );
       }
