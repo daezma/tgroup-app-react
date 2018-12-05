@@ -19,8 +19,8 @@ import Paper from '@material-ui/core/Paper';
 //   }
 // });
 
-const SimpleTable = ({ objeto }) => {
-  const rows = objeto;
+const SimpleTable = ({ data }) => {
+  const rows = data;
 
   return (
     <Paper>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import SimpleTable from '../ui/SimpleTable';
 import { itsGetClass } from '../api/itrisApiConnect';
+import AdvanceTable from '../ui/AdvanceTable';
 
 const PenVenPage = inject('login', 'penven')(
   observer(
@@ -22,7 +22,7 @@ const PenVenPage = inject('login', 'penven')(
 
       render() {
         const { penven } = this.props;
-        return <div>{penven.Data ? <SimpleTable objeto={penven.Data} /> : null}</div>;
+        return <div>{penven.Data ? <AdvanceTable data={penven.Data} /> : null}</div>;
       }
     }
   )
