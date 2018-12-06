@@ -6,6 +6,7 @@ import InitPage from './InitPage';
 import { observer, inject } from 'mobx-react';
 import * as paginas from '../constants/paginas';
 const PenVenPage = React.lazy(() => import('./PenVenPage'));
+const RecVen = React.lazy(() => import('./Recibos/RecVen'));
 
 const AppFrame = inject('login')(
   observer(
@@ -25,6 +26,8 @@ const AppFrame = inject('login')(
               return <InitPage />;
             case paginas.PENDIENTES_VENTAS:
               return <PenVenPage />;
+            case paginas.RECIBOS_VENTAS:
+              return <RecVen />;
             default:
               break;
           }

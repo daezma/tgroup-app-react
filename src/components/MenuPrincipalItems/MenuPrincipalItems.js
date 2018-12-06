@@ -21,7 +21,7 @@ class MenuPrincipalItems extends Component {
           <MenuPrinicipalItem title='Pendientes de imputación' click={() => this.GoToPage(paginas.PENDIENTES_VENTAS)}>
             <CompareArrows />
           </MenuPrinicipalItem>
-          <MenuPrinicipalItem title='Recibos'>
+          <MenuPrinicipalItem title='Recibos' click={() => this.GoToPage(paginas.RECIBOS_VENTAS)}>
             <AttachMoney />
           </MenuPrinicipalItem>
         </List>
