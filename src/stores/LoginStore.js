@@ -60,9 +60,7 @@ class LoginStore {
   }
 
   ClearSession() {
-    this.loginResponse.usersession = '';
-    this.loginResponse.error = false;
-    this.loginResponse.msgError = '';
+    this.inicializar();
   }
 
   setOpenDialog(value) {

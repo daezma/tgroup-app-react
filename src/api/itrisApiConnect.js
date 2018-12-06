@@ -64,6 +64,7 @@ export async function itsLogout(usersession) {
   let msg = '';
   try {
     await axios.post(`${itris_url}logout`, LogoutToJson(usersession));
+    loginResponse.usersession = '';
     return '';
   } catch (error) {
     if (error.response ? (msg = error.response.data.message) : (msg = error.message));

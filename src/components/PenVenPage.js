@@ -15,6 +15,7 @@ const PenVenPage = inject('login', 'penven')(
           const { login, penven } = this.props;
           const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User);
           if (typeof res === 'string') {
+            penven.SetData(null);
             penven.SetMsgAlert(res);
           } else penven.SetData(res);
         } catch (error) {
