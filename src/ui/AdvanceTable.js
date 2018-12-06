@@ -15,7 +15,9 @@ import {
   SelectionState,
   SortingState,
   DataTypeProvider,
-  DataTypeProviderProps
+  DataTypeProviderProps,
+  SummaryState,
+  IntegratedSummary
 } from '@devexpress/dx-react-grid';
 import {
   DragDropProvider,
@@ -27,6 +29,7 @@ import {
   TableGroupRow,
   TableHeaderRow,
   TableSelection,
+  TableSummaryRow,
   Toolbar
 } from '@devexpress/dx-react-grid-material-ui';
 
@@ -61,16 +64,10 @@ type CurrencyEditorProps = DataTypeProvider.ValueEditorProps & WithStyles<typeof
 const getInputValue = (value?: string): string => (value === undefined ? '' : value);
 
 const getColor = (amount: number): string => {
-  if (amount < 3000) {
-    return '#F44336';
+  if (amount > 0) {
+    return 'green';
   }
-  if (amount < 5000) {
-    return '#FFC107';
-  }
-  if (amount < 8000) {
-    return '#FF5722';
-  }
-  return '#009688';
+  return 'red';
 };
 
 const CurrencyEditor = withStyles(styles)(({ onValueChange, classes, value }: CurrencyEditorProps) => {
@@ -92,7 +89,7 @@ const CurrencyEditor = withStyles(styles)(({ onValueChange, classes, value }: Cu
       value={getInputValue(value)}
       inputProps={{
         min: 0,
-        placeholder: 'Filter...'
+        placeholder: 'Filtro...'
       }}
       onChange={handleChange}
     />
@@ -101,7 +98,7 @@ const CurrencyEditor = withStyles(styles)(({ onValueChange, classes, value }: Cu
 
 const CurrencyFormatter = withStyles(styles)(({ value, classes }: CurrencyFormatterProps) => (
   <i className={classes.currency} style={{ color: getColor(value) }}>
-    ${value}
+    ${value.toFixed(2)}
   </i>
 ));
 
@@ -114,7 +111,7 @@ const CurrencyTypeProvider: React.ComponentType<DataTypeProviderProps> = (props:
   />
 );
 
-export default class Demo extends React.Component<object, IGridState> {
+export default class AdvanceTable extends React.Component<object, IGridState> {
   columns = [
     { name: 'empresa', title: 'Empresa' },
     { name: 'fecha', title: 'Fecha' },
@@ -124,7 +121,7 @@ export default class Demo extends React.Component<object, IGridState> {
   ];
 
   pageSizes = [5, 10, 15];
-  currencyColumns = ['importe, saldo'];
+  currencyColumns = ['importe', 'saldo'];
   rows = this.props.data.map(row => {
     return {
       empresa: row.FK_ERP_EMPRESAS,
@@ -135,6 +132,25 @@ export default class Demo extends React.Component<object, IGridState> {
     };
   });
 
+  filterMessages = {
+    filterPlaceholder: 'Filtro...',
+    contains: 'Contiene',
+    notContains: 'No contiene',
+    startsWith: 'Comienza con',
+    endsWith: 'Termina con',
+    equal: 'Igual a',
+    notEqual: 'Distinto a',
+    greaterThan: 'Mayor a',
+    greaterThanOrEqual: 'Mayor o igual a',
+    lessThan: 'Menor a',
+    lessThanOrEqual: 'Menor o igual a'
+  };
+
+  pagingMessages = {
+    all: 'Todos',
+    rowsPerPage: 'Filas por página',
+    info: ({ from, to, count }) => `${from} - ${to} de ${count}`
+  };
   render() {
     //console.log(this.props.data);
     return (
@@ -147,14 +163,19 @@ export default class Demo extends React.Component<object, IGridState> {
 
           <SelectionState />
 
-          <GroupingState defaultGrouping={[{ columnName: 'empresa' }]} defaultExpandedGroups={['Celuloide']} />
+          <GroupingState grouping={[{ columnName: 'empresa' }]} defaultExpandedGroups={['Celuloide']} />
           <PagingState />
+          <SummaryState
+            groupItems={[{ columnName: 'saldo', type: 'sum' }]}
+            totalItems={[{ columnName: 'saldo', type: 'sum' }]}
+          />
 
           <IntegratedGrouping />
           <IntegratedFiltering />
           <IntegratedSorting />
           <IntegratedPaging />
           <IntegratedSelection />
+          <IntegratedSummary />
 
           <CurrencyTypeProvider for={this.currencyColumns} />
 
@@ -164,10 +185,11 @@ export default class Demo extends React.Component<object, IGridState> {
           <TableSelection showSelectAll={true} />
 
           <TableHeaderRow showSortingControls={true} />
-          <TableFilterRow showFilterSelector={true} />
-          <PagingPanel pageSizes={this.pageSizes} />
+          <TableFilterRow showFilterSelector={true} messages={this.filterMessages} />
+          <PagingPanel pageSizes={this.pageSizes} messages={this.pagingMessages} />
 
-          <TableGroupRow />
+          <TableGroupRow showColumnsWhenGrouped={true} />
+          <TableSummaryRow messages={{ sum: 'Total' }} />
           <Toolbar />
           <GroupingPanel showSortingControls={true} />
         </Grid>

@@ -188,7 +188,7 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
                 </IconButton>
               </div>
               <Divider />
-              <MenuPrincipalItems />
+              <MenuPrincipalItems onSelectedItem={this.handleDrawerClose} />
             </Drawer>
             <DialogSnack open={login.openDialogState} handleClose={this.handleClose} msg={login.msgErrorData} />
           </div>

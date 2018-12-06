@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 
 class MenuPrincipalItems extends Component {
   GoToPage = pagina => {
+    this.props.onSelectedItem();
     this.props.history.push(pagina);
   };
 
