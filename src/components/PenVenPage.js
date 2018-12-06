@@ -13,8 +13,10 @@ const PenVenPage = inject('login', 'penven')(
       traerDatos = async () => {
         try {
           const { login, penven } = this.props;
-          const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP');
-          penven.SetData(res);
+          const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User);
+          if (typeof res === 'string') {
+            penven.SetMsgAlert(res);
+          } else penven.SetData(res);
         } catch (error) {
           console.log(error);
         }
@@ -22,7 +24,7 @@ const PenVenPage = inject('login', 'penven')(
 
       render() {
         const { penven } = this.props;
-        return <div>{penven.Data ? <AdvanceTable data={penven.Data} /> : null}</div>;
+        return <div>{penven.Data ? <AdvanceTable data={penven.Data} /> : penven.MsgAlert}</div>;
       }
     }
   )

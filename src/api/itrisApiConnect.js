@@ -23,16 +23,29 @@ const LogoutToJson = usersession => {
   return JSON.stringify(obj);
 };
 
-// const ClassToJson = (usersession, clase, recordCount, sqlFilter, sqlSort) => {
-//   const obj = {
-//     usersession: usersession,
-//     class: clase,
-//     recordCount: recordCount,
-//     sqlFilter: sqlFilter,
-//     sqlSort: sqlSort
-//   };
-//   return JSON.stringify(obj);
-// };
+async function itsSecurityCheck(usersession, username, clase) {
+  let valido = false;
+  const sqlFilter = `FK_ITRIS_CLASSES = '${clase}' and MK_ITRIS_GROUPS in (select MK_ITRIS_GROUPS from ITRIS_GRO_USE 
+    where MK_ITRIS_USERS = '${username}')`;
+  const parameters = {
+    usersession: usersession,
+    class: 'ITRIS_GRO_CLA',
+    sqlFilter: sqlFilter
+  };
+  try {
+    const response = await axios.get(`${itris_url}class`, {
+      params: parameters
+    });
+
+    response.data.data.forEach(element => {
+      if (element.GCLVISIBLE === true) valido = true;
+    });
+
+    return valido;
+  } catch (error) {
+    return valido;
+  }
+}
 
 export async function itsLogin(database, username, password) {
   try {
@@ -58,19 +71,28 @@ export async function itsLogout(usersession) {
   }
 }
 
-export async function itsGetClass(usersession, clase, recordCount = '', sqlFilter = '', sqlSort = '') {
-  let msgError = '';
-  const parameters = {
-    usersession: usersession,
-    class: clase
-  };
-  try {
-    const response = await axios.get(`${itris_url}class`, {
-      params: parameters
-    });
-    return response.data.data;
-  } catch (error) {
-    if (error.response ? (msgError = error.response.data.message) : (msgError = error.message));
-    return msgError;
+export async function itsGetClass(usersession, clase, username, recordCount, sqlFilter, sqlSort = '') {
+  let valido = false;
+  //Verificar seguridad del usuario
+  valido = await itsSecurityCheck(usersession, username, clase);
+  if (valido) {
+    let msgError = '';
+    const parameters = {
+      usersession: usersession,
+      class: clase,
+      recordCount: recordCount,
+      sqlFilter: sqlFilter
+    };
+    try {
+      const response = await axios.get(`${itris_url}class`, {
+        params: parameters
+      });
+      return response.data.data;
+    } catch (error) {
+      if (error.response ? (msgError = error.response.data.message) : (msgError = error.message));
+      return msgError;
+    }
+  } else {
+    return 'Usuario no habilitado par acceder a este módulo';
   }
 }
