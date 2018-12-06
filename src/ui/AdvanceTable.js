@@ -112,25 +112,7 @@ const CurrencyTypeProvider: React.ComponentType<DataTypeProviderProps> = (props:
 );
 
 export default class AdvanceTable extends React.Component<object, IGridState> {
-  columns = [
-    { name: 'empresa', title: 'Empresa' },
-    { name: 'fecha', title: 'Fecha' },
-    { name: 'numero', title: 'Numero' },
-    { name: 'importe', title: 'Importe' },
-    { name: 'saldo', title: 'Saldo' }
-  ];
-
-  pageSizes = [5, 10, 15];
-  currencyColumns = ['importe', 'saldo'];
-  rows = this.props.data.map(row => {
-    return {
-      empresa: row.FK_ERP_EMPRESAS,
-      fecha: row.FECHA,
-      numero: row.FK_ERP_COM_VEN,
-      importe: row.IMPORTE,
-      saldo: row.SALDO
-    };
-  });
+  pageSizes = [5, 10, 15, 25];
 
   filterMessages = {
     filterPlaceholder: 'Filtro...',
@@ -151,24 +133,46 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
     rowsPerPage: 'Filas por página',
     info: ({ from, to, count }) => `${from} - ${to} de ${count}`
   };
+
+  summaryMessages = {
+    sum: 'Total',
+    avg: 'Prom.',
+    count: 'Cantidad'
+  };
+
   render() {
+    const {
+      columns,
+      data,
+      currencyColumns,
+      ordering,
+      grouping,
+      summaryGroup,
+      summaryTotal,
+      strictGrouping
+    } = this.props;
     //console.log(this.props.data);
+    let groupingState = null;
+    if (strictGrouping) {
+      groupingState = <GroupingState grouping={grouping} />;
+    } else if (grouping) {
+      groupingState = <GroupingState defaultGrouping={grouping} />;
+    }
     return (
       <Paper>
-        <Grid rows={this.rows} columns={this.columns}>
+        <Grid rows={data} columns={columns}>
           <FilteringState />
-          <SortingState
-            defaultSorting={[{ columnName: 'empresa', direction: 'asc' }, { columnName: 'importe', direction: 'asc' }]}
-          />
+          <SortingState defaultSorting={ordering} />
 
           <SelectionState />
 
-          <GroupingState grouping={[{ columnName: 'empresa' }]} defaultExpandedGroups={['Celuloide']} />
+          {groupingState}
           <PagingState />
-          <SummaryState
-            groupItems={[{ columnName: 'saldo', type: 'sum' }]}
-            totalItems={[{ columnName: 'saldo', type: 'sum' }]}
-          />
+          {summaryTotal ? (
+            <>
+              <SummaryState groupItems={summaryGroup} totalItems={summaryTotal} />
+            </>
+          ) : null}
 
           <IntegratedGrouping />
           <IntegratedFiltering />
@@ -177,7 +181,7 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
           <IntegratedSelection />
           <IntegratedSummary />
 
-          <CurrencyTypeProvider for={this.currencyColumns} />
+          {currencyColumns ? <CurrencyTypeProvider for={currencyColumns} /> : null}
 
           <DragDropProvider />
 
@@ -189,7 +193,7 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
           <PagingPanel pageSizes={this.pageSizes} messages={this.pagingMessages} />
 
           <TableGroupRow showColumnsWhenGrouped={true} />
-          <TableSummaryRow messages={{ sum: 'Total' }} />
+          {summaryTotal ? <TableSummaryRow messages={this.summaryMessages} /> : null}
           <Toolbar />
           <GroupingPanel showSortingControls={true} />
         </Grid>
