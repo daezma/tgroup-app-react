@@ -55,6 +55,5 @@ export default class ResultadoBusqueda extends React.Component {
 }
 
 ResultadoBusqueda.propTypes = {
-  tabla: PropTypes.string.isRequired,
   titulo: PropTypes.string.isRequired
 };

@@ -3,7 +3,8 @@ import { TextField, Paper, MenuItem } from '@material-ui/core';
 import style from './RecVen.module.css';
 import { observer, inject } from 'mobx-react';
 import { fk_erp_uni_neg } from '../../api/ListasFijas';
-import Buscador from '../../api/Buscadores';
+import { BuscadorEmpresa } from '../../api/Buscadores';
+import ResultadoBusqueda from './../../ui/ResultadoBusqueda';
 
 const RecVenStep1 = inject('recven', 'login')(
   observer(
@@ -42,7 +43,19 @@ const RecVenStep1 = inject('recven', 'login')(
 
       //TODO: aqui cambiar, hacer cuando se pierda el foco o se apriete enter para que active el buscador
       handleEmpresa = () => event => {
-        this.props.recven.Fk_erp_Empresas(event.target.value);
+        this.CargarEmpresa(event.target.value);
+      };
+
+      CargarEmpresa = async filter => {
+        const { login, recven } = this.props;
+        try {
+          const empresa = await BuscadorEmpresa(login.UserSession, filter);
+          recven.List_empresas(empresa);
+        } catch (error) {
+          console.log('error');
+        }
+
+        recven.Fk_erp_Empresas(event.target.value);
       };
 
       render() {
@@ -113,6 +126,11 @@ const RecVenStep1 = inject('recven', 'login')(
                 margin='normal'
                 value={recven.observaciones}
                 onChange={this.handleChange('O')}
+              />
+              <ResultadoBusqueda
+                open={recven.Busqueda_empresa_abierta}
+                titulo='Seleccionar empresa'
+                values={recven.List_empresas}
               />
             </div>
           </Paper>

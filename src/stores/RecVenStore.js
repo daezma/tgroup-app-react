@@ -18,6 +18,8 @@ class RecVenStore {
     this._imp_total = 0;
     this._saldo = 0;
     this._observaciones = '';
+    this._busqueda_empresa_abierta = false;
+    this._list_empresas = [];
   }
 
   get fecha() {
@@ -79,9 +81,22 @@ class RecVenStore {
   get list_uni_neg() {
     return this._list_uni_neg;
   }
-
   List_uni_neg(value) {
     this._list_uni_neg = value;
+  }
+
+  get busqueda_empresa_abierta() {
+    return this._busqueda_empresa_abierta;
+  }
+  Busqueda_empresa_abierta(value) {
+    this._busqueda_empresa_abierta = value;
+  }
+
+  get list_empresas() {
+    return this._list_empresas;
+  }
+  List_empresas(value) {
+    this._list_empresas = value;
   }
 }
 
@@ -95,6 +110,8 @@ decorate(RecVenStore, {
   _observaciones: observable,
   _cueTes: observable,
   _list_uni_neg: observable,
+  _busqueda_empresa_abierta: observable,
+  _list_empresas: observable,
   fecha: computed,
   fk_erp_empresas: computed,
   fk_erp_uni_neg: computed,
@@ -104,6 +121,8 @@ decorate(RecVenStore, {
   observaciones: computed,
   cueTes: computed,
   list_uni_neg: computed,
+  busqueda_empresa_abierta: computed,
+  list_empresas: computed,
   Fecha: action,
   Fk_erp_empresas: action,
   Fk_erp_uni_neg: action,
@@ -113,7 +132,9 @@ decorate(RecVenStore, {
   Observaciones: action,
   CueTes: action,
   Inicializar: action,
-  List_uni_neg: action
+  List_uni_neg: action,
+  Busqueda_empresa_abierta: action,
+  List_empresas: action
 });
 
 export default RecVenStore;

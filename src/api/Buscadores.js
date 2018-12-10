@@ -2,7 +2,7 @@ import { itsGetClassSimple } from './itrisApiConnect';
 
 let busqueda = null;
 
-export default async function Buscador(usersession, tabla, sqlFilter) {
+async function Buscador(usersession, tabla, sqlFilter) {
   if (busqueda === null) {
     busqueda = [];
     const response = await itsGetClassSimple(usersession, tabla, null, sqlFilter);
@@ -17,4 +17,9 @@ export default async function Buscador(usersession, tabla, sqlFilter) {
 
     return busqueda;
   } else return busqueda;
+}
+
+export async function BuscadorEmpresa(usersession, sqlFilter) {
+  const sqlFilterFinal = `ID like '%${sqlFilter}%' or DESCRIPCION like '%${sqlFilter}%'`;
+  return await Buscador(usersession, 'ERP_EMPRESAS', sqlFilterFinal);
 }
