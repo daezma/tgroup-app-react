@@ -97,3 +97,23 @@ export async function itsGetClass(usersession, clase, username, recordCount, sql
     return 'Usuario no habilitado par acceder a este módulo';
   }
 }
+
+//Este ItsGetClass no tiene seguridad del usuario, se usa para buscadores y listas dinamicas.
+export async function itsGetClassSimple(usersession, clase, recordCount, sqlFilter) {
+  let msgError = '';
+  const parameters = {
+    usersession: usersession,
+    class: clase,
+    recordCount: recordCount,
+    sqlFilter: sqlFilter
+  };
+  try {
+    const response = await axios.get(`${itris_url}class`, {
+      params: parameters
+    });
+    return response.data.data;
+  } catch (error) {
+    if (error.response ? (msgError = error.response.data.message) : (msgError = error.message));
+    return msgError;
+  }
+}
