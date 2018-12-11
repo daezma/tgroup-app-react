@@ -128,12 +128,11 @@ export async function itsGetClass(usersession, clase, username, recordCount, sql
  * Se utiliza para cargar listas y buscadores
  * @param {string} usersession
  * @param {string} clase
- * @param {integer} recordCount
- * @param {string} sqlFilter
+ * @param {string} sqlFilter opcional, puede ser ''
+ * @param {integer} recordCount opcional, puede ser null
  * @returns {json} JSON - Msg Error
- * @author Damián Maenza
  */
-export async function itsGetClassSimple(usersession, clase, recordCount, sqlFilter) {
+export async function itsGetClassSimple(usersession, clase, sqlFilter, recordCount) {
   let msgError = '';
   const parameters = {
     usersession: usersession,

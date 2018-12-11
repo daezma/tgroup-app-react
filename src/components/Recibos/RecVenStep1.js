@@ -4,7 +4,6 @@ import style from './RecVen.module.css';
 import { observer, inject } from 'mobx-react';
 import { fk_erp_uni_neg } from '../../api/ListasFijas';
 import { BuscadorEmpresa } from '../../api/Buscadores';
-import ResultadoBusqueda from './../../ui/ResultadoBusqueda';
 
 const RecVenStep1 = inject('recven', 'login')(
   observer(
@@ -43,7 +42,8 @@ const RecVenStep1 = inject('recven', 'login')(
 
       //TODO: aqui cambiar, hacer cuando se pierda el foco o se apriete enter para que active el buscador
       handleEmpresa = () => event => {
-        this.CargarEmpresa(event.target.value);
+        //this.CargarEmpresa(event.target.value);
+        this.props.recven.Fk_erp_Empresas(event.target.value);
       };
 
       CargarEmpresa = async filter => {
@@ -54,8 +54,7 @@ const RecVenStep1 = inject('recven', 'login')(
         } catch (error) {
           console.log('error');
         }
-
-        recven.Fk_erp_Empresas(event.target.value);
+        //recven.Fk_erp_Empresas(event.target.value);
       };
 
       render() {
@@ -126,11 +125,6 @@ const RecVenStep1 = inject('recven', 'login')(
                 margin='normal'
                 value={recven.observaciones}
                 onChange={this.handleChange('O')}
-              />
-              <ResultadoBusqueda
-                open={recven.Busqueda_empresa_abierta}
-                titulo='Seleccionar empresa'
-                values={recven.List_empresas}
               />
             </div>
           </Paper>

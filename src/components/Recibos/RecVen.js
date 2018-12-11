@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import RecVenStep1 from './RecVenStep1';
 import { observer, inject } from 'mobx-react';
+import RecVenStep2 from './RecVenStep2';
 
 const styles = theme => ({
   root: {
@@ -105,6 +106,9 @@ const RecVen = inject('recven')(
         const { classes } = this.props;
         const steps = getSteps();
         const { activeStep } = this.state;
+        let StepActivo;
+        if (activeStep === 0) StepActivo = <RecVenStep1 />;
+        else if (activeStep === 1) StepActivo = <RecVenStep2 />;
 
         return (
           <div className={classes.root}>
@@ -125,7 +129,7 @@ const RecVen = inject('recven')(
                 );
               })}
             </Stepper>
-            <RecVenStep1 />
+            {StepActivo}
             <div>
               {activeStep === steps.length ? (
                 <div>
