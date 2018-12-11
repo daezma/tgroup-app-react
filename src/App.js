@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login/Login';
+import autoLogout from './components/Login/AutoLogout/AutoLogout';
 import AppFrame from './components/AppFrame';
 import { Provider } from 'mobx-react';
 import stores from './stores';
@@ -10,6 +11,7 @@ import * as paginas from './constants/paginas';
 
 class App extends Component {
   render() {
+    const AppFrameSession = autoLogout(AppFrame);
     return (
       <Provider {...stores}>
         <Router>
@@ -19,10 +21,14 @@ class App extends Component {
               <Route
                 exact
                 path={paginas.PENDIENTES_VENTAS}
-                render={() => <AppFrame clase={paginas.PENDIENTES_VENTAS} />}
+                render={() => <AppFrameSession clase={paginas.PENDIENTES_VENTAS} />}
               />
-              <Route exact path={paginas.RECIBOS_VENTAS} render={() => <AppFrame clase={paginas.RECIBOS_VENTAS} />} />
-              <Route path={paginas.HOME} render={() => <AppFrame clase={paginas.PAGINA_EN_BLANCO} />} />
+              <Route
+                exact
+                path={paginas.RECIBOS_VENTAS}
+                render={() => <AppFrameSession clase={paginas.RECIBOS_VENTAS} />}
+              />
+              <Route path={paginas.HOME} render={() => <AppFrameSession clase={paginas.PAGINA_EN_BLANCO} />} />
             </Switch>
           </div>
         </Router>
