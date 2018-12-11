@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import RecVenStep1 from './RecVenStep1';
 import { observer, inject } from 'mobx-react';
 import RecVenStep2 from './RecVenStep2';
+import RecVenStep3 from './RecVenStep3';
 
 const styles = theme => ({
   root: {
@@ -109,6 +110,7 @@ const RecVen = inject('recven')(
         let StepActivo;
         if (activeStep === 0) StepActivo = <RecVenStep1 />;
         else if (activeStep === 1) StepActivo = <RecVenStep2 />;
+        else StepActivo = <RecVenStep3 />;
 
         return (
           <div className={classes.root}>
@@ -135,7 +137,7 @@ const RecVen = inject('recven')(
                 <div>
                   <Typography className={classes.instructions}>All steps completed - you&apos;re finished</Typography>
                   <Button onClick={this.handleReset} className={classes.button}>
-                    Reset
+                    Reiniciar
                   </Button>
                 </div>
               ) : (
@@ -143,15 +145,15 @@ const RecVen = inject('recven')(
                   <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
                   <div>
                     <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
-                      Back
+                      Anterior
                     </Button>
                     {this.isStepOptional(activeStep) && (
                       <Button variant='contained' color='primary' onClick={this.handleSkip} className={classes.button}>
-                        Skip
+                        Omitir
                       </Button>
                     )}
                     <Button variant='contained' color='primary' onClick={this.handleNext} className={classes.button}>
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                      {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
                     </Button>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { MediosCobro } from '../../api/Consultas';
-import { TextField, Paper } from '@material-ui/core';
+import { TextField, Paper, Button } from '@material-ui/core';
 import style from './RecVen.module.css';
 
 const RecVenStep2 = inject('recven', 'login')(
@@ -42,7 +42,7 @@ const RecVenStep2 = inject('recven', 'login')(
                 placeholder='Importe'
                 variant='outlined'
                 margin='normal'
-                type='input'
+                type='number'
                 value={option.saldo}
                 onChange={this.handleChangeImporte()}
               />
@@ -52,7 +52,12 @@ const RecVenStep2 = inject('recven', 'login')(
         }
         return (
           <Paper className={style.paper}>
-            <div>{medios}</div>
+            <div>
+              {medios}
+              <Button variant='contained' color='primary'>
+                Cargar cheques
+              </Button>
+            </div>
           </Paper>
         );
       }
