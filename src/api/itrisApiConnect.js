@@ -23,6 +23,12 @@ const LogoutToJson = usersession => {
   return JSON.stringify(obj);
 };
 
+/**
+ * Verifica la seguridad del usuario al acceder a una tabla
+ * @param {string} usersession
+ * @param {string} username
+ * @param {string} clase
+ */
 async function itsSecurityCheck(usersession, username, clase) {
   let valido = false;
   const sqlFilter = `FK_ITRIS_CLASSES = '${clase}' and MK_ITRIS_GROUPS in (select MK_ITRIS_GROUPS from ITRIS_GRO_USE 
@@ -47,6 +53,12 @@ async function itsSecurityCheck(usersession, username, clase) {
   }
 }
 
+/**
+ * Login a la aplicación Itris
+ * @param {string} database
+ * @param {string} username
+ * @param {string} password
+ */
 export async function itsLogin(database, username, password) {
   try {
     const response = await axios.post(`${itris_url}login`, LoginToJson(database, username, password));
@@ -60,6 +72,10 @@ export async function itsLogin(database, username, password) {
   return loginResponse;
 }
 
+/**
+ * Logout de la aplicación Itris
+ * @param {string} usersession
+ */
 export async function itsLogout(usersession) {
   let msg = '';
   try {
@@ -72,6 +88,15 @@ export async function itsLogout(usersession) {
   }
 }
 
+/**
+ * Consulta datos de las tablas de Itris. Realiza la validación de seguridad.
+ * @param {string} usersession
+ * @param {string} clase
+ * @param {string} username
+ * @param {integer} recordCount opcional, puede ser null
+ * @param {string} sqlFilter opcional, puede ser ''
+ * @param {string} sqlSort opcional, puede ser ''
+ */
 export async function itsGetClass(usersession, clase, username, recordCount, sqlFilter, sqlSort = '') {
   let valido = false;
   //Verificar seguridad del usuario
@@ -98,7 +123,16 @@ export async function itsGetClass(usersession, clase, username, recordCount, sql
   }
 }
 
-//Este ItsGetClass no tiene seguridad del usuario, se usa para buscadores y listas dinamicas.
+/**
+ *
+ * Se utiliza para cargar listas y buscadores
+ * @param {string} usersession
+ * @param {string} clase
+ * @param {integer} recordCount
+ * @param {string} sqlFilter
+ * @returns {json} JSON - Msg Error
+ * @author Damián Maenza
+ */
 export async function itsGetClassSimple(usersession, clase, recordCount, sqlFilter) {
   let msgError = '';
   const parameters = {
