@@ -21,6 +21,8 @@ class LoginStore {
     this.openDialog = false;
     this.msgError = '';
     this.loading = false;
+    this.warnTimeout = null;
+    this.logoutTimeout = null;
   }
 
   get LoginResponse() {
@@ -55,6 +57,14 @@ class LoginStore {
     return this.loginResponse.usersession;
   }
 
+  get LogoutTimeout() {
+    return this.logoutTimeout;
+  }
+
+  get WarnTimeout() {
+    return this.warnTimeout;
+  }
+
   setUserSession(value) {
     this.loginResponse.usersession = value;
   }
@@ -82,10 +92,20 @@ class LoginStore {
   setBase(value) {
     this.loginData.base = value;
   }
+
+  setLogoutTimeout(value) {
+    this.logoutTimeout = value;
+  }
+
+  setWarnTimeout(value) {
+    this.warnTimeout = value;
+  }
 }
 
 decorate(LoginStore, {
   loginResponse: observable,
+  logoutTimeout: observable,
+  warnTimeout: observable,
   loginData: observable,
   openDialog: observable,
   msgError: observable,
@@ -94,6 +114,8 @@ decorate(LoginStore, {
   User: computed,
   Pass: computed,
   Base: computed,
+  WarnTimeout: computed,
+  LogoutTimeout: computed,
   openDialogState: computed,
   msgErrorData: computed,
   UserSession: computed,
@@ -106,7 +128,9 @@ decorate(LoginStore, {
   setLoading: action,
   setPass: action,
   setBase: action,
-  setMsgError: action
+  setMsgError: action,
+  setWarnTimeout: action,
+  setLogoutTimeout: action
 });
 
 export default LoginStore;
