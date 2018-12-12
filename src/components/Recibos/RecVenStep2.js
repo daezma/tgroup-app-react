@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { MediosCobro } from '../../api/Consultas';
 import { TextField, Paper, Button } from '@material-ui/core';
 import style from './RecVen.module.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const RecVenStep2 = inject('recven', 'login')(
   observer(
@@ -12,8 +13,10 @@ const RecVenStep2 = inject('recven', 'login')(
       };
 
       CargarMediosPago = async () => {
+        this.props.recven.Loading(true);
         const medios = await MediosCobro(this.props.login.UserSession);
         this.props.recven.List_medios_cobro(medios);
+        this.props.recven.Loading(false);
       };
 
       handleChangeImporte = () => event => {
@@ -53,11 +56,18 @@ const RecVenStep2 = inject('recven', 'login')(
         return (
           <Paper className={style.paper}>
             <div>
-              {medios}
-              <Button variant='contained' color='primary'>
-                Cargar cheques
-              </Button>
+              {recven.loading ? (
+                <>
+                  <CircularProgress />
+                  <br />
+                </>
+              ) : (
+                medios
+              )}
             </div>
+            <Button variant='contained' color='primary'>
+              Cargar cheques
+            </Button>
           </Paper>
         );
       }

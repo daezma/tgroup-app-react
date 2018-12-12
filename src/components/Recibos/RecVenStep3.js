@@ -34,7 +34,7 @@ const RecVenStep3 = inject('recven')(
               <br />
               {medios}
               <br />
-              {`Total $ ${recven.imp_total}`}
+              {`Total $ ${recven.saldo}`}
             </div>
           </Paper>
         );

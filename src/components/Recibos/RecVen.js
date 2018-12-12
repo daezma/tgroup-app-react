@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -45,28 +44,16 @@ const RecVen = inject('recven')(
   observer(
     class RecVen extends Component {
       state = {
-        activeStep: 0,
-        skipped: new Set()
+        activeStep: 0
       };
 
-      // isStepOptional = step => {
-      //   return step === 1;
-      // };
-
-      isStepOptional = step => {
-        return null;
-      };
       handleNext = () => {
         const { activeStep } = this.state;
-        let { skipped } = this.state;
-        if (this.isStepSkipped(activeStep)) {
-          skipped = new Set(skipped.values());
-          skipped.delete(activeStep);
+        if (this.validaciones()) {
+          this.setState({
+            activeStep: activeStep + 1
+          });
         }
-        this.setState({
-          activeStep: activeStep + 1,
-          skipped
-        });
       };
 
       handleBack = () => {
@@ -75,36 +62,32 @@ const RecVen = inject('recven')(
         }));
       };
 
-      handleSkip = () => {
-        const { activeStep } = this.state;
-        if (!this.isStepOptional(activeStep)) {
-          // You probably want to guard against something like this,
-          // it should never occur unless someone's actively trying to break something.
-          throw new Error("You can't skip a step that isn't optional.");
-        }
-
-        this.setState(state => {
-          const skipped = new Set(state.skipped.values());
-          skipped.add(activeStep);
-          return {
-            activeStep: state.activeStep + 1,
-            skipped
-          };
-        });
-      };
-
       handleReset = () => {
         this.setState({
           activeStep: 0
         });
       };
 
-      isStepSkipped(step) {
-        return this.state.skipped.has(step);
-      }
+      validaciones = () => {
+        //TODO: continuar con las validaciones
+        let error = '';
+        // const { activeStep } = this.state;
+        // const { recven } = this.props;
+        // if (activeStep === 0) {
+        //   if (recven.saldo <= 0) {
+        //     error = 'El campo importe debe ser mayor a 0';
+        //   }
+        //   if (recven.fk_erp_empresas === '') {
+        //     error = 'El campo empresa debe contener un valor';
+        //   }
+        // }
+
+        if (error !== '') {
+          return true;
+        } else return false;
+      };
 
       render() {
-        const { classes } = this.props;
         const steps = getSteps();
         const { activeStep } = this.state;
         let StepActivo;
@@ -113,17 +96,11 @@ const RecVen = inject('recven')(
         else StepActivo = <RecVenStep3 />;
 
         return (
-          <div className={classes.root}>
+          <div>
             <Stepper activeStep={activeStep}>
               {steps.map((label, index) => {
                 const props = {};
                 const labelProps = {};
-                if (this.isStepOptional(index)) {
-                  labelProps.optional = <Typography variant='caption'>Optional</Typography>;
-                }
-                if (this.isStepSkipped(index)) {
-                  props.completed = false;
-                }
                 return (
                   <Step key={label} {...props}>
                     <StepLabel {...labelProps}>{label}</StepLabel>
@@ -135,24 +112,17 @@ const RecVen = inject('recven')(
             <div>
               {activeStep === steps.length ? (
                 <div>
-                  <Typography className={classes.instructions}>All steps completed - you&apos;re finished</Typography>
-                  <Button onClick={this.handleReset} className={classes.button}>
-                    Reiniciar
-                  </Button>
+                  <Typography>All steps completed - you&apos;re finished</Typography>
+                  <Button onClick={this.handleReset}>Reiniciar</Button>
                 </div>
               ) : (
                 <div>
-                  <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                  <Typography>{getStepContent(activeStep)}</Typography>
                   <div>
-                    <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
+                    <Button disabled={activeStep === 0} onClick={this.handleBack}>
                       Anterior
                     </Button>
-                    {this.isStepOptional(activeStep) && (
-                      <Button variant='contained' color='primary' onClick={this.handleSkip} className={classes.button}>
-                        Omitir
-                      </Button>
-                    )}
-                    <Button variant='contained' color='primary' onClick={this.handleNext} className={classes.button}>
+                    <Button variant='contained' color='primary' onClick={this.handleNext}>
                       {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
                     </Button>
                   </div>
@@ -165,9 +135,5 @@ const RecVen = inject('recven')(
     }
   )
 );
-
-RecVen.propTypes = {
-  classes: PropTypes.object
-};
 
 export default withStyles(styles)(RecVen);

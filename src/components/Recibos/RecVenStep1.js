@@ -30,7 +30,7 @@ const RecVenStep1 = inject('recven', 'login')(
             this.props.recven.Fk_erp_uni_neg(event.target.value);
             break;
           case 'I':
-            this.props.recven.Imp_total(event.target.value);
+            this.props.recven.Saldo(event.target.value);
             break;
           case 'O':
             this.props.recven.Observaciones(event.target.value);
@@ -108,12 +108,12 @@ const RecVenStep1 = inject('recven', 'login')(
               <br />
               <TextField
                 required
-                id='importe'
-                placeholder='Importe'
+                id='saldo'
+                placeholder='Saldo'
                 variant='outlined'
                 margin='normal'
                 type='number'
-                value={recven.imp_total}
+                value={recven.saldo}
                 onChange={this.handleChange('I')}
               />
               <br />
