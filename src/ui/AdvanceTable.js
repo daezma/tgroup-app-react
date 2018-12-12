@@ -65,9 +65,9 @@ const getInputValue = (value?: string): string => (value === undefined ? '' : va
 
 const getColor = (amount: number): string => {
   if (amount > 0) {
-    return 'green';
+    return 'red';
   }
-  return 'red';
+  return 'green';
 };
 
 const CurrencyEditor = withStyles(styles)(({ onValueChange, classes, value }: CurrencyEditorProps) => {
@@ -149,7 +149,10 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
       grouping,
       summaryGroup,
       summaryTotal,
-      strictGrouping
+      strictGrouping,
+      getRowId,
+      selection,
+      onSelection
     } = this.props;
     //console.log(this.props.data);
     let groupingState = null;
@@ -158,13 +161,14 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
     } else if (grouping) {
       groupingState = <GroupingState defaultGrouping={grouping} />;
     }
+
     return (
       <Paper>
-        <Grid rows={data} columns={columns}>
+        <Grid rows={data} columns={columns} getRowId={getRowId}>
           <FilteringState />
           <SortingState defaultSorting={ordering} />
 
-          <SelectionState />
+          <SelectionState selection={selection} onSelectionChange={onSelection} />
 
           {groupingState}
           <PagingState />
@@ -186,7 +190,7 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
           <DragDropProvider />
 
           <Table />
-          <TableSelection showSelectAll={true} />
+          <TableSelection highlightRow={true} />
 
           <TableHeaderRow showSortingControls={true} />
           <TableFilterRow showFilterSelector={true} messages={this.filterMessages} />

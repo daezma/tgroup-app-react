@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { itsGetClass } from '../api/itrisApiConnect';
 import AdvanceTable from '../ui/AdvanceTable';
+import Button from '@material-ui/core/Button';
 
 const PenVenPage = inject('login', 'penven')(
   observer(
@@ -52,6 +53,19 @@ const PenVenPage = inject('login', 'penven')(
         }
       };
 
+      onSelection = selection => {
+        const { penven } = this.props;
+        penven.SetSelection(selection);
+      };
+
+      generarRecibo = () => {
+        // const arraySeleccionados = this.props.penven.Selection.map(value => {
+        //   seleccion = [...value].split('_');
+        // });
+
+        window.alert(this.props.penven.Selection);
+      };
+
       render() {
         const { penven } = this.props;
         return (
@@ -60,16 +74,22 @@ const PenVenPage = inject('login', 'penven')(
               <AdvanceTable
                 data={penven.Data}
                 columns={this.columns}
+                getRowId={row => `${row.empresa}_${row.numero}`}
                 currencyColumns={this.currencyColumns}
                 ordering={this.ordering}
                 grouping={this.grouping}
                 summaryGroup={this.summaryGroup}
                 summaryTotal={this.summaryTotal}
                 strictGrouping
+                selection={penven.Selection}
+                onSelection={this.onSelection}
               />
             ) : (
               penven.MsgAlert
             )}
+            <Button onClick={this.generarRecibo} variant='contained' color='primary'>
+              Generar recibo
+            </Button>
           </div>
         );
       }
