@@ -94,6 +94,7 @@ const RecVen = inject('recven')(
         if (activeStep === 0) StepActivo = <RecVenStep1 />;
         else if (activeStep === 1) StepActivo = <RecVenStep2 />;
         else StepActivo = <RecVenStep3 />;
+        debugger;
 
         return (
           <div>

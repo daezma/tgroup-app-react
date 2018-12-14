@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { fk_erp_uni_neg } from '../../api/ListasFijas';
 import { BuscadorEmpresa } from '../../api/Buscadores';
 
-const RecVenStep1 = inject('recven', 'login')(
+const RecVenStep1 = inject('recven', 'login', 'penven')(
   observer(
     class RecVenStep1 extends Component {
       componentDidMount = () => {
@@ -58,7 +58,7 @@ const RecVenStep1 = inject('recven', 'login')(
       };
 
       render() {
-        const { recven } = this.props;
+        const { recven, penven } = this.props;
         const uniNeg = recven.list_uni_neg;
         let unidad;
         if (uniNeg !== null) {
@@ -68,9 +68,22 @@ const RecVenStep1 = inject('recven', 'login')(
             </MenuItem>
           ));
         }
+
+        let imputaciones = null;
+        if (penven.Facturas) {
+          return (
+            <div>
+              <p>Imputaciones: </p>
+              {penven.Facturas.map(value => {
+                return <p key={value}>{value}</p>;
+              })}
+            </div>
+          );
+        }
         return (
           <Paper className={style.paper}>
             <div>
+              {imputaciones}
               <TextField
                 required
                 id='fecha'

@@ -3,6 +3,8 @@ import { observer, inject } from 'mobx-react';
 import { itsGetClass } from '../api/itrisApiConnect';
 import AdvanceTable from '../ui/AdvanceTable';
 import Button from '@material-ui/core/Button';
+import { RECIBOS_VENTAS } from '../constants/paginas';
+import { withRouter } from 'react-router-dom';
 
 const PenVenPage = inject('login', 'penven')(
   observer(
@@ -59,11 +61,24 @@ const PenVenPage = inject('login', 'penven')(
       };
 
       generarRecibo = () => {
-        // const arraySeleccionados = this.props.penven.Selection.map(value => {
-        //   seleccion = [...value].split('_');
-        // });
-
-        window.alert(this.props.penven.Selection);
+        const { penven } = this.props;
+        let empresasOk = false;
+        //El ID de la fila tiene el diseño EMPRESA_NROFACTURA
+        //Valido que no se seleccionen 2 empresas diferentes
+        if (penven.Selection.length > 0)
+          empresasOk = penven.Selection.map(value => {
+            const seleccion = value.split('_');
+            return seleccion[0];
+          }).every((val, i, arr) => val === arr[0]);
+        if (empresasOk) {
+          //Armo un nuevo estado solo con las facturas seleccionadas
+          const facturas = penven.Selection.map(value => {
+            const seleccion = value.split('_');
+            return seleccion[1];
+          });
+          penven.SetFacturas(facturas);
+          this.props.history.push(RECIBOS_VENTAS);
+        }
       };
 
       render() {
@@ -97,4 +112,4 @@ const PenVenPage = inject('login', 'penven')(
   )
 );
 
-export default PenVenPage;
+export default withRouter(PenVenPage);
