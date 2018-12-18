@@ -63,11 +63,13 @@ const PenVenPage = inject('login', 'penven')(
       generarRecibo = () => {
         const { penven } = this.props;
         let empresasOk = false;
+        let empresaSeleccionada;
         //El ID de la fila tiene el diseño EMPRESA_NROFACTURA
         //Valido que no se seleccionen 2 empresas diferentes
         if (penven.Selection.length > 0)
           empresasOk = penven.Selection.map(value => {
             const seleccion = value.split('_');
+            empresaSeleccionada = seleccion[0];
             return seleccion[0];
           }).every((val, i, arr) => val === arr[0]);
         if (empresasOk) {
@@ -77,6 +79,7 @@ const PenVenPage = inject('login', 'penven')(
             return seleccion[1];
           });
           penven.SetFacturas(facturas);
+          penven.SetEmpresaImputacion(empresaSeleccionada);
           this.props.history.push(RECIBOS_VENTAS);
         }
       };

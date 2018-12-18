@@ -43,7 +43,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
       //TODO: aqui cambiar, hacer cuando se pierda el foco o se apriete enter para que active el buscador
       handleEmpresa = () => event => {
         //this.CargarEmpresa(event.target.value);
-        this.props.recven.Fk_erp_Empresas(event.target.value);
+        this.props.recven.Fk_erp_empresas(event.target.value);
       };
 
       CargarEmpresa = async filter => {
@@ -61,7 +61,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
         const { recven, penven } = this.props;
         const uniNeg = recven.list_uni_neg;
         let unidad;
-        if (uniNeg !== null) {
+        if (uniNeg !== '') {
           unidad = recven.list_uni_neg.map(option => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
@@ -69,21 +69,26 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
           ));
         }
 
-        let imputaciones = null;
-        if (penven.Facturas) {
-          return (
-            <div>
-              <p>Imputaciones: </p>
-              {penven.Facturas.map(value => {
-                return <p key={value}>{value}</p>;
-              })}
-            </div>
-          );
+        const imputaciones = penven.Facturas ? (
+          <div>
+            <p>Imputaciones: </p>
+            {penven.Facturas.map(value => {
+              return <p key={value}>{value}</p>;
+            })}
+          </div>
+        ) : null;
+
+        if (penven.EmpresaImputacion) {
+          recven.Fk_erp_empresas(penven.EmpresaImputacion);
+          recven.Empresa_props = {
+            readOnly: true
+          };
         }
+
         return (
           <Paper className={style.paper}>
+            {imputaciones}
             <div>
-              {imputaciones}
               <TextField
                 required
                 id='fecha'
@@ -104,6 +109,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 margin='normal'
                 value={recven.fk_erp_empresas}
                 onChange={this.handleEmpresa()}
+                inputProps={this.empresa_props}
               />
               <br />
               <TextField
@@ -137,6 +143,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 variant='outlined'
                 margin='normal'
                 value={recven.observaciones}
+                multiline
                 onChange={this.handleChange('O')}
               />
             </div>

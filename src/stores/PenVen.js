@@ -12,6 +12,7 @@ class PenVen {
     this.msgAlert = '';
     this.selection = [];
     this.facturas = null;
+    this.empresaImputacion = null;
   }
 
   get Data() {
@@ -29,6 +30,10 @@ class PenVen {
     return this.facturas;
   }
 
+  get EmpresaImputacion() {
+    return this.empresaImputacion;
+  }
+
   SetData = value => {
     this.data = value;
   };
@@ -44,6 +49,10 @@ class PenVen {
   SetFacturas = value => {
     this.facturas = value;
   };
+
+  SetEmpresaImputacion = value => {
+    this.empresaImputacion = value;
+  };
 }
 
 decorate(PenVen, {
@@ -51,14 +60,17 @@ decorate(PenVen, {
   selection: observable,
   msgAlert: observable,
   facturas: observable,
+  empresaImputacion: observable,
   Data: computed,
   Selection: computed,
   Facturas: computed,
+  EmpresaImputacion: computed,
   SetData: action,
   initialize: action,
   SetMsgAlert: action,
   SetSelection: action,
-  SetFacturas: action
+  SetFacturas: action,
+  SetEmpresaImputacion: action
 });
 
 export default PenVen;
