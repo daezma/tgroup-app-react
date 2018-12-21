@@ -14,6 +14,7 @@ class PenVen {
     this.facturas = null;
     this.empresaImputacion = null;
     this.errorRecibo = '';
+    this.saldoImp = 0;
   }
 
   get Data() {
@@ -39,6 +40,10 @@ class PenVen {
     return this.errorRecibo;
   }
 
+  get SaldoImp() {
+    return this.saldoImp;
+  }
+
   SetData = value => {
     this.data = value;
   };
@@ -62,6 +67,10 @@ class PenVen {
   SetErrorRecibo = value => {
     this.errorRecibo = value;
   };
+
+  SetSaldoImp = value => {
+    this.saldoImp = value;
+  };
 }
 
 decorate(PenVen, {
@@ -71,18 +80,21 @@ decorate(PenVen, {
   facturas: observable,
   empresaImputacion: observable,
   errorRecibo: observable,
+  saldoImp: observable,
   Data: computed,
   Selection: computed,
   Facturas: computed,
   EmpresaImputacion: computed,
   ErrorRecibo: computed,
+  SaldoImp: computed,
   SetData: action,
   initialize: action,
   SetMsgAlert: action,
   SetSelection: action,
   SetFacturas: action,
   SetEmpresaImputacion: action,
-  SetErrorRecibo: action
+  SetErrorRecibo: action,
+  SetSaldoImp: action
 });
 
 export default PenVen;

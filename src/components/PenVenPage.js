@@ -56,8 +56,15 @@ const PenVenPage = inject('login', 'penven')(
         }
       };
 
+      getRowId = row => `${row.empresa}_${row.numero}`;
+
       onSelection = selection => {
         const { penven } = this.props;
+        let saldo = 0;
+        penven.Data.filter(row => selection.findIndex(selectId => selectId === this.getRowId(row)) !== -1).forEach(
+          row => (saldo += row.saldo)
+        );
+        penven.SetSaldoImp(saldo);
         penven.SetSelection(selection);
       };
 
@@ -102,7 +109,7 @@ const PenVenPage = inject('login', 'penven')(
               <AdvanceTable
                 data={penven.Data}
                 columns={this.columns}
-                getRowId={row => `${row.empresa}_${row.numero}`}
+                getRowId={this.getRowId}
                 currencyColumns={this.currencyColumns}
                 ordering={this.ordering}
                 grouping={this.grouping}

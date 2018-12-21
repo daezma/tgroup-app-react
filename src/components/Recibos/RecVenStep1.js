@@ -75,6 +75,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
             {penven.Facturas.map(value => {
               return <p key={value}>{value}</p>;
             })}
+            <p>Importe imputado: ${penven.SaldoImp.toFixed(2)}</p>
           </div>
         ) : null;
 
@@ -132,6 +133,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 variant='outlined'
                 margin='normal'
                 type='number'
+                label='Importe a cuenta'
                 value={recven.saldo}
                 onChange={this.handleChange('I')}
               />

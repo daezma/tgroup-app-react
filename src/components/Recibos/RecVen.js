@@ -40,7 +40,7 @@ function getStepContent(step) {
   }
 }
 
-const RecVen = inject('recven')(
+const RecVen = inject('recven', 'penven')(
   observer(
     class RecVen extends Component {
       state = {
@@ -69,20 +69,20 @@ const RecVen = inject('recven')(
       };
 
       validaciones = () => {
-        //TODO: continuar con las validaciones
         let error = '';
-        // const { activeStep } = this.state;
-        // const { recven } = this.props;
-        // if (activeStep === 0) {
-        //   if (recven.saldo <= 0) {
-        //     error = 'El campo importe debe ser mayor a 0';
-        //   }
-        //   if (recven.fk_erp_empresas === '') {
-        //     error = 'El campo empresa debe contener un valor';
-        //   }
-        // }
+        const { activeStep } = this.state;
+        const { recven, penven } = this.props;
+        if (activeStep === 0) {
+          if (recven.saldo + penven.SaldoImp <= 0) {
+            error = 'El campo importe debe ser mayor a 0';
+          }
+          if (recven.fk_erp_empresas === '') {
+            error = 'El campo empresa debe contener un valor';
+          }
+        }
 
-        if (error !== '') {
+        console.log(error);
+        if (error === '') {
           return true;
         } else return false;
       };
