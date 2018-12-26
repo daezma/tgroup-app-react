@@ -9,20 +9,18 @@ let busqueda = null;
  * @param {string} sqlFilter
  * @returns {Array} Array con los datos resultados
  */
-async function Buscador(usersession, tabla, sqlFilter) {
-  if (busqueda === null) {
-    busqueda = [];
-    const response = await itsGetClassSimple(usersession, tabla, sqlFilter);
-    response.forEach(element => {
-      const obj = {
-        value: element.ID,
-        label: element.DESCRIPCION
-      };
-      busqueda.push(obj);
-    });
+export async function Buscador(usersession, tabla, sqlFilter) {
+  busqueda = [];
+  const response = await itsGetClassSimple(usersession, tabla, sqlFilter);
+  response.forEach(element => {
+    const obj = {
+      value: element.ID,
+      label: element.DESCRIPCION
+    };
+    busqueda.push(obj);
+  });
 
-    return busqueda;
-  } else return busqueda;
+  return busqueda;
 }
 
 /**

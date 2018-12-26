@@ -3,7 +3,7 @@ import { TextField, Paper, MenuItem } from '@material-ui/core';
 import style from './RecVen.module.css';
 import { observer, inject } from 'mobx-react';
 import { fk_erp_uni_neg } from '../../api/ListasFijas';
-import { BuscadorEmpresa } from '../../api/Buscadores';
+import SelectAutocomplete from '../../ui/SelectAutocomplete';
 
 const RecVenStep1 = inject('recven', 'login', 'penven')(
   observer(
@@ -41,20 +41,8 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
       };
 
       //TODO: aqui cambiar, hacer cuando se pierda el foco o se apriete enter para que active el buscador
-      handleEmpresa = () => event => {
-        //this.CargarEmpresa(event.target.value);
-        this.props.recven.Fk_erp_empresas(event.target.value);
-      };
-
-      CargarEmpresa = async filter => {
-        const { login, recven } = this.props;
-        try {
-          const empresa = await BuscadorEmpresa(login.UserSession, filter);
-          recven.List_empresas(empresa);
-        } catch (error) {
-          console.log('error');
-        }
-        //recven.Fk_erp_Empresas(event.target.value);
+      handleEmpresa = empresa => {
+        this.props.recven.Fk_erp_empresas(empresa);
       };
 
       render() {
@@ -101,16 +89,13 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 onChange={this.handleChange('F')}
               />
               <br />
-              <TextField
-                required
-                id='fk_erp_empresas'
-                autoFocus={true}
-                placeholder='Empresa'
-                variant='outlined'
-                margin='normal'
+              <SelectAutocomplete
                 value={recven.fk_erp_empresas}
-                onChange={this.handleEmpresa()}
-                inputProps={this.empresa_props}
+                placeholder='Seleccione una empresa'
+                clase='ERP_EMPRESAS'
+                onChange={this.handleEmpresa}
+                key={recven.fk_erp_empresas}
+                campoFiltro='ID'
               />
               <br />
               <TextField
