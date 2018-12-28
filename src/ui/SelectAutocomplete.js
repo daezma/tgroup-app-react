@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import Autocomplete from 'react-autocomplete';
-import Select from 'react-select';
+import debounce from '../helpers/Debounce';
 import { inject } from 'mobx-react';
 import { Buscador } from '../api/Buscadores';
 
 const SelectAutocomplete = inject('login')(
   class extends Component {
     state = {
-      data: [],
-      empresa: this.props.value
+      data: []
     };
 
-    AJAXData = async empresa => {
-      const filtro = `${this.props.campoFiltro} LIKE '%${empresa}%'`;
-      console.log(filtro);
-      const empresas = await Buscador(this.props.login.UserSession, this.props.clase, filtro);
-      console.log(empresas);
-      this.setState({ data: empresas });
-    };
+    AJAXData = debounce(async value => {
+      const filtro = `${this.props.campoFiltro} LIKE '%${value}%'`;
+      const datos = await Buscador(this.props.login.UserSession, this.props.clase, filtro);
+      this.setState({ data: datos });
+    }, 500);
 
-    handleChange = e => {
-      console.log('a');
-      this.setState({ empresa: e.target.value });
-      this.AJAXData(e.target.value);
-      this.props.onChange(e.target.value);
+    handleChange = value => {
+      this.props.onChange(value);
+      this.AJAXData(value);
     };
 
     getItemValue = item => {
@@ -31,8 +26,15 @@ const SelectAutocomplete = inject('login')(
     };
 
     renderItem = (item, isHighlighted) => {
-      console.log(item);
-      return <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>{item.label}</div>;
+      return (
+        <div key={item.value} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          {item.label}
+        </div>
+      );
+    };
+
+    handleSelect = item => {
+      this.props.onChange(item);
     };
 
     render() {
@@ -42,8 +44,11 @@ const SelectAutocomplete = inject('login')(
             getItemValue={this.getItemValue}
             renderItem={this.renderItem}
             items={this.state.data}
-            value={this.state.empresa}
-            onChange={this.handleChange}
+            value={this.props.value}
+            onChange={e => this.handleChange(e.target.value)}
+            onSelect={this.handleSelect}
+            wrapperStyle={{ position: 'relative', display: 'inline-block', zIndex: '999' }}
+            selectOnBlur={true}
           />
         </>
       );

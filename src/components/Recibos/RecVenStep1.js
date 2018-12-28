@@ -40,7 +40,6 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
         }
       };
 
-      //TODO: aqui cambiar, hacer cuando se pierda el foco o se apriete enter para que active el buscador
       handleEmpresa = empresa => {
         this.props.recven.Fk_erp_empresas(empresa);
       };
@@ -89,14 +88,27 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 onChange={this.handleChange('F')}
               />
               <br />
-              <SelectAutocomplete
-                value={recven.fk_erp_empresas}
-                placeholder='Seleccione una empresa'
-                clase='ERP_EMPRESAS'
-                onChange={this.handleEmpresa}
-                key={recven.fk_erp_empresas}
-                campoFiltro='ID'
-              />
+              {penven.SaldoImp !== 0 ? (
+                <TextField
+                  required
+                  id='fk_erp_empresas'
+                  autoFocus={true}
+                  placeholder='Empresa'
+                  variant='outlined'
+                  margin='normal'
+                  value={recven.fk_erp_empresas}
+                  onChange={this.handleEmpresa}
+                  inputProps={this.empresa_props}
+                />
+              ) : (
+                <SelectAutocomplete
+                  value={recven.fk_erp_empresas}
+                  placeholder='Seleccione una empresa'
+                  clase='ERP_EMPRESAS'
+                  onChange={this.handleEmpresa}
+                  campoFiltro='ID'
+                />
+              )}
               <br />
               <TextField
                 required
