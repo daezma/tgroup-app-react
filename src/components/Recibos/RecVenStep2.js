@@ -5,7 +5,7 @@ import { TextField, Paper, Button } from '@material-ui/core';
 import style from './RecVen.module.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const RecVenStep2 = inject('recven', 'login')(
+const RecVenStep2 = inject('recven', 'login', 'penven')(
   observer(
     class RecVenStep2 extends Component {
       componentDidMount = () => {
@@ -32,16 +32,16 @@ const RecVenStep2 = inject('recven', 'login')(
       };
 
       render() {
-        const { recven } = this.props;
+        const { recven, penven } = this.props;
         let medios;
         if (recven.list_medios_cobro !== null) {
           medios = recven.list_medios_cobro.map(option => (
-            <>
+            <React.Fragment key={option.value}>
               {option.label}
               <br />
               <TextField
                 required
-                id={option.value}
+                id={String(option.value)}
                 placeholder='Importe'
                 variant='outlined'
                 margin='normal'
@@ -50,7 +50,7 @@ const RecVenStep2 = inject('recven', 'login')(
                 onChange={this.handleChangeImporte()}
               />
               <br />
-            </>
+            </React.Fragment>
           ));
         }
         return (
@@ -62,7 +62,21 @@ const RecVenStep2 = inject('recven', 'login')(
                   <br />
                 </>
               ) : (
-                medios
+                <>
+                  <p>
+                    Saldo pendiente:
+                    {(
+                      parseInt(recven.saldo) +
+                      parseInt(penven.SaldoImp) -
+                      (recven.list_medios_cobro
+                        ? recven.list_medios_cobro.reduce((anterior, actual) => {
+                            return anterior + actual.saldo;
+                          }, 0)
+                        : 0)
+                    ).toFixed(2)}
+                  </p>
+                  {medios}
+                </>
               )}
             </div>
             <Button variant='contained' color='primary'>

@@ -32,6 +32,7 @@ import {
   TableSummaryRow,
   Toolbar
 } from '@devexpress/dx-react-grid-material-ui';
+import { Checkbox } from '@material-ui/core';
 
 interface IGridState {
   columns: Column[];
@@ -140,6 +141,16 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
     count: 'Cantidad'
   };
 
+  selectionComponent = ({ row, ...restProps }) => {
+    return row.saldo <= 0 ? (
+      <Table.Cell {...restProps} />
+    ) : (
+      <TableSelection.Cell {...restProps}>
+        <Checkbox />
+      </TableSelection.Cell>
+    );
+  };
+
   render() {
     const {
       columns,
@@ -154,7 +165,6 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
       selection,
       onSelection
     } = this.props;
-    //console.log(this.props.data);
     let groupingState = null;
     if (strictGrouping) {
       groupingState = <GroupingState grouping={grouping} />;
@@ -190,7 +200,7 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
           <DragDropProvider />
 
           <Table />
-          <TableSelection highlightRow={true} />
+          <TableSelection highlightRow cellComponent={this.selectionComponent} />
 
           <TableHeaderRow showSortingControls={true} />
           <TableFilterRow showFilterSelector={true} messages={this.filterMessages} />

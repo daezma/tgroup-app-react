@@ -12,7 +12,7 @@ export async function MediosCobro(usersession) {
     const obj = {
       value: element.ID,
       label: element.DESCRIPCION,
-      saldo: null
+      saldo: 0
     };
     medios.push(obj);
   });

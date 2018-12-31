@@ -80,8 +80,6 @@ const RecVen = inject('recven', 'penven')(
             error = 'El campo empresa debe contener un valor';
           }
         }
-
-        console.log(error);
         if (error === '') {
           return true;
         } else return false;
