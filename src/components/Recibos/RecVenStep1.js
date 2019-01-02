@@ -51,13 +51,15 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
         const newFacturas = penven.Facturas.map(factura => {
           if (factura.ID === event.target.id) {
             return {
-              saldo: +event.target.value,
+              saldo: event.target.value ? +event.target.value : '',
               ID: factura.ID
             };
           } else return factura;
         });
         penven.SetFacturas(newFacturas);
-        penven.SetSaldoImp(newFacturas.reduce((anterior, actual) => anterior + actual.saldo, 0));
+        penven.SetSaldoImp(
+          newFacturas.reduce((anterior, actual) => anterior + parseFloat(actual.saldo === '' ? 0 : actual.saldo), 0)
+        );
       };
 
       render() {
@@ -84,7 +86,8 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                     label={factura.ID}
                     variant='outlined'
                     margin='normal'
-                    value={factura.saldo.toFixed(2)}
+                    type='number'
+                    value={factura.saldo}
                     onChange={this.handleChangeImputacion()}
                   />
                 </React.Fragment>
@@ -116,11 +119,10 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 onChange={this.handleChange('F')}
               />
               <br />
-              {penven.SaldoImp !== 0 ? (
+              {penven.Facturas ? (
                 <TextField
                   required
                   id='fk_erp_empresas'
-                  autoFocus={true}
                   placeholder='Empresa'
                   variant='outlined'
                   margin='normal'
