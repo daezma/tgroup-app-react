@@ -22,18 +22,19 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
       };
 
       handleChange = tipo => event => {
+        const { recven } = this.props;
         switch (tipo) {
           case 'F':
-            this.props.recven.Fecha(event.target.value);
+            recven.Fecha(event.target.value);
             break;
           case 'U':
-            this.props.recven.Fk_erp_uni_neg(event.target.value);
+            recven.Fk_erp_uni_neg(event.target.value);
             break;
           case 'I':
-            this.props.recven.Saldo(event.target.value);
+            recven.Saldo(event.target.value);
             break;
           case 'O':
-            this.props.recven.Observaciones(event.target.value);
+            recven.Observaciones(event.target.value);
             break;
           default:
             break;
@@ -42,6 +43,21 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
 
       handleEmpresa = empresa => {
         this.props.recven.Fk_erp_empresas(empresa);
+      };
+
+      //TODO: Validar que no se puede imputar un importe mayor al saldo del débito
+      handleChangeImputacion = () => event => {
+        const { penven } = this.props;
+        const newFacturas = penven.Facturas.map(factura => {
+          if (factura.ID === event.target.id) {
+            return {
+              saldo: +event.target.value,
+              ID: factura.ID
+            };
+          } else return factura;
+        });
+        penven.SetFacturas(newFacturas);
+        penven.SetSaldoImp(newFacturas.reduce((anterior, actual) => anterior + actual.saldo, 0));
       };
 
       render() {
@@ -59,10 +75,21 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
         const imputaciones = penven.Facturas ? (
           <div>
             <p>Imputaciones: </p>
-            {penven.Facturas.map(value => {
-              return <p key={value}>{value}</p>;
+            {penven.Facturas.map(factura => {
+              return (
+                <React.Fragment key={factura.ID}>
+                  <TextField
+                    required
+                    id={factura.ID}
+                    label={factura.ID}
+                    variant='outlined'
+                    margin='normal'
+                    value={factura.saldo.toFixed(2)}
+                    onChange={this.handleChangeImputacion()}
+                  />
+                </React.Fragment>
+              );
             })}
-            <p>Importe imputado: ${penven.SaldoImp.toFixed(2)}</p>
           </div>
         ) : null;
 
@@ -77,6 +104,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
           <Paper className={style.paper}>
             {imputaciones}
             <div>
+              <p>Datos del recibo:</p>
               <TextField
                 required
                 id='fecha'

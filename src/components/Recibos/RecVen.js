@@ -9,6 +9,7 @@ import RecVenStep1 from './RecVenStep1';
 import { observer, inject } from 'mobx-react';
 import RecVenStep2 from './RecVenStep2';
 import RecVenStep3 from './RecVenStep3';
+import DialogSnack from '../../ui/DialogSnack';
 
 const styles = theme => ({
   root: {
@@ -29,11 +30,11 @@ function getSteps() {
 
 function getStepContent(step) {
   switch (step) {
-    case 0:
-      return 'Ingrese los datos del cliente';
     case 1:
-      return 'Cómo abona?';
+      return 'Ingrese los datos del cliente';
     case 2:
+      return 'Cómo abona?';
+    case 3:
       return 'Verifique que todo esté OK';
     default:
       return 'Unknown';
@@ -44,7 +45,7 @@ const RecVen = inject('recven', 'penven')(
   observer(
     class RecVen extends Component {
       state = {
-        activeStep: 0
+        activeStep: 1
       };
 
       handleNext = () => {
@@ -53,6 +54,10 @@ const RecVen = inject('recven', 'penven')(
           this.setState({
             activeStep: activeStep + 1
           });
+        }
+
+        if (activeStep === 3) {
+          //TODO: cargar recibo
         }
       };
 
@@ -64,7 +69,7 @@ const RecVen = inject('recven', 'penven')(
 
       handleReset = () => {
         this.setState({
-          activeStep: 0
+          activeStep: 1
         });
       };
 
@@ -72,25 +77,38 @@ const RecVen = inject('recven', 'penven')(
         let error = '';
         const { activeStep } = this.state;
         const { recven, penven } = this.props;
-        if (activeStep === 0) {
+        if (activeStep === 1) {
           if (recven.saldo + penven.SaldoImp <= 0) {
-            error = 'El campo importe debe ser mayor a 0';
+            error = 'El importe del recibo debe ser mayor a 0';
           }
           if (recven.fk_erp_empresas === '') {
             error = 'El campo empresa debe contener un valor';
           }
         }
+        if (activeStep === 2) {
+          if (+recven.importeRestanteCuentas > 0) {
+            error = `Faltan imputar $${recven.importeRestanteCuentas} a alguna cuenta de tesorería`;
+          } else if (+recven.importeRestanteCuentas < 0) {
+            error = `No se puede continuar porque se imputaron en las cuentas de tesorería $${+recven.importeRestanteCuentas *
+              -1} más que el importe del recibo`;
+          }
+        }
         if (error === '') {
+          recven.Error('');
           return true;
-        } else return false;
+        } else {
+          recven.Error(error);
+          return false;
+        }
       };
 
       render() {
         const steps = getSteps();
         const { activeStep } = this.state;
+        const { recven } = this.props;
         let StepActivo;
-        if (activeStep === 0) StepActivo = <RecVenStep1 />;
-        else if (activeStep === 1) StepActivo = <RecVenStep2 />;
+        if (activeStep === 1) StepActivo = <RecVenStep1 />;
+        else if (activeStep === 2) StepActivo = <RecVenStep2 />;
         else StepActivo = <RecVenStep3 />;
 
         return (
@@ -108,25 +126,26 @@ const RecVen = inject('recven', 'penven')(
             </Stepper>
             {StepActivo}
             <div>
-              {activeStep === steps.length ? (
+              {activeStep === steps.length + 1 ? (
                 <div>
-                  <Typography>All steps completed - you&apos;re finished</Typography>
+                  <Typography>Generación de recibos</Typography>
                   <Button onClick={this.handleReset}>Reiniciar</Button>
                 </div>
               ) : (
                 <div>
                   <Typography>{getStepContent(activeStep)}</Typography>
                   <div>
-                    <Button disabled={activeStep === 0} onClick={this.handleBack}>
+                    <Button disabled={activeStep === 1} onClick={this.handleBack}>
                       Anterior
                     </Button>
                     <Button variant='contained' color='primary' onClick={this.handleNext}>
-                      {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
+                      {activeStep === steps.length ? 'Finalizar' : 'Siguiente'}
                     </Button>
                   </div>
                 </div>
               )}
             </div>
+            <DialogSnack open={recven.error !== ''} handleClose={() => recven.Error('')} msg={recven.error} />
           </div>
         );
       }

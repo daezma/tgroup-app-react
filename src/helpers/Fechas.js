@@ -4,5 +4,5 @@
  */
 export function FechaHoy() {
   let f = new Date();
-  return f.getFullYear() + '-' + (f.getMonth() + 1) + '-' + f.getDate();
+  return f.getFullYear() + '-' + String(f.getMonth() + 1).padStart(2, '0') + '-' + String(f.getDate()).padStart(2, '0');
 }

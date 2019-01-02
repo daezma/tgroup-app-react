@@ -9,7 +9,14 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
   observer(
     class RecVenStep2 extends Component {
       componentDidMount = () => {
+        const { recven, penven } = this.props;
         this.CargarMediosPago();
+        recven.ImporteRestanteCuentas(
+          (
+            parseFloat(recven.saldo === '' ? 0 : recven.saldo) +
+            parseFloat(penven.SaldoImp === '' ? 0 : penven.SaldoImp)
+          ).toFixed(2)
+        );
       };
 
       CargarMediosPago = async () => {
@@ -20,19 +27,32 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
       };
 
       handleChangeImporte = () => event => {
-        const { recven } = this.props;
+        const { recven, penven } = this.props;
         let arraycito = recven.list_medios_cobro.map(option => {
           const fila = { ...option };
           if (option.value === +event.target.id) {
-            fila.saldo = +event.target.value;
+            fila.saldo = event.target.value;
           }
           return fila;
         });
         recven.List_medios_cobro(arraycito);
+        recven.ImporteRestanteCuentas(
+          (
+            parseFloat(recven.saldo === '' ? 0 : recven.saldo) +
+            parseFloat(penven.SaldoImp === '' ? 0 : penven.SaldoImp) -
+            (recven.list_medios_cobro
+              ? recven.list_medios_cobro.reduce((anterior, actual) => {
+                  return anterior + parseFloat(actual.saldo === '' ? 0 : actual.saldo);
+                }, 0)
+              : 0)
+          ).toFixed(2)
+        );
       };
 
+      handleClickImporte = () => event => {};
+
       render() {
-        const { recven, penven } = this.props;
+        const { recven } = this.props;
         let medios;
         if (recven.list_medios_cobro !== null) {
           medios = recven.list_medios_cobro.map(option => (
@@ -48,6 +68,7 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                 type='number'
                 value={option.saldo}
                 onChange={this.handleChangeImporte()}
+                onClick={this.handleClickImporte()}
               />
               <br />
             </React.Fragment>
@@ -63,18 +84,7 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                 </>
               ) : (
                 <>
-                  <p>
-                    Saldo pendiente:
-                    {(
-                      parseInt(recven.saldo) +
-                      parseInt(penven.SaldoImp) -
-                      (recven.list_medios_cobro
-                        ? recven.list_medios_cobro.reduce((anterior, actual) => {
-                            return anterior + actual.saldo;
-                          }, 0)
-                        : 0)
-                    ).toFixed(2)}
-                  </p>
+                  <p>Saldo pendiente: ${recven.importeRestanteCuentas}</p>
                   {medios}
                 </>
               )}

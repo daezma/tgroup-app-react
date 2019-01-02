@@ -23,6 +23,8 @@ class RecVenStore {
     this._loading = false;
     this._list_medios_cobro = null;
     this._empresa_props = {};
+    this._importeRestanteCuentas = 0;
+    this._error = '';
   }
 
   get fecha() {
@@ -30,6 +32,13 @@ class RecVenStore {
   }
   Fecha(value) {
     this._fecha = value;
+  }
+
+  get importeRestanteCuentas() {
+    return this._importeRestanteCuentas;
+  }
+  ImporteRestanteCuentas(value) {
+    this._importeRestanteCuentas = value;
   }
 
   get fk_erp_empresas() {
@@ -123,6 +132,14 @@ class RecVenStore {
   Empresa_props(value) {
     this._empresa_props = value;
   }
+
+  get error() {
+    return this._error;
+  }
+
+  Error(value) {
+    this._error = value;
+  }
 }
 
 decorate(RecVenStore, {
@@ -140,6 +157,8 @@ decorate(RecVenStore, {
   _loading: observable,
   _list_medios_cobro: observable,
   _empresa_props: observable,
+  _importeRestanteCuentas: observable,
+  _error: observable,
   fecha: computed,
   fk_erp_empresas: computed,
   fk_erp_uni_neg: computed,
@@ -154,6 +173,8 @@ decorate(RecVenStore, {
   loading: computed,
   list_medios_cobro: computed,
   empresa_props: computed,
+  importeRestanteCuentas: computed,
+  error: computed,
   Fecha: action,
   Fk_erp_empresas: action,
   Fk_erp_uni_neg: action,
@@ -168,7 +189,9 @@ decorate(RecVenStore, {
   List_empresas: action,
   List_medios_cobro: action,
   Loading: action,
-  Empresa_props: action
+  Empresa_props: action,
+  ImporteRestanteCuentas: action,
+  Error: action
 });
 
 export default RecVenStore;
