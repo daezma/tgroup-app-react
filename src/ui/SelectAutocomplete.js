@@ -49,6 +49,22 @@ const SelectAutocomplete = inject('login')(
             onSelect={this.handleSelect}
             wrapperStyle={{ position: 'relative', display: 'inline-block', zIndex: '999' }}
             selectOnBlur={true}
+            inputProps={{
+              style: {
+                padding: '18.5px 14px',
+                height: '1.1875em',
+                font: 'inherit',
+                color: 'currentColor',
+                width: '100%',
+                border: '0',
+                margin: '0',
+                display: 'block',
+                minWidth: '0',
+                boxSizing: 'content-box',
+                background: 'none',
+                outline: '0'
+              }
+            }}
           />
         </>
       );

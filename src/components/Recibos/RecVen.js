@@ -10,6 +10,7 @@ import { observer, inject } from 'mobx-react';
 import RecVenStep2 from './RecVenStep2';
 import RecVenStep3 from './RecVenStep3';
 import DialogSnack from '../../ui/DialogSnack';
+import { itsGetClassSimple, itsClassInsert } from '../../api/itrisApiConnect';
 
 const styles = theme => ({
   root: {
@@ -41,14 +42,15 @@ function getStepContent(step) {
   }
 }
 
-const RecVen = inject('recven', 'penven')(
+const RecVen = inject('recven', 'penven', 'login')(
   observer(
     class RecVen extends Component {
       state = {
         activeStep: 1
       };
 
-      handleNext = () => {
+      handleNext = async () => {
+        const { recven, penven, login } = this.props;
         const { activeStep } = this.state;
         if (this.validaciones()) {
           this.setState({
@@ -57,7 +59,48 @@ const RecVen = inject('recven', 'penven')(
         }
 
         if (activeStep === 3) {
-          //TODO: cargar recibo
+          try {
+            const responseParam = await itsGetClassSimple(login.UserSession, '_APP_PARAMETROS');
+            const tipCom = responseParam[0].FK_ERP_T_COM_VEN_REC;
+            console.log(tipCom);
+
+            const data = {
+              FECHA: recven.fecha,
+              FK_ERP_T_COM_VEN: tipCom,
+              FK_ERP_EMPRESAS: recven.fk_erp_empresas,
+              OBSERVACIONES: recven.observaciones,
+              FK_ERP_UNI_NEG: recven.fk_erp_uni_neg,
+              IMP_A_CTA: recven.saldo !== '' ? parseFloat(parseFloat(recven.saldo).toFixed(2)) : 0,
+              ...(penven.Facturas && {
+                ERP_IMP_VEN: penven.Facturas.map(factura => {
+                  return {
+                    FK_ERP_DEB_VEN: factura.ID,
+                    IMP_COT: parseFloat(parseFloat(factura.saldo).toFixed(2))
+                  };
+                })
+              }),
+              ERP_DET_TES: [
+                {
+                  FK_ERP_CUE_TES: responseParam[0].FK_ERP_CUE_TES,
+                  TIPO: 'H',
+                  UNIDADES: parseFloat((parseFloat(recven.saldo) + parseFloat(penven.SaldoImp)).toFixed(2))
+                },
+                ...recven.list_medios_cobro
+                  .filter(medio => medio.saldo)
+                  .map(medio => {
+                    return {
+                      FK_ERP_CUE_TES: medio.value,
+                      TIPO: 'D',
+                      UNIDADES: parseFloat(parseFloat(medio.saldo).toFixed(2))
+                    };
+                  })
+              ]
+            };
+            const response = await itsClassInsert(login.UserSession, 'ERP_COM_VEN_REC', data);
+            console.log(response);
+          } catch (error) {
+            console.log(error);
+          }
         }
       };
 

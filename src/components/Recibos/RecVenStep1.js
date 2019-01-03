@@ -123,7 +123,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 <TextField
                   required
                   id='fk_erp_empresas'
-                  placeholder='Empresa'
+                  label='Empresa'
                   variant='outlined'
                   margin='normal'
                   value={recven.fk_erp_empresas}
@@ -131,13 +131,22 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                   inputProps={this.empresa_props}
                 />
               ) : (
-                <SelectAutocomplete
-                  value={recven.fk_erp_empresas}
-                  placeholder='Seleccione una empresa'
-                  clase='ERP_EMPRESAS'
-                  onChange={this.handleEmpresa}
-                  campoFiltro='ID'
-                />
+                <div className={style.divDivEmpresa}>
+                  <label className={style.labelEmpresa}>Empresa*</label>
+                  <div className={style.divEmpresa}>
+                    <fieldset className={style.fieldsetEmpresa}>
+                      <legend className={style.legendEmpresa} />
+                    </fieldset>
+                    <SelectAutocomplete
+                      value={recven.fk_erp_empresas}
+                      placeholder='Seleccione una empresa'
+                      clase='ERP_EMPRESAS'
+                      onChange={this.handleEmpresa}
+                      campoFiltro='ID'
+                      inputProps={style.autoComplete}
+                    />
+                  </div>
+                </div>
               )}
               <br />
               <TextField
@@ -156,7 +165,6 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
               <TextField
                 required
                 id='saldo'
-                placeholder='Saldo'
                 variant='outlined'
                 margin='normal'
                 type='number'
@@ -168,7 +176,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
               <TextField
                 required
                 id='observaciones'
-                placeholder='Observaciones'
+                label='Observaciones'
                 variant='outlined'
                 margin='normal'
                 value={recven.observaciones}

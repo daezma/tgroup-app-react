@@ -84,7 +84,7 @@ const PenVenPage = inject('login', 'penven')(
             //Armo un nuevo estado solo con las facturas seleccionadas
             const facturas = penven.Selection.map(value => {
               const seleccion = value.split('_');
-              const saldo = penven.Data.filter(row => (value === this.getRowId(row)) !== -1)[0].saldo;
+              const saldo = penven.Data.filter(row => value === this.getRowId(row))[0].saldo;
               return { ID: seleccion[1], saldo: saldo };
             });
             penven.SetFacturas(facturas);

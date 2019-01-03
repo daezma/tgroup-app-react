@@ -39,7 +39,7 @@ async function itsSecurityCheck(usersession, username, clase) {
     sqlFilter: sqlFilter
   };
   try {
-    const response = await axios.get(`${itris_url}class`, {
+    const response = await axios.get(`${itris_url}/class`, {
       params: parameters
     });
 
@@ -61,7 +61,7 @@ async function itsSecurityCheck(usersession, username, clase) {
  */
 export async function itsLogin(database, username, password) {
   try {
-    const response = await axios.post(`${itris_url}login`, LoginToJson(database, username, password));
+    const response = await axios.post(`${itris_url}/login`, LoginToJson(database, username, password));
     loginResponse.usersession = response.data.usersession;
   } catch (error) {
     if (
@@ -79,7 +79,7 @@ export async function itsLogin(database, username, password) {
 export async function itsLogout(usersession) {
   let msg = '';
   try {
-    await axios.post(`${itris_url}logout`, LogoutToJson(usersession));
+    await axios.post(`${itris_url}/logout`, LogoutToJson(usersession));
     loginResponse.usersession = '';
     return '';
   } catch (error) {
@@ -110,7 +110,7 @@ export async function itsGetClass(usersession, clase, username, recordCount, sql
       sqlFilter: sqlFilter
     };
     try {
-      const response = await axios.get(`${itris_url}class`, {
+      const response = await axios.get(`${itris_url}/class`, {
         params: parameters
       });
       return response.data.data;
@@ -141,12 +141,35 @@ export async function itsGetClassSimple(usersession, clase, sqlFilter, recordCou
     sqlFilter: sqlFilter
   };
   try {
-    const response = await axios.get(`${itris_url}class`, {
+    const response = await axios.get(`${itris_url}/class`, {
       params: parameters
     });
     return response.data.data;
   } catch (error) {
     if (error.response ? (msgError = error.response.data.message) : (msgError = error.message));
     return msgError;
+  }
+}
+
+/**
+ * Inserta un nuevo registro de una clase
+ * @param {string} usersession
+ * @param {string} clase
+ * @param {Array} data
+ */
+export async function itsClassInsert(usersession, clase, data) {
+  let msg = '';
+  const datos = {
+    usersession: usersession,
+    class: clase,
+    data: Array(data)
+  };
+  try {
+    await axios.post(`${itris_url}/class`, JSON.stringify(datos));
+    loginResponse.usersession = '';
+    return '';
+  } catch (error) {
+    if (error.response ? (msg = error.response.data.message) : (msg = error.message));
+    return msg;
   }
 }
