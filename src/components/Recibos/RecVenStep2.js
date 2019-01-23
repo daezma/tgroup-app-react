@@ -4,10 +4,18 @@ import { MediosCobro } from '../../api/Consultas';
 import { TextField, Paper, Button } from '@material-ui/core';
 import style from './RecVen.module.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ChequesList from '../Cheques/ChequesList';
+import ChequeModal from '../Cheques/ChequeModal';
 
 const RecVenStep2 = inject('recven', 'login', 'penven')(
   observer(
     class RecVenStep2 extends Component {
+      state = {
+        modalChequeOpen: false,
+        cuentaChequeModal: null,
+        cuentaDescChequeModal: ''
+      };
+
       componentDidMount = () => {
         const { recven, penven } = this.props;
         this.CargarMediosPago();
@@ -51,6 +59,18 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
 
       handleClickImporte = () => event => {};
 
+      eliminarCheque = nroCheque => {
+        this.props.recven.Cheques(this.props.recven.cheques.filter(cheque => cheque.numero !== nroCheque));
+      };
+
+      closeModal = () => {
+        this.setState({ modalChequeOpen: false });
+      };
+
+      modalCheque = (cuenta, descCuenta) => {
+        this.setState({ modalChequeOpen: true, cuentaChequeModal: cuenta, cuentaDescChequeModal: descCuenta });
+      };
+
       render() {
         const { recven } = this.props;
         let medios;
@@ -70,7 +90,12 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                 onChange={this.handleChangeImporte()}
                 onClick={this.handleClickImporte()}
               />
+              <Button onClick={() => this.modalCheque(option.value, option.label)}>Cheque</Button>
               <br />
+              <ChequesList
+                cheques={recven.cheques.filter(cheque => cheque.cuenta === option.value)}
+                click={this.eliminarCheque}
+              />
             </React.Fragment>
           ));
         }
@@ -89,9 +114,12 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                 </>
               )}
             </div>
-            <Button variant='contained' color='primary'>
-              Cargar cheques
-            </Button>
+            <ChequeModal
+              open={this.state.modalChequeOpen}
+              onClose={this.closeModal}
+              cuenta={this.state.cuentaChequeModal}
+              cuentaDesc={this.state.cuentaDescChequeModal}
+            />
           </Paper>
         );
       }

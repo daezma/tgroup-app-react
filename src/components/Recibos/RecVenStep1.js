@@ -174,7 +174,6 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
               />
               <br />
               <TextField
-                required
                 id='observaciones'
                 label='Observaciones'
                 variant='outlined'

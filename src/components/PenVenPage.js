@@ -6,10 +6,15 @@ import Button from '@material-ui/core/Button';
 import { RECIBOS_VENTAS } from '../constants/paginas';
 import { withRouter } from 'react-router-dom';
 import DialogSnack from '../ui/DialogSnack';
+import { CircularProgress } from '@material-ui/core';
 
 const PenVenPage = inject('login', 'penven')(
   observer(
     class PenVenPage extends Component {
+      state = {
+        loading: false
+      };
+
       columns = [
         { name: 'empresa', title: 'Empresa' },
         { name: 'fecha', title: 'Fecha' },
@@ -35,7 +40,9 @@ const PenVenPage = inject('login', 'penven')(
       traerDatos = async () => {
         try {
           const { login, penven } = this.props;
+          this.setState({ loading: true });
           const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User);
+          this.setState({ loading: false });
           if (typeof res === 'string') {
             penven.SetData(null);
             penven.SetMsgAlert(res);
@@ -52,6 +59,7 @@ const PenVenPage = inject('login', 'penven')(
             penven.SetData(rows);
           }
         } catch (error) {
+          this.setState({ loading: false });
           console.log(error);
         }
       };
@@ -106,6 +114,11 @@ const PenVenPage = inject('login', 'penven')(
         const { penven } = this.props;
         return (
           <div>
+            {this.state.loading ? (
+              <div>
+                <CircularProgress />
+              </div>
+            ) : null}
             {penven.Data ? (
               <AdvanceTable
                 data={penven.Data}

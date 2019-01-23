@@ -25,6 +25,7 @@ class RecVenStore {
     this._empresa_props = {};
     this._importeRestanteCuentas = 0;
     this._error = '';
+    this._cheques = [];
   }
 
   get fecha() {
@@ -140,6 +141,14 @@ class RecVenStore {
   Error(value) {
     this._error = value;
   }
+
+  get cheques() {
+    return this._cheques;
+  }
+
+  Cheques(value) {
+    this._cheques = value;
+  }
 }
 
 decorate(RecVenStore, {
@@ -159,6 +168,7 @@ decorate(RecVenStore, {
   _empresa_props: observable,
   _importeRestanteCuentas: observable,
   _error: observable,
+  _cheques: observable,
   fecha: computed,
   fk_erp_empresas: computed,
   fk_erp_uni_neg: computed,
@@ -175,6 +185,7 @@ decorate(RecVenStore, {
   empresa_props: computed,
   importeRestanteCuentas: computed,
   error: computed,
+  cheques: computed,
   Fecha: action,
   Fk_erp_empresas: action,
   Fk_erp_uni_neg: action,
@@ -191,7 +202,8 @@ decorate(RecVenStore, {
   Loading: action,
   Empresa_props: action,
   ImporteRestanteCuentas: action,
-  Error: action
+  Error: action,
+  Cheques: action
 });
 
 export default RecVenStore;
