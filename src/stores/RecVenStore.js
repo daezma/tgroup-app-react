@@ -26,6 +26,15 @@ class RecVenStore {
     this._importeRestanteCuentas = 0;
     this._error = '';
     this._cheques = [];
+    this._dataChequeModal = {
+      banco: '',
+      numero: '',
+      importe: '',
+      tipo: 'C',
+      noALaOrden: false,
+      fecEmi: '',
+      fecDep: ''
+    };
   }
 
   get fecha() {
@@ -149,6 +158,14 @@ class RecVenStore {
   Cheques(value) {
     this._cheques = value;
   }
+
+  get dataChequeModal() {
+    return this._dataChequeModal;
+  }
+
+  DataChequeModal(value) {
+    this._dataChequeModal = value;
+  }
 }
 
 decorate(RecVenStore, {
@@ -169,6 +186,7 @@ decorate(RecVenStore, {
   _importeRestanteCuentas: observable,
   _error: observable,
   _cheques: observable,
+  _dataChequeModal: observable,
   fecha: computed,
   fk_erp_empresas: computed,
   fk_erp_uni_neg: computed,
@@ -186,6 +204,7 @@ decorate(RecVenStore, {
   importeRestanteCuentas: computed,
   error: computed,
   cheques: computed,
+  dataChequeModal: computed,
   Fecha: action,
   Fk_erp_empresas: action,
   Fk_erp_uni_neg: action,
@@ -203,7 +222,8 @@ decorate(RecVenStore, {
   Empresa_props: action,
   ImporteRestanteCuentas: action,
   Error: action,
-  Cheques: action
+  Cheques: action,
+  DataChequeModal: action
 });
 
 export default RecVenStore;

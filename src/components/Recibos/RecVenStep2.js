@@ -11,9 +11,7 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
   observer(
     class RecVenStep2 extends Component {
       state = {
-        modalChequeOpen: false,
-        cuentaChequeModal: null,
-        cuentaDescChequeModal: ''
+        modalChequeOpen: false
       };
 
       componentDidMount = () => {
@@ -57,8 +55,6 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
         );
       };
 
-      handleClickImporte = () => event => {};
-
       eliminarCheque = nroCheque => {
         this.props.recven.Cheques(this.props.recven.cheques.filter(cheque => cheque.numero !== nroCheque));
       };
@@ -68,7 +64,25 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
       };
 
       modalCheque = (cuenta, descCuenta) => {
-        this.setState({ modalChequeOpen: true, cuentaChequeModal: cuenta, cuentaDescChequeModal: descCuenta });
+        const { recven } = this.props;
+        recven.DataChequeModal({
+          banco: '',
+          numero: '',
+          importe: '',
+          tipo: 'C',
+          noALaOrden: false,
+          fecEmi: '',
+          fecDep: '',
+          cuenta: cuenta,
+          descCuenta: descCuenta
+        });
+        this.setState({ modalChequeOpen: true });
+      };
+
+      aceptarModal = () => {
+        const { recven } = this.props;
+        recven.Cheques([...recven.cheques, recven.dataChequeModal]);
+        this.setState({ modalChequeOpen: false });
       };
 
       render() {
@@ -79,23 +93,27 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
             <React.Fragment key={option.value}>
               {option.label}
               <br />
-              <TextField
-                required
-                id={String(option.value)}
-                placeholder='Importe'
-                variant='outlined'
-                margin='normal'
-                type='number'
-                value={option.saldo}
-                onChange={this.handleChangeImporte()}
-                onClick={this.handleClickImporte()}
-              />
-              <Button onClick={() => this.modalCheque(option.value, option.label)}>Cheque</Button>
-              <br />
-              <ChequesList
-                cheques={recven.cheques.filter(cheque => cheque.cuenta === option.value)}
-                click={this.eliminarCheque}
-              />
+              {option.tipo !== 'C' ? ( //TODO: Cambiar a V despues de las pruebas
+                <TextField
+                  required
+                  id={String(option.value)}
+                  placeholder='Importe'
+                  variant='outlined'
+                  margin='normal'
+                  type='number'
+                  value={option.saldo}
+                  onChange={this.handleChangeImporte()}
+                />
+              ) : (
+                <>
+                  <Button onClick={() => this.modalCheque(option.value, option.label)}>Cheque</Button>
+                  <br />
+                  <ChequesList
+                    cheques={recven.cheques.filter(cheque => cheque.cuenta === option.value)}
+                    click={this.eliminarCheque}
+                  />
+                </>
+              )}
             </React.Fragment>
           ));
         }
@@ -117,8 +135,8 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
             <ChequeModal
               open={this.state.modalChequeOpen}
               onClose={this.closeModal}
-              cuenta={this.state.cuentaChequeModal}
-              cuentaDesc={this.state.cuentaDescChequeModal}
+              data={this.state.dataChequeModal}
+              aceptar={this.aceptarModal}
             />
           </Paper>
         );
