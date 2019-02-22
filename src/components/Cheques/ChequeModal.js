@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
 import { Modal, Paper, TextField, Button, FormGroup, FormControlLabel, Checkbox, MenuItem } from '@material-ui/core';
 import { observer, inject } from 'mobx-react';
+import { itsGetClassSimple } from '../../api/itrisApiConnect';
 
-const ChequeModal = inject('recven')(
+const ChequeModal = inject('recven', 'login')(
   observer(
     class ChequeModal extends Component {
+      state = {
+        bancos: []
+      };
+
+      cargarBancos = async () => {
+        const { login } = this.props;
+        const bancos = await itsGetClassSimple(login.UserSession, 'ERP_BANCOS');
+        this.setState({ bancos: bancos });
+      };
+
       changeData = valor => event => {
         const { recven } = this.props;
         //Hago esto para hacer el evento genérico y poder usar el parámetro de la funcion como índice
         var tmpArray = { ...recven.dataChequeModal };
         tmpArray[valor] = event.target.value;
         if (
-          (valor === 'tipo' && event.target.value === 'C') ||
-          ((valor === 'fecDep' || valor === 'fecEmi') && tmpArray['tipo'] === 'C')
+          (valor === 'TIPO' && event.target.value === 'C') ||
+          ((valor === 'FEC_DEP' || valor === 'FEC_EMI') && tmpArray['TIPO'] === 'C')
         ) {
-          tmpArray['fecDep'] = tmpArray['fecEmi'];
+          tmpArray['FEC_DEP'] = tmpArray['FEC_EMI'];
         }
+        tmpArray['FK_ERP_BANCOS'] = parseInt(tmpArray['FK_ERP_BANCOS']);
         recven.DataChequeModal(tmpArray);
       };
 
@@ -28,50 +40,70 @@ const ChequeModal = inject('recven')(
                   required
                   id='cheque_cuenta'
                   label='Cuenta'
-                  value={this.props.recven.dataChequeModal.cuenta}
+                  value={this.props.recven.dataChequeModal.FK_ERP_CUE_TES}
                   inputProps={{ readOnly: true }}
                 />
                 <p>{this.props.recven.dataChequeModal.descCuenta}</p>
                 <TextField
                   required
                   id='cheque_banco'
+                  select
                   label='Banco'
-                  value={this.props.recven.dataChequeModal.banco}
-                  onChange={this.changeData('banco')}
-                />
+                  value={this.props.recven.dataChequeModal.FK_ERP_BANCOS}
+                  onChange={this.changeData('FK_ERP_BANCOS')}
+                  onClick={this.cargarBancos}
+                >
+                  {this.state.bancos.map(banco => (
+                    <MenuItem key={banco.ID} value={banco.ID}>
+                      {banco.DESCRIPCION}
+                    </MenuItem>
+                  ))}
+                </TextField>
                 <TextField
                   required
                   id='cheque_numero'
                   label='Numero'
-                  value={this.props.recven.dataChequeModal.numero}
-                  onChange={this.changeData('numero')}
+                  value={this.props.recven.dataChequeModal.NUMERO}
+                  onChange={this.changeData('NUMERO')}
                 />
                 <TextField
                   required
                   id='cheque_importe'
                   type='number'
                   label='Importe'
-                  value={this.props.recven.dataChequeModal.importe}
-                  onChange={this.changeData('importe')}
+                  value={this.props.recven.dataChequeModal.IMPORTE}
+                  onChange={this.changeData('IMPORTE')}
                 />
                 <TextField
                   required
                   id='cheque_tipo'
                   select
                   label='Tipo'
-                  value={this.props.recven.dataChequeModal.tipo}
+                  value={this.props.recven.dataChequeModal.TIPO}
                   margin='normal'
-                  onChange={this.changeData('tipo')}
+                  onChange={this.changeData('TIPO')}
                 >
                   <MenuItem value='C'>Común</MenuItem>
                   <MenuItem value='D'>Diferido</MenuItem>
                 </TextField>
+                <TextField
+                  required
+                  id='cheque_origen'
+                  select
+                  label='Origen'
+                  value={this.props.recven.dataChequeModal.ORIGEN}
+                  margin='normal'
+                  onChange={this.changeData('ORIGEN')}
+                >
+                  <MenuItem value='C'>Cliente</MenuItem>
+                  <MenuItem value='T'>Tercero</MenuItem>
+                </TextField>
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={this.props.recven.dataChequeModal.noALaOrden}
+                      checked={this.props.recven.dataChequeModal.NO_ALAORDEN}
                       value='true'
-                      onChange={this.changeData('noALaOrden')}
+                      onChange={this.changeData('NO_ALAORDEN')}
                     />
                   }
                   label='No a la orden'
@@ -79,14 +111,14 @@ const ChequeModal = inject('recven')(
                 <TextField
                   label='Fecha de emisión'
                   type='date'
-                  value={this.props.recven.dataChequeModal.fecEmi}
-                  onChange={this.changeData('fecEmi')}
+                  value={this.props.recven.dataChequeModal.FEC_EMI}
+                  onChange={this.changeData('FEC_EMI')}
                 />
                 <TextField
                   label='Fecha de depósito'
                   type='date'
-                  value={this.props.recven.dataChequeModal.fecDep}
-                  onChange={this.changeData('fecDep')}
+                  value={this.props.recven.dataChequeModal.FEC_DEP}
+                  onChange={this.changeData('FEC_DEP')}
                 />
                 <br />
                 <Button onClick={this.props.aceptar}>Aceptar</Button>

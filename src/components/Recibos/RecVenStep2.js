@@ -33,7 +33,7 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
       };
 
       handleChangeImporte = () => event => {
-        const { recven, penven } = this.props;
+        const { recven } = this.props;
         let arraycito = recven.list_medios_cobro.map(option => {
           const fila = { ...option };
           if (option.value === +event.target.id) {
@@ -42,6 +42,48 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
           return fila;
         });
         recven.List_medios_cobro(arraycito);
+        this.actualizarSaldoRestante();
+      };
+
+      eliminarCheque = nroCheque => {
+        const { recven } = this.props;
+        const cheque = recven.cheques.find(cheque => cheque.NUMERO === nroCheque);
+        recven.Cheques(recven.cheques.filter(cheque => cheque.NUMERO !== nroCheque));
+        recven.List_medios_cobro(
+          recven.list_medios_cobro.map(cuenta => {
+            var tmpCuenta = { ...cuenta };
+            if (tmpCuenta.value === cheque.FK_ERP_CUE_TES) {
+              tmpCuenta.saldo = parseFloat(tmpCuenta.saldo) - parseFloat(cheque.IMPORTE);
+            }
+            return tmpCuenta;
+          })
+        );
+        this.actualizarSaldoRestante();
+      };
+
+      closeModal = () => {
+        this.setState({ modalChequeOpen: false });
+      };
+
+      modalCheque = (cuenta, descCuenta) => {
+        const { recven } = this.props;
+        recven.DataChequeModal({
+          FK_ERP_BANCOS: '',
+          NUMERO: '',
+          IMPORTE: '',
+          TIPO: 'C',
+          NO_ALAORDEN: false,
+          FEC_EMI: '',
+          FEC_DEP: '',
+          ORIGEN: '',
+          FK_ERP_CUE_TES: parseInt(cuenta),
+          descCuenta: descCuenta
+        });
+        this.setState({ modalChequeOpen: true });
+      };
+
+      actualizarSaldoRestante = () => {
+        const { recven, penven } = this.props;
         recven.ImporteRestanteCuentas(
           (
             parseFloat(recven.saldo === '' ? 0 : recven.saldo) +
@@ -55,33 +97,22 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
         );
       };
 
-      eliminarCheque = nroCheque => {
-        this.props.recven.Cheques(this.props.recven.cheques.filter(cheque => cheque.numero !== nroCheque));
-      };
-
-      closeModal = () => {
-        this.setState({ modalChequeOpen: false });
-      };
-
-      modalCheque = (cuenta, descCuenta) => {
-        const { recven } = this.props;
-        recven.DataChequeModal({
-          banco: '',
-          numero: '',
-          importe: '',
-          tipo: 'C',
-          noALaOrden: false,
-          fecEmi: '',
-          fecDep: '',
-          cuenta: cuenta,
-          descCuenta: descCuenta
-        });
-        this.setState({ modalChequeOpen: true });
-      };
-
       aceptarModal = () => {
         const { recven } = this.props;
         recven.Cheques([...recven.cheques, recven.dataChequeModal]);
+        recven.List_medios_cobro(
+          recven.list_medios_cobro.map(cuenta => {
+            var tmpCuenta = { ...cuenta };
+            if (tmpCuenta.value === recven.dataChequeModal.FK_ERP_CUE_TES) {
+              tmpCuenta.saldo =
+                tmpCuenta.saldo === ''
+                  ? recven.dataChequeModal.IMPORTE
+                  : parseFloat(tmpCuenta.saldo) + parseFloat(recven.dataChequeModal.IMPORTE);
+            }
+            return tmpCuenta;
+          })
+        );
+        this.actualizarSaldoRestante();
         this.setState({ modalChequeOpen: false });
       };
 
@@ -91,12 +122,11 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
         if (recven.list_medios_cobro !== null) {
           medios = recven.list_medios_cobro.map(option => (
             <React.Fragment key={option.value}>
-              {option.label}
-              <br />
-              {option.tipo !== 'C' ? ( //TODO: Cambiar a V despues de las pruebas
+              {option.tipo !== 'V' ? (
                 <TextField
                   required
                   id={String(option.value)}
+                  label={option.label}
                   placeholder='Importe'
                   variant='outlined'
                   margin='normal'
@@ -105,14 +135,14 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                   onChange={this.handleChangeImporte()}
                 />
               ) : (
-                <>
+                <div>
                   <Button onClick={() => this.modalCheque(option.value, option.label)}>Cheque</Button>
                   <br />
                   <ChequesList
-                    cheques={recven.cheques.filter(cheque => cheque.cuenta === option.value)}
+                    cheques={recven.cheques.filter(cheque => cheque.FK_ERP_CUE_TES === option.value)}
                     click={this.eliminarCheque}
                   />
-                </>
+                </div>
               )}
             </React.Fragment>
           ));

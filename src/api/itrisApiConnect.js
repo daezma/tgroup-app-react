@@ -119,7 +119,7 @@ export async function itsGetClass(usersession, clase, username, recordCount, sql
       return msgError;
     }
   } else {
-    return 'Usuario no habilitado par acceder a este módulo';
+    return 'Usuario no habilitado para acceder a este módulo';
   }
 }
 

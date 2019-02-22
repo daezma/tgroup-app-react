@@ -5,11 +5,11 @@ const ChequesList = props => {
     <table>
       <tbody>
         {props.cheques.map(cheque => (
-          <tr key={cheque.numero}>
-            <td>{cheque.numero}</td>
-            <td>{cheque.importe}</td>
+          <tr key={cheque.NUMERO}>
+            <td>{cheque.NUMERO}</td>
+            <td>{cheque.IMPORTE}</td>
             <td>
-              <Button onClick={() => props.click(cheque.numero)}>Eliminar</Button>
+              <Button onClick={() => props.click(cheque.NUMERO)}>Eliminar</Button>
             </td>
           </tr>
         ))}

@@ -3,7 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import style from './Login.module.css';
 import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
-import logo from '../../image/isologo.jpg';
+import logo from '../../image/isologo.png';
 import DialogSnack from '../../ui/DialogSnack';
 import { itsLogin } from '../../api/itrisApiConnect';
 import { observer, inject } from 'mobx-react';
