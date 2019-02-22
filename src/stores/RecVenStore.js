@@ -36,6 +36,7 @@ class RecVenStore {
       FEC_DEP: '',
       ORIGEN: ''
     };
+    this._generado = false;
   }
 
   get fecha() {
@@ -167,6 +168,14 @@ class RecVenStore {
   DataChequeModal(value) {
     this._dataChequeModal = value;
   }
+
+  get generado() {
+    return this._generado;
+  }
+
+  Generado(value) {
+    this._generado = value;
+  }
 }
 
 decorate(RecVenStore, {
@@ -188,6 +197,7 @@ decorate(RecVenStore, {
   _error: observable,
   _cheques: observable,
   _dataChequeModal: observable,
+  _generado: observable,
   fecha: computed,
   fk_erp_empresas: computed,
   fk_erp_uni_neg: computed,
@@ -206,6 +216,7 @@ decorate(RecVenStore, {
   error: computed,
   cheques: computed,
   dataChequeModal: computed,
+  generado: computed,
   Fecha: action,
   Fk_erp_empresas: action,
   Fk_erp_uni_neg: action,
@@ -224,7 +235,8 @@ decorate(RecVenStore, {
   ImporteRestanteCuentas: action,
   Error: action,
   Cheques: action,
-  DataChequeModal: action
+  DataChequeModal: action,
+  Generado: action
 });
 
 export default RecVenStore;

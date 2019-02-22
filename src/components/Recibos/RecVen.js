@@ -11,6 +11,8 @@ import RecVenStep2 from './RecVenStep2';
 import RecVenStep3 from './RecVenStep3';
 import DialogSnack from '../../ui/DialogSnack';
 import { itsGetClassSimple, itsClassInsert } from '../../api/itrisApiConnect';
+import { CircularProgress } from '@material-ui/core';
+import Done from '@material-ui/icons/Done';
 
 const styles = theme => ({
   root: {
@@ -59,6 +61,7 @@ const RecVen = inject('recven', 'penven', 'login')(
         }
 
         if (activeStep === 3) {
+          recven.Loading(true);
           try {
             recven.cheques.forEach(async cheque => {
               const tmpCheque = { ...cheque };
@@ -67,7 +70,6 @@ const RecVen = inject('recven', 'penven', 'login')(
             });
             const responseParam = await itsGetClassSimple(login.UserSession, '_APP_PARAMETROS');
             const tipCom = responseParam[0].FK_ERP_T_COM_VEN_REC;
-            console.log(tipCom);
 
             const data = {
               FECHA: recven.fecha,
@@ -110,9 +112,19 @@ const RecVen = inject('recven', 'penven', 'login')(
               ]
             };
             const response = await itsClassInsert(login.UserSession, 'ERP_COM_VEN_REC', data);
+            recven.Loading(false);
             console.log(response);
+            if (typeof response === 'string' && response !== '') {
+              this.props.recven.Loading(false);
+              this.props.recven.Error(response);
+              this.handleBack();
+            } else {
+              recven.Generado(true);
+            }
           } catch (error) {
-            console.log(error);
+            this.props.recven.Loading(false);
+            this.props.recven.Error(error);
+            this.handleBack();
           }
         }
       };
@@ -124,6 +136,7 @@ const RecVen = inject('recven', 'penven', 'login')(
       };
 
       handleReset = () => {
+        this.props.recven.Generado(false);
         this.setState({
           activeStep: 1
         });
@@ -185,7 +198,23 @@ const RecVen = inject('recven', 'penven', 'login')(
               {activeStep === steps.length + 1 ? (
                 <div>
                   <Typography>Generación de recibos</Typography>
-                  <Button onClick={this.handleReset}>Reiniciar</Button>
+                  <Button onClick={this.handleReset} disabled={recven.loading}>
+                    Ir al principio
+                  </Button>
+                  {recven.loading ? (
+                    <>
+                      <br />
+                      <CircularProgress />
+                      <br />
+                    </>
+                  ) : null}
+                  {recven.generado ? (
+                    <>
+                      <br />
+                      <Done color='green' style={{ fontSize: 'large' }} />
+                      <br />
+                    </>
+                  ) : null}
                 </div>
               ) : (
                 <div>
