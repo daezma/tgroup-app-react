@@ -153,6 +153,9 @@ const RecVen = inject('recven', 'penven', 'login')(
           if (recven.fk_erp_empresas === '') {
             error = 'El campo empresa debe contener un valor';
           }
+          if (recven.fk_erp_uni_neg === '') {
+            error = 'El campo unidad de negocios debe contener un valor';
+          }
         }
         if (activeStep === 2) {
           if (+recven.importeRestanteCuentas > 0) {
