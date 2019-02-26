@@ -5,6 +5,8 @@ import { withRouter, Redirect } from 'react-router-dom';
 import InitPage from './InitPage';
 import { observer, inject } from 'mobx-react';
 import * as paginas from '../constants/paginas';
+import Img from 'react-image';
+import logo from '../image/TgroupLogo1.png';
 const PenVenPage = React.lazy(() => import('./PenVenPage'));
 const RecVen = React.lazy(() => import('./Recibos/RecVen'));
 
@@ -43,7 +45,7 @@ const AppFrame = inject('login')(
                   <Suspense fallback='Cargando...'>{contenido}</Suspense>
                 </div>
                 <div>
-                  <p>Tgroup Sistemas</p>
+                  <Img src={logo} height='170px' />
                 </div>
               </div>
             </div>

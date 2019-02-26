@@ -30,3 +30,19 @@
     transform: rotate(360deg);
   }
 }
+
+/* @media (max-width: 500px) {
+  .logo {
+    height: 25%;
+  }
+}
+
+@media (min-width: 501px) {
+  .logo {
+    height: 200px;
+  }
+} */
+
+.logo {
+  height: 200px;
+}

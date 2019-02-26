@@ -1,7 +1,7 @@
 import React from 'react';
 
 const InitPage = () => {
-  return <div>PAGINA PRINCIPAL EN BLANCO ^^</div>;
+  return <div />;
 };
 
 export default InitPage;
