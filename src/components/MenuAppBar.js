@@ -144,6 +144,7 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
                   Tgroup - Sistema Interno
                 </Typography>
                 <div>
+                  {`${login.User.toUpperCase()}`}
                   <IconButton
                     aria-owns={menuPrincipal.OpenLogin ? 'login-appbar' : null}
                     aria-haspopup='true'
