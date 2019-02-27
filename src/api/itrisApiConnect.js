@@ -165,9 +165,9 @@ export async function itsClassInsert(usersession, clase, data) {
     data: Array(data)
   };
   try {
-    await axios.post(`${itris_url}/class`, JSON.stringify(datos));
+    const response = await axios.post(`${itris_url}/class`, JSON.stringify(datos));
     loginResponse.usersession = '';
-    return '';
+    return response;
   } catch (error) {
     if (error.response ? (msg = error.response.data.message) : (msg = error.message));
     return msg;

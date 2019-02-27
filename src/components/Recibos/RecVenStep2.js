@@ -82,7 +82,7 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
         const { recven } = this.props;
         recven.DataChequeModal({
           FK_ERP_BANCOS: '',
-          NUMERO: '',
+          NUMERO2: '',
           IMPORTE: '',
           TIPO: 'C',
           NO_ALAORDEN: false,
