@@ -26,16 +26,7 @@ class RecVenStore {
     this._importeRestanteCuentas = 0;
     this._error = '';
     this._cheques = [];
-    this._dataChequeModal = {
-      FK_ERP_BANCOS: '',
-      NUMERO: '',
-      IMPORTE: '',
-      TIPO: 'C',
-      NO_ALAORDEN: false,
-      FEC_EMI: '',
-      FEC_DEP: '',
-      ORIGEN: ''
-    };
+    this._dataChequeModal = {};
     this._generado = false;
   }
 

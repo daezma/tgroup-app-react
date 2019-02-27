@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import style from './Login.module.css';
 import { Button, TextField, MenuItem, Paper } from '@material-ui/core';
 import Img from 'react-image';
@@ -64,11 +63,10 @@ const Login = inject('login')(
         return (
           <Paper className={style.paper}>
             <div>
-              <Img src={logo} />
+              <Img src={logo} className={login.loading ? style.image : null} />
               <br />
               {login.loading ? (
                 <>
-                  <CircularProgress />
                   <p>Verificando...</p>
                 </>
               ) : (

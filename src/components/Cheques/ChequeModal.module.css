@@ -1,0 +1,15 @@
+.paper {
+  margin: 50px auto;
+  padding: 30px;
+  max-width: 50%;
+}
+
+@media (max-width: 650px) {
+  .paper {
+    max-width: 90%;
+  }
+}
+
+.fullInput {
+  width: 100%;
+}

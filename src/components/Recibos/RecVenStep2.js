@@ -60,8 +60,8 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
 
       eliminarCheque = nroCheque => {
         const { recven } = this.props;
-        const cheque = recven.cheques.find(cheque => cheque.NUMERO === nroCheque);
-        recven.Cheques(recven.cheques.filter(cheque => cheque.NUMERO !== nroCheque));
+        const cheque = recven.cheques.find(cheque => cheque.NUMERO2 === nroCheque);
+        recven.Cheques(recven.cheques.filter(cheque => cheque.NUMERO2 !== nroCheque));
         recven.List_medios_cobro(
           recven.list_medios_cobro.map(cuenta => {
             var tmpCuenta = { ...cuenta };
@@ -150,7 +150,14 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                 />
               ) : (
                 <div>
-                  <Button onClick={() => this.modalCheque(option.value, option.label)}>Cheque</Button>
+                  <p>{option.label}</p>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => this.modalCheque(option.value, option.label)}
+                  >
+                    Cargar cheque
+                  </Button>
                   <br />
                   <ChequesList
                     cheques={recven.cheques.filter(cheque => cheque.FK_ERP_CUE_TES === option.value)}
