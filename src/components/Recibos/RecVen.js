@@ -63,19 +63,18 @@ const RecVen = inject('recven', 'penven', 'login')(
         if (activeStep === 3) {
           recven.Loading(true);
           try {
-            recven.Cheques(
-              recven.cheques.map(async cheque => {
-                const tmpCheque = { ...cheque };
-                delete tmpCheque.descCuenta;
-                tmpCheque.FK_ERP_BANCOS = parseInt(tmpCheque.FK_ERP_BANCOS);
-                tmpCheque.IMPORTE = parseFloat(tmpCheque.IMPORTE);
-                const responseCheque = await itsClassInsert(login.UserSession, 'ERP_CHE_TER', tmpCheque);
-                if (responseCheque.data.ID) {
-                  tmpCheque.ID = responseCheque.data.ID;
-                }
-                return tmpCheque;
-              })
-            );
+            const newCheques = recven.cheques.map(async cheque => {
+              const tmpCheque = { ...cheque };
+              delete tmpCheque.descCuenta;
+              tmpCheque.FK_ERP_BANCOS = parseInt(tmpCheque.FK_ERP_BANCOS);
+              tmpCheque.IMPORTE = parseFloat(tmpCheque.IMPORTE);
+              const responseCheque = await itsClassInsert(login.UserSession, 'ERP_CHE_TER', tmpCheque);
+              if (responseCheque.data) {
+                tmpCheque.ID = responseCheque.data.ID;
+              }
+              return tmpCheque;
+            });
+            recven.Cheques(newCheques);
             const responseParam = await itsGetClassSimple(login.UserSession, '_APP_PARAMETROS');
             const tipCom = responseParam[0].FK_ERP_T_COM_VEN_REC;
 
