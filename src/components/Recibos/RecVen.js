@@ -63,11 +63,19 @@ const RecVen = inject('recven', 'penven', 'login')(
         if (activeStep === 3) {
           recven.Loading(true);
           try {
-            recven.cheques.forEach(async cheque => {
-              const tmpCheque = { ...cheque };
-              delete tmpCheque.descCuenta;
-              await itsClassInsert(login.UserSession, 'ERP_CHE_TER', tmpCheque);
-            });
+            recven.Cheques(
+              recven.cheques.map(async cheque => {
+                const tmpCheque = { ...cheque };
+                delete tmpCheque.descCuenta;
+                tmpCheque.FK_ERP_BANCOS = parseInt(tmpCheque.FK_ERP_BANCOS);
+                tmpCheque.IMPORTE = parseFloat(tmpCheque.IMPORTE);
+                const responseCheque = await itsClassInsert(login.UserSession, 'ERP_CHE_TER', tmpCheque);
+                if (!responseCheque.error) {
+                  tmpCheque.ID = responseCheque.data.ID;
+                }
+                return tmpCheque;
+              })
+            );
             const responseParam = await itsGetClassSimple(login.UserSession, '_APP_PARAMETROS');
             const tipCom = responseParam[0].FK_ERP_T_COM_VEN_REC;
 
@@ -103,10 +111,10 @@ const RecVen = inject('recven', 'penven', 'login')(
                   }),
                 ...recven.cheques.map(cheque => {
                   return {
-                    FK_ERP_CUE_TES: cheque.FK_ERP_CUE_TES,
+                    FK_ERP_CUE_TES: parseInt(cheque.FK_ERP_CUE_TES),
                     TIPO: 'D',
-                    UNIDADES: cheque.IMPORTE,
-                    FK_ERP_CHE_TER: cheque.NUMERO
+                    UNIDADES: parseFloat(cheque.IMPORTE),
+                    FK_ERP_CHE_TER: parseInt(cheque.NUMERO2)
                   };
                 })
               ]

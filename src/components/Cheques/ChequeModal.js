@@ -27,7 +27,6 @@ const ChequeModal = inject('recven', 'login')(
         ) {
           tmpArray['FEC_DEP'] = tmpArray['FEC_EMI'];
         }
-        tmpArray['FK_ERP_BANCOS'] = parseInt(tmpArray['FK_ERP_BANCOS']);
         recven.DataChequeModal(tmpArray);
       };
 
@@ -63,8 +62,8 @@ const ChequeModal = inject('recven', 'login')(
                   required
                   id='cheque_numero'
                   label='Numero'
-                  value={this.props.recven.dataChequeModal.NUMERO}
-                  onChange={this.changeData('NUMERO')}
+                  value={this.props.recven.dataChequeModal.NUMERO2}
+                  onChange={this.changeData('NUMERO2')}
                 />
                 <TextField
                   required
