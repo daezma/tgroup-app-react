@@ -45,6 +45,19 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
         this.actualizarSaldoRestante();
       };
 
+      handleDlbClick = () => event => {
+        const { recven } = this.props;
+        let arraycito = recven.list_medios_cobro.map(option => {
+          const fila = { ...option };
+          if (option.value === +event.target.id) {
+            fila.saldo = recven.importeRestanteCuentas;
+          }
+          return fila;
+        });
+        recven.List_medios_cobro(arraycito);
+        this.actualizarSaldoRestante();
+      };
+
       eliminarCheque = nroCheque => {
         const { recven } = this.props;
         const cheque = recven.cheques.find(cheque => cheque.NUMERO === nroCheque);
@@ -133,6 +146,7 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                   type='number'
                   value={option.saldo}
                   onChange={this.handleChangeImporte()}
+                  onDoubleClick={this.handleDlbClick()}
                 />
               ) : (
                 <div>
