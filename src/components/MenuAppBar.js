@@ -141,7 +141,7 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
                   <MenuIcon />
                 </IconButton>
                 <Typography variant='h6' color='inherit' className={classes.grow}>
-                  Tgroup - Sistema Interno
+                  Tgroup (Base {`${login.Base}`})
                 </Typography>
                 <div>
                   {`${login.User.toUpperCase()}`}
