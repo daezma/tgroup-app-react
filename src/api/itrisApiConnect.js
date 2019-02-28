@@ -12,6 +12,7 @@ const loginResponse = {
  * @param {string} database 
  * @param {string} username 
  * @param {string} password 
+ * 
  */
 const LoginToJson = (database, username, password) => {
   const obj = {
