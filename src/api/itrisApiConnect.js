@@ -7,6 +7,12 @@ const loginResponse = {
   usersession: ''
 };
 
+/**
+ * Transforma los datos del login a JSON
+ * @param {string} database 
+ * @param {string} username 
+ * @param {string} password 
+ */
 const LoginToJson = (database, username, password) => {
   const obj = {
     database: database,
