@@ -10,6 +10,7 @@ import logo from '../image/TgroupLogo1.png';
 const PenVenPage = React.lazy(() => import('./PenVenPage'));
 const PenComPage = React.lazy(() => import('./PenComPage'));
 const ValoresCarteraPage = React.lazy(() => import('./ValoresCarteraPage'));
+const ChequesADebitarPage = React.lazy(() => import('./ChequesADebitarPage'));
 const RecVen = React.lazy(() => import('./Recibos/RecVen'));
 
 const AppFrame = inject('login')(
@@ -36,6 +37,8 @@ const AppFrame = inject('login')(
               return <PenComPage />;
             case paginas.VALORES:
               return <ValoresCarteraPage />;
+            case paginas.CHEQUES_A_DEBITAR:
+              return <ChequesADebitarPage />;
             default:
               break;
           }

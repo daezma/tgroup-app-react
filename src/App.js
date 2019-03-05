@@ -38,6 +38,11 @@ class App extends Component {
                 path={paginas.VALORES}
                 render={() => <AppFrameSession clase={paginas.VALORES} />}
               />
+              <Route
+                exact
+                path={paginas.CHEQUES_A_DEBITAR}
+                render={() => <AppFrameSession clase={paginas.CHEQUES_A_DEBITAR} />}
+              />
               <Route path={paginas.HOME} render={() => <AppFrameSession clase={paginas.PAGINA_EN_BLANCO} />} />
             </Switch>
           </div>
