@@ -31,6 +31,12 @@ class MenuPrincipalItems extends Component {
             <CompareArrows />
           </MenuPrinicipalItem>
         </List>
+        <Divider />
+        <List subheader={<ListSubheader component='div'>Tesorería</ListSubheader>}>
+          <MenuPrinicipalItem title='Valores en cartera' click={() => this.GoToPage(paginas.VALORES)}>
+            <CompareArrows />
+          </MenuPrinicipalItem>
+        </List>
       </>
     );
   }

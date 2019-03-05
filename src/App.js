@@ -33,6 +33,11 @@ class App extends Component {
                 path={paginas.PENDIENTES_COMPRAS}
                 render={() => <AppFrameSession clase={paginas.PENDIENTES_COMPRAS} />}
               />
+              <Route
+                exact
+                path={paginas.VALORES}
+                render={() => <AppFrameSession clase={paginas.VALORES} />}
+              />
               <Route path={paginas.HOME} render={() => <AppFrameSession clase={paginas.PAGINA_EN_BLANCO} />} />
             </Switch>
           </div>
