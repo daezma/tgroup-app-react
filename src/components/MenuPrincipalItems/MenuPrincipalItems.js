@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import CompareArrows from '@material-ui/icons/CompareArrows';
 import AttachMoney from '@material-ui/icons/AttachMoney';
 import Print from '@material-ui/icons/Print';
 import List from '@material-ui/core/List';
@@ -20,7 +19,7 @@ class MenuPrincipalItems extends Component {
       <>
         <List subheader={<ListSubheader component='div'>Ventas</ListSubheader>}>
           <MenuPrinicipalItem title='Pendientes de imputación' click={() => this.GoToPage(paginas.PENDIENTES_VENTAS)}>
-            <CompareArrows />
+            <Print />
           </MenuPrinicipalItem>
           <MenuPrinicipalItem title='Recibos' click={() => this.GoToPage(paginas.RECIBOS_VENTAS)}>
             <AttachMoney />
