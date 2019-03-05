@@ -8,6 +8,7 @@ import * as paginas from '../constants/paginas';
 import Img from 'react-image';
 import logo from '../image/TgroupLogo1.png';
 const PenVenPage = React.lazy(() => import('./PenVenPage'));
+const PenComPage = React.lazy(() => import('./PenComPage'));
 const RecVen = React.lazy(() => import('./Recibos/RecVen'));
 
 const AppFrame = inject('login')(
@@ -30,6 +31,8 @@ const AppFrame = inject('login')(
               return <PenVenPage />;
             case paginas.RECIBOS_VENTAS:
               return <RecVen />;
+            case paginas.PENDIENTES_COMPRAS:
+              return <PenComPage />;
             default:
               break;
           }

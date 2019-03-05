@@ -27,7 +27,7 @@ class MenuPrincipalItems extends Component {
         </List>
         <Divider />
         <List subheader={<ListSubheader component='div'>Compras</ListSubheader>}>
-          <MenuPrinicipalItem title='Pendientes de imputación'>
+          <MenuPrinicipalItem title='Pendientes de imputación' click={() => this.GoToPage(paginas.PENDIENTES_COMPRAS)}>
             <CompareArrows />
           </MenuPrinicipalItem>
         </List>

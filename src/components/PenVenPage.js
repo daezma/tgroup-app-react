@@ -18,7 +18,7 @@ const PenVenPage = inject('login', 'penven')(
       columns = [
         { name: 'empresa', title: 'Empresa' },
         { name: 'fecha', title: 'Fecha' },
-        { name: 'numero', title: 'Numero' },
+        { name: 'numero', title: 'Número' },
         { name: 'importe', title: 'Importe' },
         { name: 'saldo', title: 'Saldo' }
       ];
