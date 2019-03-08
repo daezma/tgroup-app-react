@@ -18,7 +18,7 @@ const PenVenPage = inject('login', 'penven')(
       columns = [
         { name: 'empresa', title: 'Empresa' },
         { name: 'fecha', title: 'Fecha' },
-        { name: 'numero', title: 'Numero' },
+        { name: 'numero', title: 'Número' },
         { name: 'importe', title: 'Importe' },
         { name: 'saldo', title: 'Saldo' }
       ];
@@ -42,7 +42,7 @@ const PenVenPage = inject('login', 'penven')(
           const { login, penven } = this.props;
           penven.initialize();
           this.setState({ loading: true });
-          const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User);
+          const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User, 100);
           this.setState({ loading: false });
           if (typeof res === 'string') {
             penven.SetData(null);

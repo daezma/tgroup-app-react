@@ -63,17 +63,18 @@ const RecVen = inject('recven', 'penven', 'login')(
         if (activeStep === 3) {
           recven.Loading(true);
           try {
-            const newCheques = recven.cheques.map(async cheque => {
+            const newCheques = [];
+            for(const cheque of recven.cheques){
               const tmpCheque = { ...cheque };
               delete tmpCheque.descCuenta;
               tmpCheque.FK_ERP_BANCOS = parseInt(tmpCheque.FK_ERP_BANCOS);
               tmpCheque.IMPORTE = parseFloat(tmpCheque.IMPORTE);
               const responseCheque = await itsClassInsert(login.UserSession, 'ERP_CHE_TER', tmpCheque);
               if (responseCheque.data) {
-                tmpCheque.ID = responseCheque.data.ID;
+                tmpCheque.ID = responseCheque.data.data[0].ID;
               }
-              return tmpCheque;
-            });
+              newCheques.push(tmpCheque);
+            };
             recven.Cheques(newCheques);
             const responseParam = await itsGetClassSimple(login.UserSession, '_APP_PARAMETROS');
             const tipCom = responseParam[0].FK_ERP_T_COM_VEN_REC;
@@ -113,14 +114,13 @@ const RecVen = inject('recven', 'penven', 'login')(
                     FK_ERP_CUE_TES: parseInt(cheque.FK_ERP_CUE_TES),
                     TIPO: 'D',
                     UNIDADES: parseFloat(cheque.IMPORTE),
-                    FK_ERP_CHE_TER: parseInt(cheque.NUMERO2)
+                    FK_ERP_CHE_TER: parseInt(cheque.ID)
                   };
                 })
               ]
             };
             const response = await itsClassInsert(login.UserSession, 'ERP_COM_VEN_REC', data);
             recven.Loading(false);
-            console.log(response);
             if (typeof response === 'string' && response !== '') {
               this.props.recven.Loading(false);
               this.props.recven.Error(response);
@@ -224,7 +224,7 @@ const RecVen = inject('recven', 'penven', 'login')(
                   {recven.generado ? (
                     <>
                       <br />
-                      <Done color='green' style={{ fontSize: 'large' }} />
+                      <Done style={{ fontSize: 'large', color: 'green' }} />
                       <br />
                     </>
                   ) : null}
