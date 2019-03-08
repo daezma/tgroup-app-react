@@ -12,6 +12,7 @@ import {
   Select,
   Input
 } from '@material-ui/core';
+import DialogSnack from '../../ui/DialogSnack';
 import { observer, inject } from 'mobx-react';
 import { itsGetClassSimple } from '../../api/itrisApiConnect';
 import style from './ChequeModal.module.css';
@@ -20,7 +21,9 @@ const ChequeModal = inject('recven', 'login')(
   observer(
     class ChequeModal extends Component {
       state = {
-        bancos: []
+        bancos: [],
+        chequeCargado: false,
+        error: ''
       };
 
       cargarBancos = async () => {
@@ -29,18 +32,56 @@ const ChequeModal = inject('recven', 'login')(
         this.setState({ bancos: bancos });
       };
 
-      changeData = valor => event => {
+      getCheque = async () => {
+        const { recven, login } = this.props;
+        var tmpArray = { ...recven.dataChequeModal };
+        if (tmpArray.NUMERO2 !== '' && tmpArray.FK_ERP_BANCOS !== '') {
+          try {
+            const cheque = await itsGetClassSimple(
+              login.UserSession,
+              'ERP_CHE_TER',
+              `FK_ERP_BANCOS = ${tmpArray.FK_ERP_BANCOS} AND NUMERO2 = ${tmpArray.NUMERO2}`
+            );
+            if (cheque.length > 0) {
+              this.setState({ chequeCargado: true });
+              tmpArray.IMPORTE = cheque[0].IMPORTE;
+              //TODO: Seguir desde aca
+              const emi = new Date('18/11/1991');
+              const dep = new Date(cheque[0].FEC_DEP);
+              tmpArray.FEC_EMI = `${emi.getFullYear()}-${emi.getMonth()}-${emi.getDay()}`;
+              tmpArray.FEC_DEP = `${emi.getFullYear()}-${dep.getMonth()}-${dep.getDay()}`;
+              tmpArray.NO_ALAORDEN = cheque[0].NO_ALAORDEN;
+              tmpArray.TIPO = cheque[0].TIPO;
+              tmpArray.FK_ERP_BANCOS = cheque[0].FK_ERP_BANCOS;
+              tmpArray.NUMERO2 = cheque[0].NUMERO2;
+              tmpArray.ORIGEN = cheque[0].ORIGEN;
+              tmpArray.ID = cheque[0].ID;
+              debugger;
+            } else {
+              this.setState({ chequeCargado: false });
+            }
+          } catch (error) {
+            this.setState({ chequeCargado: false, error: error });
+          }
+        }
+        recven.DataChequeModal(tmpArray);
+      };
+
+      changeData = valor => async event => {
         const { recven } = this.props;
         //Hago esto para hacer el evento genérico y poder usar el parámetro de la funcion como índice
         var tmpArray = { ...recven.dataChequeModal };
         tmpArray[valor] = event.target.value;
         if (
           (valor === 'TIPO' && event.target.value === 'C') ||
-          ((valor === 'FEC_DEP' || valor === 'FEC_EMI') && tmpArray['TIPO'] === 'C')
+          ((valor === 'FEC_DEP' || valor === 'FEC_EMI') && tmpArray.TIPO === 'C')
         ) {
-          tmpArray['FEC_DEP'] = tmpArray['FEC_EMI'];
+          tmpArray.FEC_DEP = tmpArray.FEC_EMI;
         }
         recven.DataChequeModal(tmpArray);
+        if (valor === 'FK_ERP_BANCOS') {
+          this.getCheque();
+        }
       };
 
       render() {
@@ -94,6 +135,7 @@ const ChequeModal = inject('recven', 'login')(
                       type='number'
                       value={this.props.recven.dataChequeModal.NUMERO2}
                       onChange={this.changeData('NUMERO2')}
+                      onBlur={this.getCheque}
                       className={style.fullInput}
                     />
                   </Grid>
@@ -179,6 +221,11 @@ const ChequeModal = inject('recven', 'login')(
                   </Grid>
                 </Grid>
               </FormGroup>
+              <DialogSnack
+                open={this.state.error !== ''}
+                handleClose={() => this.setState({ error: '' })}
+                msg={this.state.error}
+              />
             </Paper>
           </Modal>
         );

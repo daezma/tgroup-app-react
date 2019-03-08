@@ -9,10 +9,10 @@ const loginResponse = {
 
 /**
  * Transforma los datos del login a JSON
- * @param {string} database 
- * @param {string} username 
- * @param {string} password 
- * 
+ * @param {string} database
+ * @param {string} username
+ * @param {string} password
+ *
  */
 const LoginToJson = (database, username, password) => {
   const obj = {
@@ -139,13 +139,13 @@ export async function itsGetClass(usersession, clase, username, recordCount, sql
  * @param {integer} recordCount opcional, puede ser null
  * @returns {json} JSON - Msg Error
  */
-export async function itsGetClassSimple(usersession, clase, sqlFilter, recordCount) {
+export async function itsGetClassSimple(usersession, clase, sqlFilter, recordCount = 500) {
   let msgError = '';
   const parameters = {
     usersession: usersession,
     class: clase,
     recordCount: recordCount,
-    sqlFilter: sqlFilter
+    ...(sqlFilter !== '' && { sqlFilter: sqlFilter })
   };
   try {
     const response = await axios.get(`${itris_url}/class`, {
