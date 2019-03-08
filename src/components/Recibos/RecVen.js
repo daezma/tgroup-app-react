@@ -64,7 +64,7 @@ const RecVen = inject('recven', 'penven', 'login')(
           recven.Loading(true);
           try {
             const newCheques = [];
-            for(const cheque of recven.cheques){
+            for (const cheque of recven.cheques) {
               const tmpCheque = { ...cheque };
               delete tmpCheque.descCuenta;
               tmpCheque.FK_ERP_BANCOS = parseInt(tmpCheque.FK_ERP_BANCOS);
@@ -74,7 +74,7 @@ const RecVen = inject('recven', 'penven', 'login')(
                 tmpCheque.ID = responseCheque.data.data[0].ID;
               }
               newCheques.push(tmpCheque);
-            };
+            }
             recven.Cheques(newCheques);
             const responseParam = await itsGetClassSimple(login.UserSession, '_APP_PARAMETROS');
             const tipCom = responseParam[0].FK_ERP_T_COM_VEN_REC;
@@ -224,7 +224,7 @@ const RecVen = inject('recven', 'penven', 'login')(
                   {recven.generado ? (
                     <>
                       <br />
-                      <Done style={{ fontSize: 'large', color: 'green' }} />
+                      <Done style={{ color: 'green' }} />
                       <br />
                     </>
                   ) : null}
