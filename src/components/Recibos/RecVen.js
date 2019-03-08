@@ -143,7 +143,10 @@ const RecVen = inject('recven', 'penven', 'login')(
       };
 
       handleReset = () => {
-        this.props.recven.Generado(false);
+        const { recven, penven } = this.props;
+        penven.initialize();
+        recven.Inicializar();
+        recven.Generado(false);
         this.setState({
           activeStep: 1
         });

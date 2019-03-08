@@ -40,6 +40,7 @@ const PenVenPage = inject('login', 'penven')(
       traerDatos = async () => {
         try {
           const { login, penven } = this.props;
+          penven.initialize();
           this.setState({ loading: true });
           const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User);
           this.setState({ loading: false });
