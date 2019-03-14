@@ -70,6 +70,7 @@ const RecVen = inject('recven', 'penven', 'login')(
               if (!tmpCheque.ID) {
                 tmpCheque.FK_ERP_BANCOS = parseInt(tmpCheque.FK_ERP_BANCOS);
                 tmpCheque.IMPORTE = parseFloat(tmpCheque.IMPORTE);
+                tmpCheque.NO_ALAORDEN = tmpCheque.NO_ALAORDEN === 'true';
                 const responseCheque = await itsClassInsert(login.UserSession, 'ERP_CHE_TER', tmpCheque);
                 if (responseCheque.data) {
                   tmpCheque.ID = responseCheque.data.data[0].ID;

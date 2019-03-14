@@ -40,31 +40,45 @@ const ChequeModal = inject('recven', 'login')(
             const cheque = await itsGetClassSimple(
               login.UserSession,
               'ERP_CHE_TER',
-              `FK_ERP_BANCOS = ${tmpArray.FK_ERP_BANCOS} AND NUMERO2 = ${tmpArray.NUMERO2}`
+              `FK_ERP_BANCOS = ${tmpArray.FK_ERP_BANCOS} AND NUMERO2 = ${
+                tmpArray.NUMERO2
+              } AND isnull(ANULADO,0) = 0 AND isnull(FK_ERP_CUE_TES,0) = 0`
             );
             if (cheque.length > 0) {
               this.setState({ chequeCargado: true });
               tmpArray.IMPORTE = cheque[0].IMPORTE;
-              //TODO: Seguir desde aca
-              const emi = new Date('18/11/1991');
+              const emi = new Date(cheque[0].FEC_EMI);
               const dep = new Date(cheque[0].FEC_DEP);
-              tmpArray.FEC_EMI = `${emi.getFullYear()}-${emi.getMonth()}-${emi.getDay()}`;
-              tmpArray.FEC_DEP = `${emi.getFullYear()}-${dep.getMonth()}-${dep.getDay()}`;
+              tmpArray.FEC_EMI = `${emi.getFullYear()}-${emi
+                .getMonth()
+                .toString()
+                .padStart(2, '0')}-${emi
+                .getDay()
+                .toString()
+                .padStart(2, '0')}`;
+              tmpArray.FEC_DEP = `${emi.getFullYear()}-${dep
+                .getMonth()
+                .toString()
+                .padStart(2, '0')}-${dep
+                .getDay()
+                .toString()
+                .padStart(2, '0')}`;
               tmpArray.NO_ALAORDEN = cheque[0].NO_ALAORDEN;
               tmpArray.TIPO = cheque[0].TIPO;
               tmpArray.FK_ERP_BANCOS = cheque[0].FK_ERP_BANCOS;
               tmpArray.NUMERO2 = cheque[0].NUMERO2;
               tmpArray.ORIGEN = cheque[0].ORIGEN;
               tmpArray.ID = cheque[0].ID;
-              debugger;
+              recven.DataChequeModal(tmpArray);
+              this.props.aceptar();
             } else {
               this.setState({ chequeCargado: false });
+              recven.DataChequeModal(tmpArray);
             }
           } catch (error) {
             this.setState({ chequeCargado: false, error: error });
           }
-        }
-        recven.DataChequeModal(tmpArray);
+        } else recven.DataChequeModal(tmpArray);
       };
 
       changeData = valor => async event => {
