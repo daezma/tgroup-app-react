@@ -27,9 +27,11 @@ const ChequeModal = inject('recven', 'login')(
       };
 
       cargarBancos = async () => {
-        const { login } = this.props;
-        const bancos = await itsGetClassSimple(login.UserSession, 'ERP_BANCOS');
-        this.setState({ bancos: bancos });
+        if (!this.state.bancos.length) {
+          const { login } = this.props;
+          const bancos = await itsGetClassSimple(login.UserSession, 'ERP_BANCOS');
+          this.setState({ bancos: bancos });
+        }
       };
 
       getCheque = async () => {
