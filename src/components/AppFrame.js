@@ -2,16 +2,17 @@ import React, { Component, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import MenuAppBar from './MenuAppBar';
 import { withRouter, Redirect } from 'react-router-dom';
-import InitPage from './InitPage';
+import InitPage from './Pages/InitPage';
 import { observer, inject } from 'mobx-react';
 import * as paginas from '../constants/paginas';
 import Img from 'react-image';
 import logo from '../image/TgroupLogo1.png';
-const PenVenPage = React.lazy(() => import('./PenVenPage'));
-const PenComPage = React.lazy(() => import('./PenComPage'));
-const ValoresCarteraPage = React.lazy(() => import('./ValoresCarteraPage'));
-const ChequesADebitarPage = React.lazy(() => import('./ChequesADebitarPage'));
-const RecVen = React.lazy(() => import('./Recibos/RecVen'));
+const PenVenPage = React.lazy(() => import('./Pages/PenVenPage'));
+const PenComPage = React.lazy(() => import('./Pages/PenComPage'));
+const ValoresCarteraPage = React.lazy(() => import('./Pages/ValoresCarteraPage'));
+const ChequesADebitarPage = React.lazy(() => import('./Pages/ChequesADebitarPage'));
+const ComTesPage = React.lazy(() => import('./Pages/ComTes/ComTes'));
+const RecVen = React.lazy(() => import('./Pages/Recibos/RecVen'));
 
 const AppFrame = inject('login')(
   observer(
@@ -39,6 +40,8 @@ const AppFrame = inject('login')(
               return <ValoresCarteraPage />;
             case paginas.CHEQUES_A_DEBITAR:
               return <ChequesADebitarPage />;
+            case paginas.COMPROBANTES_TESORERIA:
+              return <ComTesPage />;
             default:
               break;
           }

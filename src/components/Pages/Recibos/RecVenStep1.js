@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { TextField, Paper, MenuItem } from '@material-ui/core';
 import style from './RecVen.module.css';
 import { observer, inject } from 'mobx-react';
-import { fk_erp_uni_neg } from '../../api/ListasFijas';
-import SelectAutocomplete from '../../ui/SelectAutocomplete';
+import { fk_erp_uni_neg } from '../../../api/ListasFijas';
+import SelectAutocomplete from '../../../ui/SelectAutocomplete';
 
 const RecVenStep1 = inject('recven', 'login', 'penven')(
   observer(

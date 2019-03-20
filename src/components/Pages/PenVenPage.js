@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { itsGetClass } from '../api/itrisApiConnect';
-import AdvanceTable from '../ui/AdvanceTable';
+import { itsGetClass } from '../../api/itrisApiConnect';
+import AdvanceTable from '../../ui/AdvanceTable';
 import Button from '@material-ui/core/Button';
-import { RECIBOS_VENTAS } from '../constants/paginas';
+import { RECIBOS_VENTAS } from '../../constants/paginas';
 import { withRouter } from 'react-router-dom';
-import DialogSnack from '../ui/DialogSnack';
+import DialogSnack from '../../ui/DialogSnack';
 import { CircularProgress } from '@material-ui/core';
 
 const PenVenPage = inject('login', 'penven')(

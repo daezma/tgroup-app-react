@@ -33,15 +33,16 @@ class App extends Component {
                 path={paginas.PENDIENTES_COMPRAS}
                 render={() => <AppFrameSession clase={paginas.PENDIENTES_COMPRAS} />}
               />
-              <Route
-                exact
-                path={paginas.VALORES}
-                render={() => <AppFrameSession clase={paginas.VALORES} />}
-              />
+              <Route exact path={paginas.VALORES} render={() => <AppFrameSession clase={paginas.VALORES} />} />
               <Route
                 exact
                 path={paginas.CHEQUES_A_DEBITAR}
                 render={() => <AppFrameSession clase={paginas.CHEQUES_A_DEBITAR} />}
+              />
+              <Route
+                exact
+                path={paginas.COMPROBANTES_TESORERIA}
+                render={() => <AppFrameSession clase={paginas.COMPROBANTES_TESORERIA} />}
               />
               <Route path={paginas.HOME} render={() => <AppFrameSession clase={paginas.PAGINA_EN_BLANCO} />} />
             </Switch>

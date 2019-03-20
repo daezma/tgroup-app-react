@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { MediosCobro } from '../../api/Consultas';
+import { MediosCobro } from '../../../api/Consultas';
 import { TextField, Paper, Button } from '@material-ui/core';
 import style from './RecVen.module.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ChequesList from '../Cheques/ChequesList';
-import ChequeModal from '../Cheques/ChequeModal';
+import ChequesList from '../../Cheques/ChequesList';
+import ChequeModal from '../../Cheques/ChequeModal';
 
 const RecVenStep2 = inject('recven', 'login', 'penven')(
   observer(

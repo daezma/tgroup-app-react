@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { itsGetClass } from '../api/itrisApiConnect';
-import AdvanceTable from '../ui/AdvanceTable';
+import { itsGetClass } from '../../api/itrisApiConnect';
+import AdvanceTable from '../../ui/AdvanceTable';
 import { withRouter } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 

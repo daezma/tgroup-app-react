@@ -4,5 +4,6 @@ export const VALORES = '/valores';
 export const CHEQUES_A_DEBITAR = '/cheques_debitar';
 export const RECIBOS_VENTAS = '/recven';
 export const PAGINA_EN_BLANCO = '/blank';
+export const COMPROBANTES_TESORERIA = '/comp-tes';
 export const LOGIN = '/login';
 export const HOME = '/';

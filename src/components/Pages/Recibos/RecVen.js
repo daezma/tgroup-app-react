@@ -9,8 +9,8 @@ import RecVenStep1 from './RecVenStep1';
 import { observer, inject } from 'mobx-react';
 import RecVenStep2 from './RecVenStep2';
 import RecVenStep3 from './RecVenStep3';
-import DialogSnack from '../../ui/DialogSnack';
-import { itsGetClassSimple, itsClassInsert } from '../../api/itrisApiConnect';
+import DialogSnack from '../../../ui/DialogSnack';
+import { itsGetClassSimple, itsClassInsert } from '../../../api/itrisApiConnect';
 import { CircularProgress } from '@material-ui/core';
 import Done from '@material-ui/icons/Done';
 

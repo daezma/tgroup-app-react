@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { itsGetClass } from '../api/itrisApiConnect';
-import AdvanceTable from '../ui/AdvanceTable';
+import { itsGetClass } from '../../api/itrisApiConnect';
+import AdvanceTable from '../../ui/AdvanceTable';
 import { withRouter } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 
@@ -62,9 +62,9 @@ const ChequesADebitarPage = inject('login', 'cheques_debitar')(
       onSelection = selection => {
         const { cheques_debitar } = this.props;
         let saldo = 0;
-        cheques_debitar.Data.filter(row => selection.findIndex(selectId => selectId === this.getRowId(row)) !== -1).forEach(
-          row => (saldo += row.importe)
-        );
+        cheques_debitar.Data.filter(
+          row => selection.findIndex(selectId => selectId === this.getRowId(row)) !== -1
+        ).forEach(row => (saldo += row.importe));
         cheques_debitar.SetSaldoImp(saldo);
         cheques_debitar.SetSelection(selection);
       };
