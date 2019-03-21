@@ -155,6 +155,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 select
                 label='Unidad de negocio'
                 className={style.menu}
+                variant='outlined'
                 value={recven.fk_erp_uni_neg}
                 onChange={this.handleChange('U')}
                 margin='normal'

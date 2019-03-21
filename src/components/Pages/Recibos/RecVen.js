@@ -51,6 +51,10 @@ const RecVen = inject('recven', 'penven', 'login')(
         activeStep: 1
       };
 
+      componentDidMount() {
+        this.props.recven.Inicializar();
+      }
+
       handleNext = async () => {
         const { recven, penven, login } = this.props;
         const { activeStep } = this.state;
@@ -104,7 +108,7 @@ const RecVen = inject('recven', 'penven', 'login')(
                   UNIDADES: parseFloat((parseFloat(recven.saldo) + parseFloat(penven.SaldoImp)).toFixed(2))
                 },
                 ...recven.list_medios_cobro
-                  .filter(medio => medio.saldo && medio.tipo !== 'V')
+                  .filter(medio => medio.saldo && parseFloat(medio.saldo).toFixed(2) !== '0.00' && medio.tipo !== 'V')
                   .map(medio => {
                     return {
                       FK_ERP_CUE_TES: medio.value,

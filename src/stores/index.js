@@ -5,7 +5,7 @@ import PenCom from './PenCom';
 import RecVenStore from './RecVenStore';
 import ValoresStore from './ValoresStore';
 import ChequesADebitarStore from './ChequesADebitarStore';
-import ComTesStore from './ChequesADebitarStore';
+import ComTesStore from './ComTesStore';
 
 export default {
   login: new LoginStore(),

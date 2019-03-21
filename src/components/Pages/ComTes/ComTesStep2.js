@@ -94,7 +94,7 @@ const ComTesStep2 = inject('comtes', 'login')(
         const { comtes } = this.props;
         comtes.ImporteRestanteCuentas(
           (
-            parseFloat(comtes.saldo === '' ? 0 : comtes.saldo) +
+            parseFloat(comtes.saldo === '' ? 0 : comtes.saldo) -
             (comtes.list_medios_cobro
               ? comtes.list_medios_cobro.reduce((anterior, actual) => {
                   return anterior + parseFloat(actual.saldo === '' ? 0 : actual.saldo);

@@ -12,7 +12,7 @@ const ComTesStep3 = inject('comtes')(
         if (comtes.list_medios_cobro !== null) {
           medios = comtes.list_medios_cobro.map(option => {
             let componente;
-            if (option.saldo !== '') {
+            if (option.saldo !== '' && parseFloat(option.saldo).toFixed(2) !== '0.00') {
               componente = (
                 <React.Fragment key={option.value}>
                   {`${option.label} $ ${parseFloat(option.saldo).toFixed(2)}`}

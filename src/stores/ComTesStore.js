@@ -25,6 +25,9 @@ class ComTesStore {
     this._cheques = [];
     this._dataChequeModal = {};
     this._generado = false;
+    this._concepto = '';
+    this._list_conceptos = [];
+    this._tipo = '';
   }
 
   get fecha() {
@@ -135,6 +138,30 @@ class ComTesStore {
   Generado(value) {
     this._generado = value;
   }
+
+  get concepto() {
+    return this._concepto;
+  }
+
+  Concepto(value) {
+    this._concepto = value;
+  }
+
+  get list_conceptos() {
+    return this._list_conceptos;
+  }
+
+  List_conceptos(value) {
+    this._list_conceptos = value;
+  }
+
+  get tipo() {
+    return this._tipo;
+  }
+
+  Tipo(value) {
+    this._tipo = value;
+  }
 }
 
 decorate(ComTesStore, {
@@ -153,6 +180,9 @@ decorate(ComTesStore, {
   _cheques: observable,
   _dataChequeModal: observable,
   _generado: observable,
+  _concepto: observable,
+  _list_conceptos: observable,
+  _tipo: observable,
   fecha: computed,
   fk_erp_uni_neg: computed,
   id: computed,
@@ -168,6 +198,9 @@ decorate(ComTesStore, {
   cheques: computed,
   dataChequeModal: computed,
   generado: computed,
+  concepto: computed,
+  list_conceptos: computed,
+  tipo: computed,
   Fecha: action,
   Fk_erp_uni_neg: action,
   Id: action,
@@ -183,7 +216,10 @@ decorate(ComTesStore, {
   Error: action,
   Cheques: action,
   DataChequeModal: action,
-  Generado: action
+  Generado: action,
+  Concepto: action,
+  List_conceptos: action,
+  Tipo: action
 });
 
 export default ComTesStore;

@@ -51,6 +51,10 @@ const ComTes = inject('comtes', 'login')(
         activeStep: 1
       };
 
+      componentDidMount() {
+        this.props.comtes.Inicializar();
+      }
+
       handleNext = async () => {
         const { comtes, login } = this.props;
         const { activeStep } = this.state;
@@ -80,40 +84,40 @@ const ComTes = inject('comtes', 'login')(
             }
             comtes.Cheques(newCheques);
             const responseParam = await itsGetClassSimple(login.UserSession, '_APP_PARAMETROS');
-            const tipCom = responseParam[0].FK_ERP_T_COM_VEN_REC;
+            const tipCom =
+              comtes.tipo === 'I' ? responseParam[0].FK_ERP_T_COM_TES_ING : responseParam[0].FK_ERP_T_COM_TES_EGR;
 
             const data = {
               FECHA: comtes.fecha,
-              FK_ERP_T_COM_VEN: tipCom,
-              FK_ERP_EMPRESAS: comtes.fk_erp_empresas,
+              FK_ERP_T_COM_TES: tipCom,
               OBSERVACIONES: comtes.observaciones,
               FK_ERP_UNI_NEG: comtes.fk_erp_uni_neg,
               ERP_DET_TES: [
                 {
-                  FK_ERP_CUE_TES: responseParam[0].FK_ERP_CUE_TES,
-                  TIPO: 'H',
+                  FK_ERP_CUE_TES: parseInt(comtes.concepto),
+                  TIPO: comtes.tipo === 'I' ? 'H' : 'D',
                   UNIDADES: parseFloat(parseFloat(comtes.saldo).toFixed(2))
                 },
                 ...comtes.list_medios_cobro
-                  .filter(medio => medio.saldo && medio.tipo !== 'V')
+                  .filter(medio => medio.saldo && parseFloat(medio.saldo).toFixed(2) !== '0.00' && medio.tipo !== 'V')
                   .map(medio => {
                     return {
                       FK_ERP_CUE_TES: medio.value,
-                      TIPO: 'D',
+                      TIPO: comtes.tipo === 'I' ? 'D' : 'H',
                       UNIDADES: parseFloat(parseFloat(medio.saldo).toFixed(2))
                     };
                   }),
                 ...comtes.cheques.map(cheque => {
                   return {
                     FK_ERP_CUE_TES: parseInt(cheque.FK_ERP_CUE_TES),
-                    TIPO: 'D',
+                    TIPO: comtes.tipo === 'I' ? 'D' : 'H',
                     UNIDADES: parseFloat(cheque.IMPORTE),
                     FK_ERP_CHE_TER: parseInt(cheque.ID)
                   };
                 })
               ]
             };
-            const response = await itsClassInsert(login.UserSession, 'ERP_COM_VEN_REC', data);
+            const response = await itsClassInsert(login.UserSession, 'ERP_COM_TES', data);
             comtes.Loading(false);
             if (typeof response === 'string' && response !== '') {
               this.props.comtes.Loading(false);
@@ -152,9 +156,12 @@ const ComTes = inject('comtes', 'login')(
         if (activeStep === 1) {
           if (comtes.saldo <= 0) {
             error = 'El importe del comprobante debe ser mayor a 0';
-          }
-          if (comtes.fk_erp_uni_neg === '') {
+          } else if (comtes.fk_erp_uni_neg === '') {
             error = 'El campo unidad de negocios debe contener un valor';
+          } else if (comtes.tipo === '') {
+            error = 'El campo tipo debe contener un valor';
+          } else if (comtes.concepto === '') {
+            error = 'El campo concepto debe contener un valor';
           }
         }
         if (activeStep === 2) {

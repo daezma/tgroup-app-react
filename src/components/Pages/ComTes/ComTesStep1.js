@@ -3,6 +3,7 @@ import { TextField, Paper, MenuItem } from '@material-ui/core';
 import style from './ComTes.module.css';
 import { observer, inject } from 'mobx-react';
 import { fk_erp_uni_neg } from '../../../api/ListasFijas';
+import { itsGetClassSimple } from '../../../api/itrisApiConnect';
 
 const ComTesStep1 = inject('comtes', 'login')(
   observer(
@@ -16,9 +17,9 @@ const ComTesStep1 = inject('comtes', 'login')(
           const { login, comtes } = this.props;
           const uniNeg = await fk_erp_uni_neg(login.UserSession);
           //TODO: AGREGAR LA CONSULTA DE CUENTAS
-          const conceptos = await fk_erp_uni_neg(login.UserSession);
+          const conceptos = await itsGetClassSimple(login.UserSession, 'ERP_CUE_TES', "isnull(_TIPO_WEB, '') <> ''");
           comtes.List_uni_neg(uniNeg);
-          comtes.Conceptos(conceptos);
+          comtes.List_conceptos(conceptos);
         } catch (error) {
           console.log('error:' + error);
         }
@@ -41,6 +42,10 @@ const ComTesStep1 = inject('comtes', 'login')(
             break;
           case 'T':
             comtes.Tipo(event.target.value);
+            comtes.Concepto('');
+            break;
+          case 'C':
+            comtes.Concepto(event.target.value);
             break;
           default:
             break;
@@ -49,26 +54,19 @@ const ComTesStep1 = inject('comtes', 'login')(
 
       render() {
         const { comtes } = this.props;
-        const uniNeg = comtes.list_uni_neg;
-        let unidad;
-        if (uniNeg !== '') {
-          unidad = comtes.list_uni_neg.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+        const unidad = comtes.list_uni_neg.map(option => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ));
+
+        const conceptos = comtes.list_conceptos
+          .filter(cuenta => cuenta._TIPO_WEB === comtes.tipo)
+          .map(cuenta => (
+            <MenuItem key={cuenta.ID} value={cuenta.ID}>
+              {cuenta.DESCRIPCION}
             </MenuItem>
           ));
-        }
-
-        let conceptos;
-        if (comtes.cuentas !== '') {
-          conceptos = comtes.cuentas
-            .filter(cuenta => cuenta.tipo === comtes.tipo)
-            .map(cuenta => (
-              <MenuItem key={cuenta.ID} value={cuenta.ID}>
-                {cuenta.DESCRIPCION}
-              </MenuItem>
-            ));
-        }
 
         return (
           <Paper className={style.paper}>
@@ -87,19 +85,6 @@ const ComTesStep1 = inject('comtes', 'login')(
               <br />
               <TextField
                 required
-                id='fk_erp_uni_neg'
-                select
-                label='Unidad de negocio'
-                className={style.menu}
-                value={comtes.fk_erp_uni_neg}
-                onChange={this.handleChange('U')}
-                margin='normal'
-              >
-                {unidad}
-              </TextField>
-              <br />
-              <TextField
-                required
                 id='saldo'
                 variant='outlined'
                 margin='normal'
@@ -111,29 +96,47 @@ const ComTesStep1 = inject('comtes', 'login')(
               <br />
               <TextField
                 required
+                id='fk_erp_uni_neg'
+                select
+                label='Unidad de negocio'
+                variant='outlined'
+                className={style.menu}
+                value={comtes.fk_erp_uni_neg}
+                onChange={this.handleChange('U')}
+                margin='normal'
+              >
+                {unidad}
+              </TextField>
+              <br />
+              <TextField
+                required
                 id='tipo'
                 select
                 label='Tipo'
                 variant='outlined'
                 value={comtes.tipo}
+                className={style.menu}
                 margin='normal'
                 onChange={this.handleChange('T')}
               >
                 <MenuItem value='I'>Ingreso</MenuItem>
                 <MenuItem value='E'>Egreso</MenuItem>
               </TextField>
+              <br />
               <TextField
                 required
                 id='concepto'
                 select
                 label='Concepto'
-                className={style.menu}
+                variant='outlined'
                 value={comtes.concepto}
+                className={style.menu}
                 onChange={this.handleChange('C')}
                 margin='normal'
               >
                 {conceptos}
               </TextField>
+              <br />
               <TextField
                 id='observaciones'
                 label='Observaciones'
