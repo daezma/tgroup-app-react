@@ -202,7 +202,7 @@ const RecVen = inject('recven', 'penven', 'login')(
 
         return (
           <div>
-            <Stepper activeStep={activeStep}>
+            <Stepper activeStep={activeStep - 1}>
               {steps.map((label, index) => {
                 const props = {};
                 const labelProps = {};

@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ChequesList from '../../Cheques/ChequesList';
 import ChequeModal from '../../Cheques/ChequeModal';
 
-const RecVenStep2 = inject('recven', 'login', 'penven')(
+const RecVenStep2 = inject('recven', 'login', 'penven', 'chequeModal')(
   observer(
     class RecVenStep2 extends Component {
       state = {
@@ -15,7 +15,8 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
       };
 
       componentDidMount = () => {
-        const { recven, penven } = this.props;
+        const { recven, penven, chequeModal } = this.props;
+        chequeModal.Inicializar();
         this.CargarMediosPago();
         recven.ImporteRestanteCuentas(
           (
@@ -79,8 +80,8 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
       };
 
       modalCheque = (cuenta, descCuenta) => {
-        const { recven } = this.props;
-        recven.DataChequeModal({
+        const { chequeModal } = this.props;
+        chequeModal.DataChequeModal({
           FK_ERP_BANCOS: '',
           NUMERO2: '',
           IMPORTE: '',
@@ -111,16 +112,16 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
       };
 
       aceptarModal = () => {
-        const { recven } = this.props;
-        recven.Cheques([...recven.cheques, recven.dataChequeModal]);
+        const { recven, chequeModal } = this.props;
+        recven.Cheques([...recven.cheques, chequeModal.dataChequeModal]);
         recven.List_medios_cobro(
           recven.list_medios_cobro.map(cuenta => {
             var tmpCuenta = { ...cuenta };
-            if (tmpCuenta.value === recven.dataChequeModal.FK_ERP_CUE_TES) {
+            if (tmpCuenta.value === chequeModal.dataChequeModal.FK_ERP_CUE_TES) {
               tmpCuenta.saldo =
                 tmpCuenta.saldo === ''
-                  ? recven.dataChequeModal.IMPORTE
-                  : parseFloat(tmpCuenta.saldo) + parseFloat(recven.dataChequeModal.IMPORTE);
+                  ? chequeModal.dataChequeModal.IMPORTE
+                  : parseFloat(tmpCuenta.saldo) + parseFloat(chequeModal.dataChequeModal.IMPORTE);
             }
             return tmpCuenta;
           })
@@ -183,12 +184,7 @@ const RecVenStep2 = inject('recven', 'login', 'penven')(
                 </>
               )}
             </div>
-            <ChequeModal
-              open={this.state.modalChequeOpen}
-              onClose={this.closeModal}
-              data={this.state.dataChequeModal}
-              aceptar={this.aceptarModal}
-            />
+            <ChequeModal open={this.state.modalChequeOpen} onClose={this.closeModal} aceptar={this.aceptarModal} />
           </Paper>
         );
       }

@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ChequesList from '../../Cheques/ChequesList';
 import ChequeModal from '../../Cheques/ChequeModal';
 
-const ComTesStep2 = inject('comtes', 'login')(
+const ComTesStep2 = inject('comtes', 'login', 'chequeModal')(
   observer(
     class ComTesStep2 extends Component {
       state = {
@@ -15,7 +15,8 @@ const ComTesStep2 = inject('comtes', 'login')(
       };
 
       componentDidMount = () => {
-        const { comtes } = this.props;
+        const { comtes, chequeModal } = this.props;
+        chequeModal.Inicializar();
         this.CargarMediosPago();
         comtes.ImporteRestanteCuentas(parseFloat(comtes.saldo === '' ? 0 : comtes.saldo).toFixed(2));
       };
@@ -74,8 +75,8 @@ const ComTesStep2 = inject('comtes', 'login')(
       };
 
       modalCheque = (cuenta, descCuenta) => {
-        const { comtes } = this.props;
-        comtes.DataChequeModal({
+        const { chequeModal } = this.props;
+        chequeModal.DataChequeModal({
           FK_ERP_BANCOS: '',
           NUMERO2: '',
           IMPORTE: '',
@@ -105,16 +106,16 @@ const ComTesStep2 = inject('comtes', 'login')(
       };
 
       aceptarModal = () => {
-        const { comtes } = this.props;
-        comtes.Cheques([...comtes.cheques, comtes.dataChequeModal]);
+        const { comtes, chequeModal } = this.props;
+        comtes.Cheques([...comtes.cheques, chequeModal.dataChequeModal]);
         comtes.List_medios_cobro(
           comtes.list_medios_cobro.map(cuenta => {
             var tmpCuenta = { ...cuenta };
-            if (tmpCuenta.value === comtes.dataChequeModal.FK_ERP_CUE_TES) {
+            if (tmpCuenta.value === chequeModal.dataChequeModal.FK_ERP_CUE_TES) {
               tmpCuenta.saldo =
                 tmpCuenta.saldo === ''
-                  ? comtes.dataChequeModal.IMPORTE
-                  : parseFloat(tmpCuenta.saldo) + parseFloat(comtes.dataChequeModal.IMPORTE);
+                  ? chequeModal.dataChequeModal.IMPORTE
+                  : parseFloat(tmpCuenta.saldo) + parseFloat(chequeModal.dataChequeModal.IMPORTE);
             }
             return tmpCuenta;
           })
@@ -177,12 +178,7 @@ const ComTesStep2 = inject('comtes', 'login')(
                 </>
               )}
             </div>
-            <ChequeModal
-              open={this.state.modalChequeOpen}
-              onClose={this.closeModal}
-              data={this.state.dataChequeModal}
-              aceptar={this.aceptarModal}
-            />
+            <ChequeModal open={this.state.modalChequeOpen} onClose={this.closeModal} aceptar={this.aceptarModal} />
           </Paper>
         );
       }

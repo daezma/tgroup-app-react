@@ -17,7 +17,7 @@ import { observer, inject } from 'mobx-react';
 import { itsGetClassSimple } from '../../api/itrisApiConnect';
 import style from './ChequeModal.module.css';
 
-const ChequeModal = inject('recven', 'login')(
+const ChequeModal = inject('chequeModal', 'login')(
   observer(
     class ChequeModal extends Component {
       state = {
@@ -35,8 +35,8 @@ const ChequeModal = inject('recven', 'login')(
       };
 
       getCheque = async () => {
-        const { recven, login } = this.props;
-        var tmpArray = { ...recven.dataChequeModal };
+        const { chequeModal, login } = this.props;
+        var tmpArray = { ...chequeModal.dataChequeModal };
         if (tmpArray.NUMERO2 !== '' && tmpArray.FK_ERP_BANCOS !== '') {
           try {
             const cheque = await itsGetClassSimple(
@@ -71,22 +71,22 @@ const ChequeModal = inject('recven', 'login')(
               tmpArray.NUMERO2 = cheque[0].NUMERO2;
               tmpArray.ORIGEN = cheque[0].ORIGEN;
               tmpArray.ID = cheque[0].ID;
-              recven.DataChequeModal(tmpArray);
+              chequeModal.DataChequeModal(tmpArray);
               this.props.aceptar();
             } else {
               this.setState({ chequeCargado: false });
-              recven.DataChequeModal(tmpArray);
+              chequeModal.DataChequeModal(tmpArray);
             }
           } catch (error) {
             this.setState({ chequeCargado: false, error: error });
           }
-        } else recven.DataChequeModal(tmpArray);
+        } else chequeModal.DataChequeModal(tmpArray);
       };
 
       changeData = valor => async event => {
-        const { recven } = this.props;
+        const { chequeModal } = this.props;
         //Hago esto para hacer el evento genérico y poder usar el parámetro de la funcion como índice
-        var tmpArray = { ...recven.dataChequeModal };
+        var tmpArray = { ...chequeModal.dataChequeModal };
         tmpArray[valor] = event.target.value;
         if (
           (valor === 'TIPO' && event.target.value === 'C') ||
@@ -94,7 +94,7 @@ const ChequeModal = inject('recven', 'login')(
         ) {
           tmpArray.FEC_DEP = tmpArray.FEC_EMI;
         }
-        recven.DataChequeModal(tmpArray);
+        chequeModal.DataChequeModal(tmpArray);
         if (valor === 'FK_ERP_BANCOS') {
           this.getCheque();
         }
@@ -111,18 +111,18 @@ const ChequeModal = inject('recven', 'login')(
                       required
                       id='cheque_cuenta'
                       label='Cuenta'
-                      value={this.props.recven.dataChequeModal.FK_ERP_CUE_TES}
+                      value={this.props.chequeModal.dataChequeModal.FK_ERP_CUE_TES}
                       inputProps={{ readOnly: true }}
                     />
                   </Grid>
                   <Grid item xm={6} xs={6}>
-                    <p>{this.props.recven.dataChequeModal.descCuenta}</p>
+                    <p>{this.props.chequeModal.dataChequeModal.descCuenta}</p>
                   </Grid>
                   <Grid item xm={12} xs={12}>
                     <Select
                       required
                       label='Banco'
-                      value={this.props.recven.dataChequeModal.FK_ERP_BANCOS}
+                      value={this.props.chequeModal.dataChequeModal.FK_ERP_BANCOS}
                       onChange={this.changeData('FK_ERP_BANCOS')}
                       onClick={this.cargarBancos}
                       className={style.fullInput}
@@ -149,7 +149,7 @@ const ChequeModal = inject('recven', 'login')(
                       id='cheque_numero'
                       label='Numero'
                       type='number'
-                      value={this.props.recven.dataChequeModal.NUMERO2}
+                      value={this.props.chequeModal.dataChequeModal.NUMERO2}
                       onChange={this.changeData('NUMERO2')}
                       onBlur={this.getCheque}
                       className={style.fullInput}
@@ -161,7 +161,7 @@ const ChequeModal = inject('recven', 'login')(
                       id='cheque_importe'
                       type='number'
                       label='Importe'
-                      value={this.props.recven.dataChequeModal.IMPORTE}
+                      value={this.props.chequeModal.dataChequeModal.IMPORTE}
                       onChange={this.changeData('IMPORTE')}
                     />
                   </Grid>
@@ -171,7 +171,7 @@ const ChequeModal = inject('recven', 'login')(
                       id='cheque_tipo'
                       select
                       label='Tipo'
-                      value={this.props.recven.dataChequeModal.TIPO}
+                      value={this.props.chequeModal.dataChequeModal.TIPO}
                       margin='normal'
                       onChange={this.changeData('TIPO')}
                     >
@@ -185,7 +185,7 @@ const ChequeModal = inject('recven', 'login')(
                       id='cheque_origen'
                       select
                       label='Origen'
-                      value={this.props.recven.dataChequeModal.ORIGEN}
+                      value={this.props.chequeModal.dataChequeModal.ORIGEN}
                       margin='normal'
                       onChange={this.changeData('ORIGEN')}
                       className={style.fullInput}
@@ -198,7 +198,7 @@ const ChequeModal = inject('recven', 'login')(
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={this.props.recven.dataChequeModal.NO_ALAORDEN}
+                          checked={this.props.chequeModal.dataChequeModal.NO_ALAORDEN}
                           value='true'
                           onChange={this.changeData('NO_ALAORDEN')}
                         />
@@ -210,7 +210,7 @@ const ChequeModal = inject('recven', 'login')(
                     <p>Emisión</p>
                     <TextField
                       type='date'
-                      value={this.props.recven.dataChequeModal.FEC_EMI}
+                      value={this.props.chequeModal.dataChequeModal.FEC_EMI}
                       onChange={this.changeData('FEC_EMI')}
                       className={style.fullInput}
                     />
@@ -219,7 +219,7 @@ const ChequeModal = inject('recven', 'login')(
                     <p>Depósito</p>
                     <TextField
                       type='date'
-                      value={this.props.recven.dataChequeModal.FEC_DEP}
+                      value={this.props.chequeModal.dataChequeModal.FEC_DEP}
                       onChange={this.changeData('FEC_DEP')}
                       className={style.fullInput}
                     />
