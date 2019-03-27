@@ -11,14 +11,15 @@ const SelectAutocomplete = inject('login')(
     };
 
     AJAXData = debounce(async value => {
-      const filtro = `${this.props.campoFiltro} LIKE '%${value}%'`;
+      const filtro2 = this.props.campoFiltro2 ? ` OR ${this.props.campoFiltro2} LIKE '%${value}%'` : '';
+      const filtro = `${this.props.campoFiltro} LIKE '%${value}%'${filtro2}`;
       const datos = await Buscador(this.props.login.UserSession, this.props.clase, filtro);
       this.setState({ data: datos });
-    }, 500);
+    }, 800);
 
-    handleChange = value => {
+    handleChange = async value => {
       this.props.onChange(value);
-      this.AJAXData(value);
+      await this.AJAXData(value);
     };
 
     getItemValue = item => {
@@ -62,8 +63,20 @@ const SelectAutocomplete = inject('login')(
                 minWidth: '0',
                 boxSizing: 'content-box',
                 background: 'none',
-                outline: '0'
+                outline: '0',
+                maxWidth: '170px'
               }
+            }}
+            menuStyle={{
+              borderRadius: '3px',
+              boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+              background: 'rgba(255, 255, 255, 0.9)',
+              padding: '2px 0',
+              fontSize: '90%',
+              minWidth: '170px',
+              overflow: 'auto',
+              maxHeight: '120px',
+              maxWidth: '170px'
             }}
           />
         </>

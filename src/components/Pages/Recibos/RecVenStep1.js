@@ -143,6 +143,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                       clase='ERP_EMPRESAS'
                       onChange={this.handleEmpresa}
                       campoFiltro='ID'
+                      campoFiltro2='DESCRIPCION'
                       inputProps={style.autoComplete}
                     />
                   </div>
