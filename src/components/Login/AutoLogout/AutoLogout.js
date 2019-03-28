@@ -40,7 +40,7 @@ const AutoLogout = Clase =>
           render() {
             return (
               <>
-                <Clase {...this.props} />
+                <Clase {...this.props} resetTimeout={this.resetTimeout} />
               </>
             );
           }

@@ -53,6 +53,7 @@ const ComTes = inject('comtes', 'login')(
 
       componentDidMount() {
         this.props.comtes.Inicializar();
+        this.props.resetTimeout();
       }
 
       handleNext = async () => {
@@ -118,6 +119,7 @@ const ComTes = inject('comtes', 'login')(
               ]
             };
             const response = await itsClassInsert(login.UserSession, 'ERP_COM_TES', data);
+            this.props.resetTimeout();
             comtes.Loading(false);
             if (typeof response === 'string' && response !== '') {
               this.props.comtes.Loading(false);

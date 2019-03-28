@@ -8,6 +8,7 @@ import { itsLogin } from '../../api/itrisApiConnect';
 import { observer, inject } from 'mobx-react';
 import { bases } from '../../constants/bases';
 import { HOME } from '../../constants/paginas';
+import { withRouter, Redirect } from 'react-router-dom';
 
 const Login = inject('login')(
   observer(
@@ -57,72 +58,81 @@ const Login = inject('login')(
         this.props.login.setUser(event.target.value);
       };
 
+      SessionOk = () => {
+        if (sessionStorage.usersession) {
+          return <Redirect to={HOME} />;
+        }
+      };
+
       render() {
         const { login } = this.props;
 
         return (
-          <Paper className={style.paper}>
-            <div>
-              <Img src={logo} className={login.loading ? style.image : null} />
-              <br />
-              {login.loading ? (
-                <>
-                  <p>Verificando...</p>
-                </>
-              ) : (
-                <>
-                  <TextField
-                    required
-                    id='user'
-                    autoFocus={true}
-                    placeholder='Usuario'
-                    variant='outlined'
-                    margin='normal'
-                    value={login.User}
-                    onChange={this.handleChangeLogin()}
-                  />
-                  <br />
-                  <TextField
-                    id='password'
-                    placeholder='Contraseña'
-                    type='password'
-                    margin='normal'
-                    variant='outlined'
-                    value={login.Pass}
-                    onChange={this.handleChange('P')}
-                  />
-                  <br />
-                  <TextField
-                    required
-                    id='select-base'
-                    select
-                    label='Base'
-                    className={style.menu}
-                    value={login.Base}
-                    onChange={this.handleChange('B')}
-                    margin='normal'
-                  >
-                    {bases.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <br />
-                  <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
-                    Login
-                  </Button>
-                </>
-              )}
+          <>
+            {this.SessionOk()}
+            <Paper className={style.paper}>
+              <div>
+                <Img src={logo} className={login.loading ? style.image : null} />
+                <br />
+                {login.loading ? (
+                  <>
+                    <p>Verificando...</p>
+                  </>
+                ) : (
+                  <>
+                    <TextField
+                      required
+                      id='user'
+                      autoFocus={true}
+                      placeholder='Usuario'
+                      variant='outlined'
+                      margin='normal'
+                      value={login.User}
+                      onChange={this.handleChangeLogin()}
+                    />
+                    <br />
+                    <TextField
+                      id='password'
+                      placeholder='Contraseña'
+                      type='password'
+                      margin='normal'
+                      variant='outlined'
+                      value={login.Pass}
+                      onChange={this.handleChange('P')}
+                    />
+                    <br />
+                    <TextField
+                      required
+                      id='select-base'
+                      select
+                      label='Base'
+                      className={style.menu}
+                      value={login.Base}
+                      onChange={this.handleChange('B')}
+                      margin='normal'
+                    >
+                      {bases.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    <br />
+                    <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
+                      Login
+                    </Button>
+                  </>
+                )}
 
-              <br />
-              <DialogSnack open={login.openDialogState} handleClose={this.handleClose} msg={login.msgErrorData} />
-            </div>
-          </Paper>
+                <br />
+                <DialogSnack open={login.openDialogState} handleClose={this.handleClose} msg={login.msgErrorData} />
+              </div>
+            </Paper>
+          </>
         );
       }
     }
   )
 );
 
-export default Login;
+export default withRouter(Login);

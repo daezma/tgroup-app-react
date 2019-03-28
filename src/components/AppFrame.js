@@ -19,37 +19,35 @@ const AppFrame = inject('login')(
   observer(
     class AppFrame extends Component {
       SessionOk = () => {
-        const { login } = this.props;
-        if (login.UserSession === '') {
+        if (!sessionStorage.usersession) {
           return <Redirect to={paginas.LOGIN} />;
         }
       };
 
       render() {
-        const { clase } = this.props;
+        const { clase, resetTimeout } = this.props;
         const contenido = (() => {
           switch (clase) {
             case paginas.PAGINA_EN_BLANCO:
-              return <InitPage />;
+              return <InitPage resetTimeout={resetTimeout} />;
             case paginas.PENDIENTES_VENTAS:
-              return <PenVenPage />;
+              return <PenVenPage resetTimeout={resetTimeout} />;
             case paginas.RECIBOS_VENTAS:
-              return <RecVen />;
+              return <RecVen resetTimeout={resetTimeout} />;
             case paginas.PENDIENTES_COMPRAS:
-              return <PenComPage />;
+              return <PenComPage resetTimeout={resetTimeout} />;
             case paginas.VALORES:
-              return <ValoresCarteraPage />;
+              return <ValoresCarteraPage resetTimeout={resetTimeout} />;
             case paginas.CHEQUES_A_DEBITAR:
-              return <ChequesADebitarPage />;
+              return <ChequesADebitarPage resetTimeout={resetTimeout} />;
             case paginas.COMPROBANTES_TESORERIA:
-              return <ComTesPage />;
+              return <ComTesPage resetTimeout={resetTimeout} />;
             case paginas.SAL_TES:
-              return <SalTesPage />;
+              return <SalTesPage resetTimeout={resetTimeout} />;
             default:
               break;
           }
         })();
-
         return (
           <>
             {this.SessionOk()}

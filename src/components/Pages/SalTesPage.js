@@ -38,6 +38,7 @@ const SalTesPage = inject('login')(
           const { login } = this.props;
           this.setState({ loading: true });
           const res = await itsGetClass(login.UserSession, '_TDI_SAL_TES', login.User, 100);
+          this.props.resetTimeout();
           this.setState({ loading: false });
           //Si esta OK trae un array sino string
           if (typeof res === 'string') {

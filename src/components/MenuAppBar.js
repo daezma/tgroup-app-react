@@ -113,16 +113,10 @@ const MenuAppBar = inject('menuPrincipal', 'login')(
 
       closeSession = async () => {
         const { login } = this.props;
-        const response = await itsLogout(login.UserSession);
-        if (response === '') {
-          login.ClearSession();
-          login.setLoading(false);
-          this.props.history.push(LOGIN);
-        } else {
-          login.setOpenDialog(true);
-          login.setMsgError(response);
-          login.setLoading(false);
-        }
+        await itsLogout(login.UserSession);
+        login.setLoading(false);
+        login.ClearSession();
+        this.props.history.push(LOGIN);
       };
 
       render() {

@@ -53,6 +53,7 @@ const RecVen = inject('recven', 'penven', 'login')(
 
       componentDidMount() {
         this.props.recven.Inicializar();
+        this.props.resetTimeout();
       }
 
       handleNext = async () => {
@@ -127,6 +128,7 @@ const RecVen = inject('recven', 'penven', 'login')(
               ]
             };
             const response = await itsClassInsert(login.UserSession, 'ERP_COM_VEN_REC', data);
+            this.props.resetTimeout();
             recven.Loading(false);
             if (typeof response === 'string' && response !== '') {
               this.props.recven.Loading(false);
