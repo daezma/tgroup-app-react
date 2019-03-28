@@ -44,6 +44,7 @@ class App extends Component {
                 path={paginas.COMPROBANTES_TESORERIA}
                 render={() => <AppFrameSession clase={paginas.COMPROBANTES_TESORERIA} />}
               />
+              <Route exact path={paginas.SAL_TES} render={() => <AppFrameSession clase={paginas.SAL_TES} />} />
               <Route path={paginas.HOME} render={() => <AppFrameSession clase={paginas.PAGINA_EN_BLANCO} />} />
             </Switch>
           </div>

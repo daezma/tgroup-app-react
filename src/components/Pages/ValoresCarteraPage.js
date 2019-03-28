@@ -25,6 +25,7 @@ const ValoresCarteraPage = inject('login', 'valores')(
       ordering = [{ columnName: 'empresa', direction: 'asc' }, { columnName: 'fecha', direction: 'asc' }];
 
       summaryTotal = [{ columnName: 'importe', type: 'sum' }];
+      summaryGroup = [{ columnName: 'importe', type: 'sum' }];
 
       componentDidMount() {
         this.traerDatos();
@@ -89,8 +90,7 @@ const ValoresCarteraPage = inject('login', 'valores')(
                 summaryGroup={this.summaryGroup}
                 summaryTotal={this.summaryTotal}
                 strictGrouping
-                selection={valores.Selection}
-                onSelection={this.onSelection}
+                noselect
               />
             ) : (
               valores.MsgAlert

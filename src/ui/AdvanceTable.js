@@ -64,11 +64,18 @@ type CurrencyEditorProps = DataTypeProvider.ValueEditorProps & WithStyles<typeof
 
 const getInputValue = (value?: string): string => (value === undefined ? '' : value);
 
-const getColor = (amount: number): string => {
-  if (amount > 0) {
+const getColor = (amount: number, invertColors: boolean): string => {
+  if (invertColors) {
+    if (amount > 0) {
+      return 'red';
+    }
+    return 'green';
+  } else {
+    if (amount > 0) {
+      return 'green';
+    }
     return 'red';
   }
-  return 'green';
 };
 
 const CurrencyEditor = withStyles(styles)(({ onValueChange, classes, value }: CurrencyEditorProps) => {
@@ -97,15 +104,16 @@ const CurrencyEditor = withStyles(styles)(({ onValueChange, classes, value }: Cu
   );
 });
 
-const CurrencyFormatter = withStyles(styles)(({ value, classes }: CurrencyFormatterProps) => (
-  <i className={classes.currency} style={{ color: getColor(value) }}>
-    ${value.toFixed(2)}
-  </i>
-));
+const CurrencyFormatter = invertColors =>
+  withStyles(styles)(({ value, classes }: CurrencyFormatterProps) => (
+    <i className={classes.currency} style={{ color: getColor(value, invertColors) }}>
+      ${value.toFixed(2)}
+    </i>
+  ));
 
 const CurrencyTypeProvider: React.ComponentType<DataTypeProviderProps> = (props: DataTypeProviderProps) => (
   <DataTypeProvider
-    formatterComponent={CurrencyFormatter}
+    formatterComponent={CurrencyFormatter(props.invertColors)}
     editorComponent={CurrencyEditor}
     availableFilterOperations={availableFilterOperations}
     {...props}
@@ -141,8 +149,12 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
     count: 'Cantidad'
   };
 
+  groupMessages = {
+    groupByColumn: 'Arrastre la cabecera de la columna a agrupar'
+  };
+
   selectionComponent = ({ row, ...restProps }) => {
-    return row.saldo <= 0 ? (
+    return row.saldo <= 0 || this.props.noselect ? (
       <Table.Cell {...restProps} />
     ) : (
       <TableSelection.Cell {...restProps}>
@@ -195,7 +207,9 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
           <IntegratedSelection />
           <IntegratedSummary />
 
-          {currencyColumns ? <CurrencyTypeProvider for={currencyColumns} /> : null}
+          {currencyColumns ? (
+            <CurrencyTypeProvider for={currencyColumns} invertColors={this.props.invertColors ? true : false} />
+          ) : null}
 
           <DragDropProvider />
 
@@ -209,7 +223,7 @@ export default class AdvanceTable extends React.Component<object, IGridState> {
           <TableGroupRow showColumnsWhenGrouped={true} />
           {summaryTotal ? <TableSummaryRow messages={this.summaryMessages} /> : null}
           <Toolbar />
-          <GroupingPanel showSortingControls={true} />
+          <GroupingPanel showSortingControls={true} messages={this.groupMessages} />
         </Grid>
       </Paper>
     );

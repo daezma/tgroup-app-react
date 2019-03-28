@@ -34,6 +34,9 @@ class MenuPrincipalItems extends Component {
         </List>
         <Divider />
         <List subheader={<ListSubheader component='div'>Tesorería</ListSubheader>}>
+          <MenuPrinicipalItem title='Saldos de tesorería' click={() => this.GoToPage(paginas.SAL_TES)}>
+            <Print />
+          </MenuPrinicipalItem>
           <MenuPrinicipalItem title='Valores en cartera' click={() => this.GoToPage(paginas.VALORES)}>
             <Print />
           </MenuPrinicipalItem>

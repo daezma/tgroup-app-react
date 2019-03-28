@@ -133,6 +133,7 @@ const PenVenPage = inject('login', 'penven')(
                 strictGrouping
                 selection={penven.Selection}
                 onSelection={this.onSelection}
+                invertColors
               />
             ) : (
               penven.MsgAlert

@@ -25,6 +25,7 @@ const ChequesADebitarPage = inject('login', 'cheques_debitar')(
       ordering = [{ columnName: 'empresa', direction: 'asc' }, { columnName: 'fecha', direction: 'asc' }];
 
       summaryTotal = [{ columnName: 'importe', type: 'sum' }];
+      summaryGroup = [{ columnName: 'importe', type: 'sum' }];
 
       componentDidMount() {
         this.traerDatos();
@@ -89,8 +90,7 @@ const ChequesADebitarPage = inject('login', 'cheques_debitar')(
                 summaryGroup={this.summaryGroup}
                 summaryTotal={this.summaryTotal}
                 strictGrouping
-                selection={cheques_debitar.Selection}
-                onSelection={this.onSelection}
+                noselect
               />
             ) : (
               cheques_debitar.MsgAlert

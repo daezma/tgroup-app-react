@@ -12,6 +12,7 @@ const PenComPage = React.lazy(() => import('./Pages/PenComPage'));
 const ValoresCarteraPage = React.lazy(() => import('./Pages/ValoresCarteraPage'));
 const ChequesADebitarPage = React.lazy(() => import('./Pages/ChequesADebitarPage'));
 const ComTesPage = React.lazy(() => import('./Pages/ComTes/ComTes'));
+const SalTesPage = React.lazy(() => import('./Pages/SalTesPage'));
 const RecVen = React.lazy(() => import('./Pages/Recibos/RecVen'));
 
 const AppFrame = inject('login')(
@@ -42,6 +43,8 @@ const AppFrame = inject('login')(
               return <ChequesADebitarPage />;
             case paginas.COMPROBANTES_TESORERIA:
               return <ComTesPage />;
+            case paginas.SAL_TES:
+              return <SalTesPage />;
             default:
               break;
           }

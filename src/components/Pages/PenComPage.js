@@ -95,6 +95,7 @@ const PenComPage = inject('login', 'pencom')(
                 strictGrouping
                 selection={pencom.Selection}
                 onSelection={this.onSelection}
+                invertColors
               />
             ) : (
               pencom.MsgAlert
