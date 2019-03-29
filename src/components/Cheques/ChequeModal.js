@@ -100,6 +100,11 @@ const ChequeModal = inject('chequeModal', 'login')(
         }
       };
 
+      changeOrden = (event, checked) => {
+        const { chequeModal } = this.props;
+        chequeModal.DataChequeModal({ ...chequeModal.dataChequeModal, NO_ALAORDEN: checked });
+      };
+
       render() {
         return (
           <Modal open={this.props.open} onClose={this.props.onClose}>
@@ -163,6 +168,7 @@ const ChequeModal = inject('chequeModal', 'login')(
                       label='Importe'
                       value={this.props.chequeModal.dataChequeModal.IMPORTE}
                       onChange={this.changeData('IMPORTE')}
+                      inputProps={{ readOnly: !this.props.nuevaCarga }}
                     />
                   </Grid>
                   <Grid item xm={6} xs={6}>
@@ -174,6 +180,7 @@ const ChequeModal = inject('chequeModal', 'login')(
                       value={this.props.chequeModal.dataChequeModal.TIPO}
                       margin='normal'
                       onChange={this.changeData('TIPO')}
+                      inputProps={{ readOnly: !this.props.nuevaCarga }}
                     >
                       <MenuItem value='C'>Común</MenuItem>
                       <MenuItem value='D'>Diferido</MenuItem>
@@ -189,6 +196,7 @@ const ChequeModal = inject('chequeModal', 'login')(
                       margin='normal'
                       onChange={this.changeData('ORIGEN')}
                       className={style.fullInput}
+                      inputProps={{ readOnly: !this.props.nuevaCarga }}
                     >
                       <MenuItem value='C'>Cliente</MenuItem>
                       <MenuItem value='T'>Tercero</MenuItem>
@@ -199,8 +207,7 @@ const ChequeModal = inject('chequeModal', 'login')(
                       control={
                         <Checkbox
                           checked={this.props.chequeModal.dataChequeModal.NO_ALAORDEN}
-                          value='true'
-                          onChange={this.changeData('NO_ALAORDEN')}
+                          onChange={this.changeOrden}
                         />
                       }
                       label='No a la orden'
@@ -213,6 +220,7 @@ const ChequeModal = inject('chequeModal', 'login')(
                       value={this.props.chequeModal.dataChequeModal.FEC_EMI}
                       onChange={this.changeData('FEC_EMI')}
                       className={style.fullInput}
+                      inputProps={{ readOnly: !this.props.nuevaCarga }}
                     />
                   </Grid>
                   <Grid item xm={6} xs={6}>
@@ -222,6 +230,7 @@ const ChequeModal = inject('chequeModal', 'login')(
                       value={this.props.chequeModal.dataChequeModal.FEC_DEP}
                       onChange={this.changeData('FEC_DEP')}
                       className={style.fullInput}
+                      inputProps={{ readOnly: !this.props.nuevaCarga }}
                     />
                   </Grid>
                   <br />

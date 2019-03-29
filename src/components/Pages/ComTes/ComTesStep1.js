@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, Paper, MenuItem } from '@material-ui/core';
+import { TextField, Paper, MenuItem, FormControlLabel, Checkbox } from '@material-ui/core';
 import style from './ComTes.module.css';
 import { observer, inject } from 'mobx-react';
 import { fk_erp_uni_neg } from '../../../api/ListasFijas';
@@ -50,6 +50,10 @@ const ComTesStep1 = inject('comtes', 'login')(
           default:
             break;
         }
+      };
+
+      handleCompartido = (event, checked) => {
+        this.props.comtes.Compartido(checked);
       };
 
       focusInput = event => {
@@ -143,6 +147,11 @@ const ComTesStep1 = inject('comtes', 'login')(
               >
                 {conceptos}
               </TextField>
+              <br />
+              <FormControlLabel
+                control={<Checkbox checked={comtes.compartido} onChange={this.handleCompartido} />}
+                label='Gasto compartido'
+              />
               <br />
               <TextField
                 id='observaciones'

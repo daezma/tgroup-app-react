@@ -178,7 +178,12 @@ const ComTesStep2 = inject('comtes', 'login', 'chequeModal')(
                 </>
               )}
             </div>
-            <ChequeModal open={this.state.modalChequeOpen} onClose={this.closeModal} aceptar={this.aceptarModal} />
+            <ChequeModal
+              open={this.state.modalChequeOpen}
+              onClose={this.closeModal}
+              aceptar={this.aceptarModal}
+              nuevaCarga={comtes.tipo === 'I' ? true : false}
+            />
           </Paper>
         );
       }

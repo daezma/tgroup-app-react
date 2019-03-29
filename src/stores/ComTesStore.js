@@ -28,6 +28,7 @@ class ComTesStore {
     this._concepto = '';
     this._list_conceptos = [];
     this._tipo = '';
+    this._compartido = false;
   }
 
   get fecha() {
@@ -162,6 +163,14 @@ class ComTesStore {
   Tipo(value) {
     this._tipo = value;
   }
+
+  get compartido() {
+    return this._compartido;
+  }
+
+  Compartido(value) {
+    this._compartido = value;
+  }
 }
 
 decorate(ComTesStore, {
@@ -183,6 +192,7 @@ decorate(ComTesStore, {
   _concepto: observable,
   _list_conceptos: observable,
   _tipo: observable,
+  _compartido: observable,
   fecha: computed,
   fk_erp_uni_neg: computed,
   id: computed,
@@ -200,6 +210,7 @@ decorate(ComTesStore, {
   generado: computed,
   concepto: computed,
   list_conceptos: computed,
+  compartido: computed,
   tipo: computed,
   Fecha: action,
   Fk_erp_uni_neg: action,
@@ -219,7 +230,8 @@ decorate(ComTesStore, {
   Generado: action,
   Concepto: action,
   List_conceptos: action,
-  Tipo: action
+  Tipo: action,
+  Compartido: action
 });
 
 export default ComTesStore;

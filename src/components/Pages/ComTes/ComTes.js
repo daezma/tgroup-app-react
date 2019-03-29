@@ -93,6 +93,7 @@ const ComTes = inject('comtes', 'login')(
               FK_ERP_T_COM_TES: tipCom,
               OBSERVACIONES: comtes.observaciones,
               FK_ERP_UNI_NEG: comtes.fk_erp_uni_neg,
+              _COMPARTIDO: comtes.compartido,
               ERP_DET_TES: [
                 {
                   FK_ERP_CUE_TES: parseInt(comtes.concepto),
