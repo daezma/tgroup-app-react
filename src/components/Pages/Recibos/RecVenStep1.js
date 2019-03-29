@@ -62,6 +62,12 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
         );
       };
 
+      focusInput = event => {
+        if (event.target.value === '0') {
+          this.props.recven.Saldo('');
+        }
+      };
+
       render() {
         const { recven, penven } = this.props;
         const uniNeg = recven.list_uni_neg;
@@ -173,6 +179,7 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
                 label='Importe a cuenta'
                 value={recven.saldo}
                 onChange={this.handleChange('I')}
+                onFocus={this.focusInput}
               />
               <br />
               <TextField

@@ -52,6 +52,12 @@ const ComTesStep1 = inject('comtes', 'login')(
         }
       };
 
+      focusInput = event => {
+        if (event.target.value === '0') {
+          this.props.comtes.Saldo('');
+        }
+      };
+
       render() {
         const { comtes } = this.props;
         const unidad = comtes.list_uni_neg.map(option => (
@@ -92,6 +98,7 @@ const ComTesStep1 = inject('comtes', 'login')(
                 label='Importe'
                 value={comtes.saldo}
                 onChange={this.handleChange('I')}
+                onFocus={this.focusInput}
               />
               <br />
               <TextField

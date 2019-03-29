@@ -34,6 +34,9 @@ class MenuPrincipalItems extends Component {
         </List>
         <Divider />
         <List subheader={<ListSubheader component='div'>Tesorería</ListSubheader>}>
+          <MenuPrinicipalItem title='Ingresos/Egresos' click={() => this.GoToPage(paginas.COMPROBANTES_TESORERIA)}>
+            <Swap />
+          </MenuPrinicipalItem>
           <MenuPrinicipalItem title='Saldos de tesorería' click={() => this.GoToPage(paginas.SAL_TES)}>
             <Print />
           </MenuPrinicipalItem>
@@ -42,9 +45,6 @@ class MenuPrincipalItems extends Component {
           </MenuPrinicipalItem>
           <MenuPrinicipalItem title='Cheques a debitar' click={() => this.GoToPage(paginas.CHEQUES_A_DEBITAR)}>
             <Print />
-          </MenuPrinicipalItem>
-          <MenuPrinicipalItem title='Ingresos/Egresos' click={() => this.GoToPage(paginas.COMPROBANTES_TESORERIA)}>
-            <Swap />
           </MenuPrinicipalItem>
         </List>
       </>
