@@ -80,47 +80,49 @@ const Login = inject('login')(
                   </>
                 ) : (
                   <>
-                    <TextField
-                      required
-                      id='user'
-                      autoFocus={true}
-                      placeholder='Usuario'
-                      variant='outlined'
-                      margin='normal'
-                      value={login.User}
-                      onChange={this.handleChangeLogin()}
-                    />
-                    <br />
-                    <TextField
-                      id='password'
-                      placeholder='Contraseña'
-                      type='password'
-                      margin='normal'
-                      variant='outlined'
-                      value={login.Pass}
-                      onChange={this.handleChange('P')}
-                    />
-                    <br />
-                    <TextField
-                      required
-                      id='select-base'
-                      select
-                      label='Base'
-                      className={style.menu}
-                      value={login.Base}
-                      onChange={this.handleChange('B')}
-                      margin='normal'
-                    >
-                      {bases.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <br />
-                    <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
-                      Login
-                    </Button>
+                    <form autoComplete="on">
+                      <TextField
+                        required
+                        id='user'
+                        autoFocus={true}
+                        placeholder='Usuario'
+                        variant='outlined'
+                        margin='normal'
+                        value={login.User}
+                        onChange={this.handleChangeLogin()}
+                      />
+                      <br />
+                      <TextField
+                        id='password'
+                        placeholder='Contraseña'
+                        type='password'
+                        margin='normal'
+                        variant='outlined'
+                        value={login.Pass}
+                        onChange={this.handleChange('P')}
+                      />
+                      <br />
+                      <TextField
+                        required
+                        id='select-base'
+                        select
+                        label='Base'
+                        className={style.menu}
+                        value={login.Base}
+                        onChange={this.handleChange('B')}
+                        margin='normal'
+                      >
+                        {bases.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      <br />
+                      <Button variant='contained' color='primary' onClick={this.handleClickOpen}>
+                        Login
+                      </Button>
+                    </form>
                   </>
                 )}
 
