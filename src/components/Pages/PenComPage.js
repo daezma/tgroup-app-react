@@ -38,7 +38,7 @@ const PenComPage = inject('login', 'pencom')(
         try {
           const { login, pencom } = this.props;
           this.setState({ loading: true });
-          const res = await itsGetClass(login.UserSession, 'ERP_PEN_COM_IMP', login.User, 100);
+          const res = await itsGetClass(login.UserSession, 'ERP_PEN_COM_IMP', login.User, 500);
           this.props.resetTimeout();
           this.setState({ loading: false });
           if (typeof res === 'string') {

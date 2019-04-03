@@ -42,7 +42,7 @@ const PenVenPage = inject('login', 'penven')(
           const { login, penven } = this.props;
           penven.initialize();
           this.setState({ loading: true });
-          const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User);
+          const res = await itsGetClass(login.UserSession, 'ERP_PEN_VEN_IMP', login.User, 500);
           this.props.resetTimeout();
           this.setState({ loading: false });
           if (typeof res === 'string') {

@@ -35,7 +35,7 @@ const ValoresCarteraPage = inject('login', 'valores')(
         try {
           const { login, valores } = this.props;
           this.setState({ loading: true });
-          const res = await itsGetClass(login.UserSession, 'ERP_CHE_CAR', login.User, 100);
+          const res = await itsGetClass(login.UserSession, 'ERP_CHE_CAR', login.User, 500);
           this.props.resetTimeout();
           this.setState({ loading: false });
           if (typeof res === 'string') {
