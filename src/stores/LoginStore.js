@@ -39,7 +39,7 @@ class LoginStore {
 
   setUser(value) {
     this.loginData.name = value;
-    sessionStorage.setItem('user', JSON.stringify(toJS(value)));
+    sessionStorage.setItem('user', value);
   }
 
   get Pass() {
@@ -76,7 +76,6 @@ class LoginStore {
   }
 
   ClearSession() {
-    sessionStorage.removeItem('name');
     sessionStorage.removeItem('usersession');
     this.inicializar();
   }
