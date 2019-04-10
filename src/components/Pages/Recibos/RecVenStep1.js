@@ -16,6 +16,9 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
         try {
           const uniNeg = await fk_erp_uni_neg(this.props.login.UserSession);
           this.props.recven.List_uni_neg(uniNeg);
+          if (this.props.penven.Facturas) {
+            this.props.recven.Fk_erp_uni_neg(this.props.penven.Facturas[0].unineg);
+          }
         } catch (error) {
           console.log('error:' + error);
         }
@@ -52,7 +55,8 @@ const RecVenStep1 = inject('recven', 'login', 'penven')(
           if (factura.ID === event.target.id) {
             return {
               saldo: event.target.value ? +event.target.value : '',
-              ID: factura.ID
+              ID: factura.ID,
+              unineg: factura.unineg
             };
           } else return factura;
         });

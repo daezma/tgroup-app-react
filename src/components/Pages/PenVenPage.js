@@ -55,7 +55,8 @@ const PenVenPage = inject('login', 'penven')(
                 fecha: row.FECHA,
                 numero: row.FK_ERP_COM_VEN,
                 importe: row.IMPORTE,
-                saldo: row.SALDO
+                saldo: row.SALDO,
+                unineg: row._FK_ERP_UNI_NEG
               };
             });
             penven.SetData(rows);
@@ -95,7 +96,8 @@ const PenVenPage = inject('login', 'penven')(
             const facturas = penven.Selection.map(value => {
               const seleccion = value.split('_');
               const saldo = penven.Data.filter(row => value === this.getRowId(row))[0].saldo;
-              return { ID: seleccion[1], saldo: saldo };
+              const unineg = penven.Data.filter(row => value === this.getRowId(row))[0].unineg;
+              return { ID: seleccion[1], saldo: saldo, unineg: unineg };
             });
             penven.SetFacturas(facturas);
             penven.SetEmpresaImputacion(empresaSeleccionada);

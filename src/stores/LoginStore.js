@@ -1,4 +1,4 @@
-import { observable, computed, configure, action, decorate, toJS } from 'mobx';
+import { observable, computed, configure, action, decorate } from 'mobx';
 
 configure({ enforceActions: 'always' });
 
@@ -23,9 +23,9 @@ class LoginStore {
     this.loading = false;
     this.warnTimeout = null;
     this.logoutTimeout = null;
-    if (sessionStorage.usersession && JSON.parse(sessionStorage.getItem('usersession')) !== '') {
-      this.setUser(JSON.parse(sessionStorage.getItem('user')));
-      this.setUserSession(JSON.parse(sessionStorage.getItem('usersession')));
+    if (sessionStorage.usersession && sessionStorage.getItem('usersession') !== '') {
+      this.setUser(sessionStorage.getItem('user'));
+      this.setUserSession(sessionStorage.getItem('usersession'));
     }
   }
 
@@ -72,7 +72,7 @@ class LoginStore {
 
   setUserSession(value) {
     this.loginResponse.usersession = value;
-    sessionStorage.setItem('usersession', JSON.stringify(toJS(value)));
+    sessionStorage.setItem('usersession', value);
   }
 
   ClearSession() {
