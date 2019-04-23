@@ -184,7 +184,12 @@ const RecVenStep2 = inject('recven', 'login', 'penven', 'chequeModal')(
                 </>
               )}
             </div>
-            <ChequeModal open={this.state.modalChequeOpen} onClose={this.closeModal} aceptar={this.aceptarModal} />
+            <ChequeModal
+              open={this.state.modalChequeOpen}
+              onClose={this.closeModal}
+              aceptar={this.aceptarModal}
+              nuevaCarga
+            />
           </Paper>
         );
       }
