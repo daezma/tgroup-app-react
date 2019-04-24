@@ -7,6 +7,7 @@ import { observer, inject } from 'mobx-react';
 import * as paginas from '../constants/paginas';
 import Img from 'react-image';
 import logo from '../image/TgroupLogo1.png';
+import SalTesPageSinUN from './Pages/SalTesPageSinUN';
 const PenVenPage = React.lazy(() => import('./Pages/PenVenPage'));
 const PenComPage = React.lazy(() => import('./Pages/PenComPage'));
 const ValoresCarteraPage = React.lazy(() => import('./Pages/ValoresCarteraPage'));
@@ -44,6 +45,8 @@ const AppFrame = inject('login')(
               return <ComTesPage resetTimeout={resetTimeout} />;
             case paginas.SAL_TES:
               return <SalTesPage resetTimeout={resetTimeout} />;
+            case paginas.SAL_TES_NO_UN:
+              return <SalTesPageSinUN resetTimeout={resetTimeout} />;
             default:
               break;
           }

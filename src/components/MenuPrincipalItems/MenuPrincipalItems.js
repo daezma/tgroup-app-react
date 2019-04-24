@@ -37,7 +37,10 @@ class MenuPrincipalItems extends Component {
           <MenuPrinicipalItem title='Ingresos/Egresos' click={() => this.GoToPage(paginas.COMPROBANTES_TESORERIA)}>
             <Swap />
           </MenuPrinicipalItem>
-          <MenuPrinicipalItem title='Saldos de tesorería' click={() => this.GoToPage(paginas.SAL_TES)}>
+          <MenuPrinicipalItem title='Saldos de tesorería(Uni. Neg.)' click={() => this.GoToPage(paginas.SAL_TES)}>
+            <Print />
+          </MenuPrinicipalItem>
+          <MenuPrinicipalItem title='Saldos de tesorería' click={() => this.GoToPage(paginas.SAL_TES_NO_UN)}>
             <Print />
           </MenuPrinicipalItem>
           <MenuPrinicipalItem title='Valores en cartera' click={() => this.GoToPage(paginas.VALORES)}>

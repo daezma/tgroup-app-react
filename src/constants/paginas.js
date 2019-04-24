@@ -6,5 +6,6 @@ export const RECIBOS_VENTAS = '/recven';
 export const PAGINA_EN_BLANCO = '/blank';
 export const COMPROBANTES_TESORERIA = '/comp_tes';
 export const SAL_TES = '/sal_tes';
+export const SAL_TES_NO_UN = '/sal_tes_no_un';
 export const LOGIN = '/login';
 export const HOME = '/';
